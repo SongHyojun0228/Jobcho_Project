@@ -1,0 +1,60 @@
+.chat_header_emoticon {
+	position: relative;
+}
+
+.chatroom_member_list {
+	display: none;
+	position: absolute;
+	width: 15rem;
+	background: white;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	padding: 1rem;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	z-index: 2000;
+	transition: opacity 0.2s ease;
+	top: 100%;
+	right: 0;
+}
+
+.team_member_text {
+	color: rgb(169, 169, 169);
+	font-weight: 600;
+}
+
+.chatroom_member_list_item {
+	display: flex;
+	align-items: center;
+	margin-bottom: 1rem;
+}
+
+.chatroom_member_list_item:last-child {
+	margin-bottom: 0;
+}
+
+
+.chatroom_member_list_item img {
+	margin: 0;
+	width: 2rem;
+	height: 2rem;
+	border-radius: 30%;
+}
+
+.chatroom_member_name {
+	font-size: 0.9rem;
+	font-weight: 600;
+	margin-left: 0.5rem;
+	color: rgb(125, 125, 125);
+	color: black;
+}
+
+.is_active {
+	display: flex;
+	align-items: center;
+}
+
+.is_active img {
+	width: 0.5rem;
+	height: 0.5rem;
+	margin-left: 0.5rem;
+}

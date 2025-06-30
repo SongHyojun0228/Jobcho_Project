@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="ko">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="_csrf" th:content="${_csrf.token}" />
+	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+	<title layout:title-pattern="$LAYOUT_TITLE - Jobcho">Jobcho</title>
+
+	<link rel="stylesheet" th:href="@{/css/includes/shared.css}" />
+</head>
+
+<body>
+	<div th:replace="~{includes/header :: commonHeader}"></div>
+	<main layout:fragment="content">
+	</main>
+</body>
+
+</html>

@@ -1,0 +1,187 @@
+.main {
+	width: 50rem;
+	margin: auto;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+}
+
+.path {
+	margin-top: 2rem;
+}
+
+.go_to_index {
+	color: rgb(169, 169, 169);
+}
+
+.path>span {
+	color: rgb(125, 125, 125);
+}
+
+.here {
+	color: rgb(125, 125, 125);
+	font-weight: 500;
+}
+
+.main_container {
+	width: 50rem;
+	margin: auto;
+	margin-top: 2rem;
+	padding: 3.5rem 2.5rem;
+	border: 2px solid rgb(228, 228, 228);
+	border-radius: 6px;
+	background-color: white;
+}
+
+.preview {
+	display: none;
+}
+
+
+.personal_info_items {
+	display: flex;
+	justify-content: space-between;
+	padding: 2rem 1rem;
+	border-bottom: 1.5px solid rgb(228, 228, 228);
+}
+
+.info_texts {
+	display: flex;
+}
+
+.personal_info_items:not(:first-child):hover {
+	background-color: rgb(250, 250, 250);
+}
+
+.personal_info_items:not(:first-child) img {
+	width: 1rem;
+	height: 1rem;
+}
+
+.personal_info_items:first-child img {
+	width: 3rem;
+	height: 3rem;
+	border-radius: 12px;
+}
+
+.personal_info_items_title {
+	width: 15rem;
+	font-weight: 500;
+}
+
+.profile_label_input_btn_flex {
+	display: flex;
+	flex-direction: column;
+	align-items: baseline;
+	gap: 0.5rem;
+}
+
+.btn_upload {
+	margin-top: 0.5rem;
+	color: rgb(169, 169, 169);
+	cursor: pointer;
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+}
+
+.btn_upload:hover {
+	color: rgb(6, 195, 115);
+	font-weight: 500;
+}
+
+.profile_none_block {
+	display: none;
+}
+
+.profile_btns {
+	margin-top: 0.5rem;
+}
+
+.profile_btns button {
+	padding: 0.5rem;
+}
+
+
+.personal_info_items p:last-child {
+	color: rgb(125, 125, 125);
+}
+
+.personal_info_items:last-child {
+	border: none;
+}
+
+.change_form {
+	display: none;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.5rem;
+	width: 25rem;
+}
+
+.caution_notice {
+	color: rgb(125, 125, 125);
+	margin-bottom: 0.5rem;
+}
+
+.email_caution,
+.pw_caution {
+	color: rgb(196, 69, 65);
+	font-weight: 500;
+	display: none;
+	margin-bottom: 0.5rem;
+}
+
+.change_form input {
+	padding: 0.5rem;
+	width: 100%;
+	box-sizing: border-box;
+	margin-bottom: 0.5rem;
+}
+
+.change_form input:focus {
+	outline: none;
+}
+
+.change_btns button {
+	padding: 0.5rem 1rem;
+}
+
+.cancel_btn {
+	background-color: rgb(250, 250, 250);
+	color: rgb(169, 169, 169);
+	border: 1px solid rgb(169, 169, 169);
+}
+
+.cancel_btn:hover {
+	font-weight: 600;
+}
+
+.confirm_btn {
+	background-color: rgb(169, 169, 169);
+	color: rgb(250, 250, 250);
+	border: 1px solid rgb(169, 169, 169);
+}
+
+.last_confirm {
+	background-color: rgb(248, 230, 232);
+	padding: 1rem;
+	color: rgb(169, 69, 65);
+	font-weight: 600;
+	margin-bottom: 1rem;
+	border-radius: 6px;
+}
+
+.delete_btn {
+	background-color: rgb(248, 230, 232);
+	color: rgb(169, 69, 65);
+	border: 1px solid rgb(169, 69, 65);
+}
+
+.delete_btn:hover {
+	background-color: rgb(169, 69, 65);
+	color: rgb(248, 230, 232);
+	border: 1px solid rgb(248, 230, 232);
+}

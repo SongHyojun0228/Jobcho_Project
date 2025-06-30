@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{includes/layout}" lang="ko">
+
+<head>
+	<title layout:title="로그인">로그인</title>
+	<link rel="stylesheet" th:href="@{/css/user/sign_form.css}" />
+</head>
+
+<body>
+	<div class="main" layout:fragment="content">
+		<div class="login_container">
+			<h1>로그인</h1>
+			<form th:action="@{/user/login}" class="login_form" method="post">
+				<div th:if="${param.error}">
+					<div class="toggle_caution">
+						<div class="error_form_caution">이메일 또는 비밀번호가 틀렸습니다.</div>
+					</div>
+				</div>
+				<input type="email" placeholder="이메일" class="login_input input_email" name="user_email" />
+				<p class="caution">이메일 주소를 입력해주세요.</p>
+				<input type="password" placeholder="비밀번호" class="login_input input_password" name="user_password" />
+				<p class="caution">비밀번호를 입력해주세요.</p>
+				<div class="select_container">
+					<!-- <label class="checkbox">
+						<input type="checkbox" />이메일 기억하기
+					</label> -->
+					<label class="checkbox">
+						<input type="checkbox" name="remember-me" id="remember-me" />로그인 상태 유지
+					</label>
+					<a th:href="@{/user/find/password}" class="forgotpassword">비밀번호 찾기</a>
+				</div>
+				<button type="submit" class="login_btn">로그인</button>
+				<p class="signup">
+					잡초가 처음이신가요?
+					<a th:href="@{/user/signup}">회원가입</a>
+				</p>
+			</form>
+		</div>
+		<script th:src="@{/javascript/user/login.js}"></script>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,10 @@
+.talk_container {
+width: 25rem;
+height: 50rem;
+margin: auto;
+/* padding: 1rem 1.5rem 0 1.5rem; */
+background-color: rgb(250, 250, 250);
+box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+border-radius: 30px;
+overflow: hidden;
+}

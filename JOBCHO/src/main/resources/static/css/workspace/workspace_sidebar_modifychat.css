@@ -1,0 +1,11 @@
+.side_chat{
+	display: flex;
+	flex-direction: column;
+	width: 33rem;
+	height: 867px;
+	border: 1px solid rgb(228,228,227);
+}
+
+.chat{
+	flex-direction: row;
+}

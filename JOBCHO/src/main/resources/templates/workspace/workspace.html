@@ -1,0 +1,1376 @@
+<div layout:decorate="~{workspace/layout_workspace}">
+	<div layout:fragment="content" class="container my-3">
+
+		<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title th:text="'Welcome | ' + ${workspaceId}">Welcome</title>
+			<link rel="stylesheet" th:href="@{/css/includes/shared.css}" />
+			<link rel="stylesheet" th:href="@{/css/workspace/workspace.css}" />
+			<link rel="stylesheet" th:href="@{/css/workspace/uploadnotification.css}" />
+			<link rel="stylesheet" th:href="@{/css/workspace/task.css}" />
+			<link rel="stylesheet" th:href="@{/css/workspace/bookmark.css}" />
+			<link rel="stylesheet" th:href="@{/css/workspace/createtask.css}" />
+			<link rel="stylesheet" th:href="@{/css/workspace/detailtask.css}" />
+			<link rel="stylesheet" th:href="@{/css/workspace/create_chat.css}" />
+			<link rel="stylesheet" th:href="@{/css/workspace/organization_chart.css}" />
+			<link rel="stylesheet" th:href="@{/css/workspace/invite_chat_member.css}" />
+			<link rel="stylesheet" th:href="@{/css/workspace/message_answer.css}" />
+			<link rel="stylesheet" th:href="@{/css/workspace/date_format.css}" />
+			<link rel="stylesheet" th:href="@{/css/workspace/workspace_folder_open.css}" />
+			<link rel="stylesheet" th:href="@{/css/workspace/message_file.css}" />
+			<link rel="stylesheet" th:href="@{/css/workspace/workspace_icons.css}" />
+			<link rel="stylesheet" th:href="@{/css/workspace/chatroom_member.css}">
+			<link rel="stylesheet" th:href="@{/css/workspace/side_alarm.css}" />
+			<link rel="stylesheet" th:href="@{/css/cs/customerservicecenter.css}" />
+
+			<script th:src="@{/javascript/workspace/organization_search.js}" defer></script>
+			<script th:src="@{/javascript/workspace/bookmark.js}" defer></script>
+			<script th:src="@{/javascript/workspace/workspace_click.js}" defer></script>
+			<script th:src="@{/javascript/workspace/invite_chat_member.js}" defer></script>
+			<script th:src="@{/javascript/cs/close_service_center.js}" defer></script>
+		</head>
+
+		<body th:data-user-name="${user.userName}" th:data-user-id="${user.userId}"
+			th:data-user-img="@{/uploads/profileImg/{img}(img=${user.userImg})}" th:data-chatroom-id="${chatroomId}">
+			<div id="modalBackdrop" class="modal_backdrop" style="display: none;"></div>
+			<header>
+				<a th:href="@{/index}">
+					<div class="jobcho_logo">
+						<img th:src="@{/images/Jobcho_logo.png}" alt="Jobcho_logo" />
+						<p>Jabcho</p>
+					</div>
+				</a>
+				<div class="header_icon_info">
+					<div class="more-options-wrapper">
+						<a href="" class="header_alarm_icon">
+							<img th:data-workspace-id="${workspaceId}" th:src="@{/images/icons/alarm-bell.png}"
+								alt="i_alarm" onclick="showAlarm()">
+							<span class="is_new_alarm" style="visibility: hidden;"></span>
+						</a>
+						<div id="side_alarm">
+							<div class="total_side_alarm_container">
+								<div class="top_alarm_container">
+									<p>알림센터</p>
+									<a>x</a>
+								</div>
+								<div class="bottom_alarm_container">
+									<div th:each="alarmItem : ${alarmList}" class="alarm_items"
+										th:fragment="alarmListFragment">
+										<!-- 공지사항 알림 -->
+										<div th:if="${alarmItem.notification != null}">
+											<p class="chatroom_name"
+												th:text="${alarmItem.notification.chatroom.chatroomName}">
+												채팅방 이름
+											</p>
+											<div class="author_info">
+												<img th:src="@{/uploads/profileImg/{img}(img=${alarmItem.notification.author.userImg})}"
+													alt="profile_img" />
+												<div class="author_name_and_created_date">
+													<p class="author_name"
+														th:text="${alarmItem.notification.author.userName}">
+														작성자 이름
+													</p>
+													<p class="created_date" th:text="${alarmItem.createdDate}"></p>
+												</div>
+											</div>
+											<div class="alarm_text">
+												<p class="alarm_sign">공지를 등록했습니다.</p>
+												<p class="alarm_content" th:text="${alarmItem.notification.content}">
+												</p>
+											</div>
+										</div>
+										<!-- 할 일 알림 -->
+										<div th:if="${alarmItem.task != null}">
+											<p class="chatroom_name" th:text="${alarmItem.task.chatroom.chatroomName}">
+												채팅방
+												이름
+											</p>
+											<div class="author_info">
+												<img th:src="@{/uploads/profileImg/{img}(img=${alarmItem.task.author.userImg})}"
+													alt="profile_img" />
+												<div class="author_name_and_created_date">
+													<p class="author_name" th:text="${alarmItem.task.author.userName}">
+														작성자
+														이름
+													</p>
+													<p class="created_date" th:text="${alarmItem.createdDate}"></p>
+												</div>
+											</div>
+											<div class="alarm_text">
+												<p class="alarm_sign">할 일을 등록했습니다.</p>
+												<p class="alarm_content" th:text="${alarmItem.task.taskTitle}"></p>
+											</div>
+										</div>
+
+										<!-- 멘션 알림 -->
+										<div th:if="${alarmItem.mention != null}">
+											<p class="chatroom_name"
+												th:text="${alarmItem.mention.chatroom.chatroomName}">
+												채팅방 이름
+											</p>
+											<div class="author_info">
+												<img th:src="@{/uploads/profileImg/{img}(img=${alarmItem.mention.sender.userImg})}"
+													alt="profile_img" />
+												<div class="author_name_and_created_date">
+													<p class="author_name"
+														th:text="${alarmItem.mention.sender.userName}">
+														작성자 이름
+													</p>
+													<p class="created_date" th:text="${alarmItem.createdDate}"></p>
+												</div>
+											</div>
+											<div class="alarm_text mention_text">
+												<span th:text="${alarmItem.mention.sender.userName}"></span>
+												<p class="alarm_sign">님이 멘션했습니다.</p>
+											</div>
+											<p class="mention_content" th:text="${alarmItem.mention.message.content}">
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="more-options-wrapper">
+						<a href="" class="event_prevent"><img th:src="@{/images/icons/organigram.png}"
+								alt="i_organization" onclick="showOrganization()"></img></a>
+						<div id="organization_chart">
+							<div class="organization_container">
+								<h2>조직도 <span>총 </span><span th:text="${members.size()}"></span><span>명</span></h2>
+								<input type="text" placeholder="참여 멤버" class="search_input">
+								<p class="team_member_text">팀 멤버</p>
+
+								<div class="member_list_container">
+									<div class="member_list_item" th:each="member:${members}">
+										<div th:if="${member.userImg == null} and ${member.isAdmin != 1}">
+											<img th:src="@{/images/profileImg/default_profile.png}" class="profile_img"
+												alt="default_profile_img" />
+										</div>
+										<div th:if="${member.userImg != null} and ${member.isAdmin != 1}">
+											<img th:src="@{/uploads/profileImg/{img}(img=${member.userImg})}"
+												class="profile_img" alt="profile_img">
+										</div>
+										<p class="member_name" th:text="${member.userName}"></p>
+										<div th:if="${member.isActive == 1}" class="is_active">
+											<img th:src="@{/images/icons/is_active.png}">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<a href=""><img th:src="@{/images/icons/search (1).png}" alt="i_alarm"></img></a>
+					<div class="more-options-wrapper">
+						<a href="" id="menu_link"><img th:src="@{/images/icons/menu.png}" alt="i_menu"
+								id="menu_icon"></img></a>
+						<div class="popup2" id="popup2">
+							<div class="menu_icon_plus">
+								<div class="popup_format">
+									<img th:src="@{/images/icons/to-do-list.png}">
+									<a href="" id="task-link">할 일</a>
+								</div>
+								<div class="popup_format">
+									<img th:src="@{/images/icons/vote.png}">
+									<a href="" id="vote-link">투표</a>
+								</div>
+								<div class="popup_format">
+									<img th:src="@{/images/icons/empty_star.png}">
+									<a href="" id="bookmark-link">즐겨찾기</a>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="more-options-wrapper">
+						<a href="#" id="event_prevent"><img th:src="@{/images/icons/menu (1).png}"
+								onclick="showHamPopup()"></img></a>
+						<div class="ham_popup" id="ham_popup">
+							<div class="menu_icon_plus">
+								<div class="popup_format">
+									<img th:src="@{/images/icons/add-user.png}">
+									<a th:href="@{|/${workspaceId}/invite|}">새로운 맴버 초대하기</a>
+								</div>
+								<div class="popup_format">
+									<img th:src="@{/images/icons/paper-aeroplane.png}" class="openCsImg">
+									<a href="" id="cs_a">1:1 문의하기</a>
+								</div>
+								<div class="popup_format">
+									<img th:src="@{/images/icons/admin.png}">
+									<a href="">팀 설정</a>
+								</div>
+								<div class="popup_format">
+									<img th:src="@{/images/settings.png}">
+									<a href="http://localhost:2003/user/setting">계정 설정</a>
+								</div>
+								<div class="popup_format">
+									<img th:src="@{/images/icons/exit-to-app-button.png}">
+									<a href="http://localhost:2003/user/logout">로그아웃</a>
+								</div>
+							</div>
+						</div>
+						<div class="csChatBox">
+							<div class="total_container_cs">
+								<div class="customer_service_center_container">
+									<div class="upper_container_cs">
+										<p class="service_center_text">
+											잡초에 <strong>궁금한 점</strong>이 있다면?
+										</p>
+										<p class="service_center_text">
+											저희가 <strong>답변</strong>드립니다.
+										</p>
+										<h2 class="service_center_text_h2">유저<small>의</small> 소리</h2>
+									</div>
+									<h2 class="service_center_text_h2">JOBCHO</h2>
+
+									<div class="lower_container">
+										<div class="pop_container">
+											<p>JOBCHO</p>
+											<p th:text="${user.userName + '님, 궁금한 점이 있으신가요?'}"></p>
+											<a th:href="@{/cs/chat/{userId}(userId=${user.userId})}" class="chat-link">
+												<p>문의하기</p>
+												<img th:src="@{/images/icons/paper-aeroplane.png}" alt="" />
+											</a>
+										</div>
+										<div class="btn_container_cs">
+											<a href="/index">
+												<img th:src="@{/images/icons/home-icon-silhouette (1).png}" alt="" />
+											</a>
+											<a href="">
+												<img th:src="@{/images/icons/conversation.png}" alt="" />
+											</a>
+										</div>
+									</div>
+								</div>
+								<div class="x_btn">
+									<img th:src="@{/images/icons/cross-mark.png}" alt="" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</header>
+			<main>
+				<div class="main">
+					<div th:replace="~{workspace/modal_invite_chat_member :: modal}"
+						class="invite_chat_member_container">
+					</div>
+					<div class="side_bar">
+						<div class="workroom">
+							<div class="search_chat_line">
+								<div class="icon_box">
+									<img th:src="@{/images/icons/search_black.png}" alt="대화방 검색 아이콘">
+									<p>대화방 검색</p>
+								</div>
+								<div class="icon_box">
+									<img th:src="@{/images/icons/show_menu.png}" alt="메뉴 숨기기">
+								</div>
+							</div>
+							<div class="search_chat_line">
+								<div class="icon_box">
+									<img th:src="@{/images/icons/arrow-down.png}" alt="숨기기,보이기 화살표">
+									<p>채팅방</p>
+								</div>
+								<div class="icon_box_2">
+									<img th:src="@{/images/icons/sort_ascending.png}" alt="정렬메뉴">
+								</div>
+								<div class="icon_box_2">
+									<img th:src="@{/images/icons/cross-mark.png}" alt="새로 만들기 버튼"
+										id="create_folder_btn">
+								</div>
+							</div>
+							<div th:each="folder, iterStat : ${folders}" class="folder">
+								<div class="icon_box" onclick="toggleFolder(this)">
+									<div class="folder_line">
+										<img th:src="@{/images/icons/arrow-down.png}" alt="숨기기,보이기 화살표"
+											class="folder_arrow">
+										<a href="#" th:text="${folder.folderName}">Default folder</a>
+									</div>
+									<img th:src="@{/images/icons/plus.png}" alt="채팅방 추가" class="addChatroombtn"
+										th:attr="data-folder-index=${iterStat.index}" onclick="openModal(this)">
+								</div>
+
+								<div class="folder_in">
+									<div th:each="chatroom : ${folder.chatrooms}"
+										th:if="${#lists.contains(userChatrooms, chatroom)}" class="icon_box_chat">
+										<img th:if="${bookmarkedChatroomIds.contains(chatroom.chatroomId)}"
+											th:src="@{/images/icons/star.png}" alt="즐겨찾기O"
+											th:class="'star-icon bookmark_star_chatroom_' + ${chatroom.chatroomId}"
+											onclick="toggleStar(this);" data-type="chatroom"
+											th:data-id="${chatroom.chatroomId}" />
+
+										<img th:unless="${bookmarkedChatroomIds.contains(chatroom.chatroomId)}"
+											th:src="@{/images/icons/empty_star.png}" alt="즐겨찾기X"
+											th:class="'star-icon bookmark_star_chatroom_' + ${chatroom.chatroomId}"
+											onclick="toggleStar(this);" data-type="chatroom"
+											th:data-id="${chatroom.chatroomId}" />
+
+										<a th:href="@{/workspace/{workspaceId}/{chatroomId}(workspaceId=${folder.workspaceId}, chatroomId=${chatroom.chatroomId})}"
+											th:text="${chatroom.chatroomName}">채팅방 이름</a>
+									</div>
+								</div>
+
+								<div class="modal2" th:attr="id='modal2-' + ${iterStat.index}">
+									<div class="createchat_total_container">
+										<p class="title">새 채팅 생성</p>
+										<form
+											th:action="@{/workspace/{workspaceId}/chatroomcreate(workspaceId=${folder.workspaceId})}"
+											class="register_form" method="post">
+											<p class="title2">채팅방 이름</p>
+											<input type="hidden" name="folderId" th:value="${folder.folderId}">
+											<input type="hidden" name="createduserId" th:value="${user.userId}">
+											<div class="form_item">
+												<input type="text" maxlength="50" placeholder="채팅 이름" name="chatName" />
+											</div>
+
+											<p class="title2">채팅방 공개 여부</p>
+											<div class="form_item">
+												<select name="isPrivate" id="">
+													<option value="1">공개</option>
+													<option value="2">비공개</option>
+												</select>
+											</div>
+
+											<p class="title2">채팅방 설명(옵션)</p>
+											<textarea name="chatroom_discription" id="chatroom_content"
+												rows="10">채팅방에 대한 설명을 입력하세요</textarea>
+											<p class="numbers_of_text">
+												<span class=""></span>
+												/ 5,000
+											</p>
+											<div class="btns">
+												<button class="cancel_btn" type="button"
+													th:attr="data-folder-index=${iterStat.index}">취소</button>
+												<button class="register_btn" type="submit">등록하기</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+							<div class="folder" id="create_folder">
+								<div class="icon_box">
+									<form
+										th:action="@{/workspace/{workspaceId}/foldercreate (workspaceId=${workspaceId})}"
+										method="post">
+										<input type="text" id="create_folder_input" name="folder_name">
+									</form>
+								</div>
+							</div>
+							<div class="line_side_bar"></div>
+							<div class="non_folder">
+								<div class="icon_box_chat">
+									<img th:if="${bookmarkedMyChatroomIds.contains(mychat.myChatroomId)}"
+										th:src="@{/images/icons/star.png}" alt="즐겨찾기O"
+										th:class="'star-icon bookmark_star_mychatroom_' + ${mychat.myChatroomId}"
+										onclick="toggleStar(this);" data-type="mychatroom"
+										th:data-id="${mychat.myChatroomId}" />
+
+									<img th:unless="${bookmarkedMyChatroomIds.contains(mychat.myChatroomId)}"
+										th:src="@{/images/icons/empty_star.png}" alt="즐겨찾기X"
+										th:class="'star-icon bookmark_star_mychatroom_' + ${mychat.myChatroomId}"
+										onclick="toggleStar(this);" data-type="mychatroom"
+										th:data-id="${mychat.myChatroomId}" />
+
+									<img th:src="@{/images/Jobcho_logo.png}" alt="잡초 로고 small">
+									<a
+										th:href="@{/workspace/{workspaceId}/mychat/{myChatroomId} (workspaceId=${workspaceId}, myChatroomId=${mychat.myChatroomId})}">The
+										Jobcho (나와의 대화)</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="chat">
+
+						<div class="chat_side_box">
+							<div th:if="${chatrooms != null}">
+								<div class="chat_header">
+									<div class="chat_header_title">
+										<img th:if="${bookmarkedChatroomIds.contains(chatrooms.chatroomId)}"
+											th:src="@{/images/icons/star.png}" alt="즐겨찾기O"
+											th:class="'star-icon bookmark_star_chatroom_' + ${chatrooms.chatroomId}"
+											onclick="toggleStar(this);" data-type="chatroom"
+											th:data-id="${chatrooms.chatroomId}" />
+
+										<img th:unless="${bookmarkedChatroomIds.contains(chatrooms.chatroomId)}"
+											th:src="@{/images/icons/empty_star.png}" alt="즐겨찾기X"
+											th:class="'star-icon bookmark_star_chatroom_' + ${chatrooms.chatroomId}"
+											onclick="toggleStar(this);" data-type="chatroom"
+											th:data-id="${chatrooms.chatroomId}" />
+
+										<p th:text="${chatrooms.chatroomName}">쳇 제목</p>
+									</div>
+									<div class="chat_header_emoticon">
+										<div class="alarm-wrapper" onclick="toggleAlarm(this)">
+											<img th:src="@{/images/icons/alarm-bell.png}" alt="알람" class="alarm-icon">
+											<div class="alarm-line"></div>
+										</div>
+
+										<img th:src="@{/images/icons/currunt_users.png}" alt="현재 유저 이미지"
+											class="chatroom_member_img_btn" onclick="chatroom_member_img_toggle()">
+										<div th:replace="~{workspace/chatroom_member :: chatroom_member}"
+											class="chatroom_member_toggle"></div>
+
+										<img th:src="@{/images/icons/add-user.png}" alt="유저 추가 이미지"
+											id="invite_chat_member_img">
+
+										<div class="more-options-wrapper">
+											<img th:src="@{/images/icons/more-options.png}" alt="더보기 이미지"
+												id="plus_icon">
+											<div class="popup" id="popup">
+												<div class="popup_indiv">
+													<div class="popup_format">
+														<img th:src="@{/images/icons/annoucement.png}" id="plus_icon">
+														<a href="#" id="notice-link">공지등록</a>
+													</div>
+													<div class="popup_format">
+														<img th:src="@{/images/settings.png}"
+															th:if="${chatrooms.createdBy == user.userId}">
+														<a href="#" id="chatinfomodify-link"
+															th:if="${chatrooms.createdBy == user.userId}"
+															th:data-workspace-id="${workspaceId}"
+															th:data-chatroom-id="${chatroomId}"
+															onclick="showModifyChat(this)">변경</a>
+													</div>
+													<div class="popup_format">
+														<img th:src="@{/images/icons/recycle-bin-container.png}"
+															th:if="${chatrooms.createdBy == user.userId}">
+														<a href="#" id="chatremove-link"
+															th:if="${chatrooms.createdBy == user.userId}"
+															onclick="showAlertDel()">삭제</a>
+													</div>
+													<div class="popup_format">
+														<img th:src="@{/images/icons/exit-to-app-button.png}">
+														<a href="#" id="chatout-link" onclick="showAlertOut()">나가기</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="chat_main" data-chatroom-id="" th:data-chatroom-id="${chatroomId}"
+								th:data-workspace-id="${workspaceId}">
+								<div class="chat_box" id="chat_box">
+									<div class="notification_wrapper">
+										<div th:if="${chatrooms != null}">
+											<div th:each="notification : ${notifications}"
+												th:if="${notification.isDeleted == 0}" class="notification_short"
+												id="notificaiton_short">
+												<div class="notification_short_item">
+													<img th:src="@{/uploads/profileImg/{img}(img=${notification.author.userImg})}"
+														alt="profile_img" />
+													<p th:text="${notification.content}" class="notification_content">
+														공지사항
+														내용
+													</p>
+												</div>
+												<img th:src="@{/images/icons/arrow-down.png}"
+													id="plus_icon_notificaiton">
+											</div>
+										</div>
+
+										<div th:each="notification : ${notifications}"
+											th:if="${notification.isDeleted == 0}" class="notification_more"
+											id="notificaiton_more">
+											<div class="notification_more_row1">
+												<div class="notification_more_item">
+													<img
+														th:src="@{/uploads/profileImg/{img}(img=${notification.author.userImg})}">
+													<p th:text="${notification.author.userName}">사용자명</p>
+													<p th:text="${notification.createdDate}" class="notification_date">
+														2025/5/15
+														AM
+														09:41</p>
+												</div>
+												<div class="notification_more_item2">
+													<p th:text="${notification.content}" class="notification_content">
+														공지사항
+														내용
+													</p>
+													<img th:src="@{/images/icons/arrow-down.png}"
+														id="min_icon_notificaiton">
+												</div>
+											</div>
+											<div class="notification_more_row2">
+												<div class="notification_more_row2_item">
+													<button th:data-notification-content="${notification.content}"
+														onclick="shownotifi(this)" class="notifi_btn">수정</button>
+													<form
+														th:action="@{'/workspace/' + ${workspaceId} + '/' + ${chatroomId} + '/notification/delete'}"
+														method="post">
+														<button type="submit" class="notifi_btn">삭제</button>
+													</form>
+												</div>
+												<a>숨기기</a>
+											</div>
+										</div>
+									</div>
+
+									<div class="chat_message" th:each="message, iterStat : ${messages}"
+										th:if="${message.parentMessage == null}"
+										th:attr="data-message-id=${message.messageId}">
+										<th:block
+											th:if="${iterStat.index == 0 or #temporals.format(message.createdDate, 'yyyy-MM-dd') != 
+																			                          #temporals.format(messages[iterStat.index - 1].createdDate, 'yyyy-MM-dd')}">
+											<div class="date-divider">
+												<hr class="line" />
+												<span class="date-text"
+													th:text="${#temporals.format(message.createdDate, 'yyyy년 MM월 dd일 (E요일)')}">날짜</span>
+												<hr class="line" />
+											</div>
+										</th:block>
+										<div class="chat_info">
+											<img class="chat_profile"
+												th:src="@{/uploads/profileImg/{img}(img=${message.sender.userImg})}"
+												alt="profile_img" />
+											<span class="chat_sender" th:text="${message.sender.userName}">아이디</span>
+										</div>
+										<div class="chat_bubble" th:if="${message.isDeleted == 0}"
+											th:utext="${message.isEdited == 1} ? ${message.highlightedContent + ' (수정됨)'} : ${message.highlightedContent}"
+											th:attr="data-message-id=${message.messageId}">
+											기존 챗 내용
+										</div>
+										<div th:if="${message.files != null and !message.files.isEmpty()}"
+											class="file-boxes" th:each="file : ${message.files}">
+											<img th:if="${#strings.endsWith(file.fileName.toLowerCase(), '.png') 
+																			                             or #strings.endsWith(file.fileName.toLowerCase(), '.jpg') 
+																			                             or #strings.endsWith(file.fileName.toLowerCase(), '.jpeg') 
+																			                             or #strings.endsWith(file.fileName.toLowerCase(), '.gif')}"
+												th:src="@{'/uploads/files/' + ${file.fileName}}" class="file-img" />
+											<img th:if="${!#strings.endsWith(file.fileName.toLowerCase(), '.png') 
+																				                             and !#strings.endsWith(file.fileName.toLowerCase(), '.jpg') 
+																				                             and !#strings.endsWith(file.fileName.toLowerCase(), '.jpeg') 
+																				                             and !#strings.endsWith(file.fileName.toLowerCase(), '.gif')}"
+												th:src="@{/images/icons/file-icon.png}" class="file-defult" />
+											<div class="file-form">
+												<a th:href="@{'/uploads/files/' + ${file.fileName}}"
+													th:text="${file.fileName}" download class="file-in-form">
+												</a>
+											</div>
+										</div>
+										<div class="chat_bubble_deleted" th:if="${message.isDeleted != 0}">삭제된 메시지입니다.
+										</div>
+										<div class="chat_wrap" th:attr="onmouseover='openChatMenu(' + ${iterStat.index} + ')',
+																	                                  onmouseout='closeChatMenu(' + ${iterStat.index} + ')'">
+											<div class="chat_menu" th:attr="id='chatmenu-' + ${iterStat.index}"
+												th:style="${message.sender.userId == user.userId} ? 'width: 10.5rem;' : 'width: 7rem;'">
+												<img th:src="@{/images/icons/annoucement.png}" alt="공지사항"
+													th:data-message-content="${message.content}"
+													onclick="shownotifiOnMessage(this)">
+												<img th:src="@{/images/icons/comment.png}" alt="답글"
+													th:data-message-id="${message.messageId}"
+													th:data-workspace-id="${workspaceId}"
+													th:data-chatroom-id="${chatroomId}" onclick="openSideMessage(this)">
+												<img th:src="@{/images/icons/edit.png}" alt="메시지수정"
+													th:if="${message.sender.userId == user.userId}"
+													th:data-message-content="${message.content}"
+													th:data-message-id="${message.messageId}"
+													onclick="showMessageEdit(this)">
+												<form th:if="${message.sender.userId == user.userId}"
+													th:action="@{'/workspace/' + ${workspaceId} + '/' + ${chatroomId} + '/message/' + ${message.messageId} + '/delete'}"
+													method="post" class="deletled_message_form">
+													<button type="submit" class="deletled_message_btn">
+														<img th:src="@{/images/icons/recycle-bin-container.png}"
+															alt="메시지삭제">
+													</button>
+												</form>
+												<img th:src="@{/images/icons/to-do-list.png}" alt="할 일 등록"
+													th:data-message-content="${message.content}"
+													onclick="showTaskOnMessage(this)">
+
+												<img th:if="${bookmarkedMessageIds.contains(message.messageId)}"
+													th:src="@{/images/icons/star.png}" alt="즐겨찾기O"
+													th:class="'star-icon bookmark_star_message_' + ${message.messageId}"
+													onclick="toggleStar(this)" data-type="message"
+													th:data-id="${message.messageId}" />
+
+												<img th:unless="${bookmarkedMessageIds.contains(message.messageId)}"
+													th:src="@{/images/icons/empty_star.png}" alt="즐겨찾기X"
+													th:class="'star-icon bookmark_star_message_' + ${message.messageId}"
+													onclick="toggleStar(this)" data-type="message"
+													th:data-id="${message.messageId}" />
+
+											</div>
+										</div>
+										<div class="answer_total_box" th:if="${!(message.replies.empty)}">
+											<img th:src="@{/images/profileImg/default_profile.png}" alt="profile_img" />
+											<div class="answer_box">
+												<div class="message_info_box_upper">
+													<img th:src="@{/uploads/profileImg/{img}(img=${message.sender.userImg})}"
+														alt="profile_img" />
+													<div class="user_info_box">
+														<p th:text="${message.sender.userName}">유저 이름</p>
+														<p th:text="${message.content}">메시지 내용</p>
+													</div>
+												</div>
+												<div class="answer_middle_box">
+													<p th:text="${message.replies.size()}"></p>
+													<p>개의 답글 모두보기</p>
+												</div>
+												<div class="message_info_box_under"
+													th:each="reply : ${message.replies}">
+													<img th:src="@{/uploads/profileImg/{img}(img=${reply.sender.userImg})}"
+														alt="profile_img" />
+													<div class="user_info_box" id="under">
+														<p th:text="${reply.sender.userName}">답글 유저 이름</p>
+														<p id="under" th:if="${reply.isDeleted == 0}"
+															th:text="${reply.isEdited == 1} ? ${reply.content + ' (수정됨)'} : ${reply.content}">
+															답글 내용</p>
+														<p id="under" class="chat_bubble_deleted"
+															th:if="${reply.isDeleted != 0}">삭제된 답글입니다.</p>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="chat_input_box">
+									<input id="chat_input" type="text" placeholder="메시지를 입력하세요."
+										onchange="updateFileName(this)">
+									<ul id="mention_list" class="mention-dropdown" style="display:none;"></ul>
+								</div>
+								<div class="chat_emoticon">
+									<input type="file" id="chat_file" name="file" accept="image/*,application/pdf" />
+									<label for="chat_file">
+										<img src="/images/icons/paper-clip.png" alt="파일 첨부" style="cursor: pointer;"
+											onclick="showFileUpload()">
+									</label>
+									<button onclick="sendMessage()">
+										<img src="/images/icons/arrow-chat.png" alt="전송">
+									</button>
+								</div>
+							</div>
+						</div>
+						<th:block layout:fragment="sideblock"></th:block>
+					</div>
+
+					<div class="chat-aside" id="chat-aside">
+						<div th:if="${chatrooms != null}" class="task-aside-total-container">
+							<div class="task_total_container">
+								<div class="upper_container">
+									<p class="title">할 일</p>
+									<button id="create-task">+ 할 일 생성</button>
+									<p class="number_of_tasks"><strong th:text="${#lists.size(tasks)}"></strong>개의 할일
+									</p>
+								</div>
+								<div th:each="task, iterStat : ${tasks}" class="under_container"
+									id="task_detail_container" th:data-workspace-id="${workspaceId}"
+									th:data-chatroom-id="${chatroomId}" th:data-task-id="${task.taskId}"
+									onclick="openSideTask(this)">
+									<div class="tasks" th:attr="id='tasks-' + ${iterStat.index}">
+										<p class="task_status" th:text="|진행률: ${task.status}%|"><strong>0</strong>%</p>
+										<p class="task_title" th:text="${task.taskTitle}"></p>
+										<p class="task_content" th:text="${task.description}"></p>
+										<div class="task_date_container">
+											<p class="task_date" th:text="${task.startDate}"></p>
+											<p>&nbsp; ~ &nbsp;</p>
+											<p class="task_date" th:text="${task.endDate}"></p>
+										</div>
+										<p class="team_name" th:text="${chatrooms.chatroomName}"></p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="vote_total_container">
+							<div class="upper_container">
+								<p class="title">투표</p>
+								<button id="create-task">+ 투표 만들기</button>
+								<select name="" id="" class="select">
+									<option value="" selected>모든 투표</option>
+									<option value="">오늘 점심 메뉴 추천</option>
+								</select>
+							</div>
+							<div class="under_container">
+								<p class="number_of_tasks"><strong>2</strong>개의 할 일</p>
+								<div class="tasks">
+									<p class="task_status">진행률 <strong>0</strong>%</p>
+									<p class="task_title">유토 갈비뼈 괘유 기원</p>
+									<p class="task_content">꾀병이 아님을 증명해</p>
+									<p class="task_date">2025/04/11 PM 05:20 ~ 2025/04/12 AM 00:00</p>
+									<p class="team_name">영화 버리고 협업툴 해말아</p>
+								</div>
+
+								<div class="tasks">
+									<p class="task_status">진행률 <strong>0</strong>%</p>
+									<p class="task_title">유토 갈비뼈 괘유 기원</p>
+									<p class="task_content">꾀병이 아님을 증명해</p>
+									<p class="task_date">2025/04/11 PM 05:20 ~ 2025/04/12 AM 00:00</p>
+									<p class="team_name">영화 버리고 협업툴 해말아</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="bookmark_total_container">
+							<div class="upper_container">
+								<div class="bookmark_title">
+									<p class="bookmark_sign">즐겨찾기</p>
+									<p>X</p>
+								</div>
+								<div class="btn_container">
+									<div class="form_btns">
+										<button class="all_form_btn">모든보기</button>
+										<button class="file_form_btn">파일 형식</button>
+									</div>
+									<div class="sort_btn_container">
+										<button class="sort_btn">
+											<img th:src="@{/images/icons/sort_ascending.png}" alt="" />등록 순
+										</button>
+									</div>
+								</div>
+							</div>
+							<div class="under_container">
+
+								<div th:each="bm : ${bookmarks}" class="bookmarks">
+
+									<div th:if="${bm.chatroom != null and bm.message == null}">
+										<p class="chatroom_name">채팅방</p>
+										<div class="bookmark_items">
+											<img th:src="@{/images/icons/comment.png}" />
+											<div class="right_container">
+												<div class="bookmark_info">
+													<a
+														th:href="@{/workspace/{workspaceId}/{chatroomId}(workspaceId=${workspaceId}, chatroomId=${bm.chatroom.chatroomId})}">
+														<p class="user_name" th:text="${bm.chatroom.chatroomName}"></p>
+													</a>
+													<p class="upload_date" th:text="${bm.chatroom.createdDate}"></p>
+												</div>
+												<p class="bookmark_contents" th:text="${bm.chatroom.description}"></p>
+											</div>
+										</div>
+									</div>
+
+									<div th:if="${bm.chatroom == null and bm.message != null}">
+										<p class="chatroom_name">메시지</p>
+										<div class="bookmark_items">
+											<img th:if="${bm.message.sender.userImg != null}"
+												th:src="@{/uploads/profileImg/{img}(img=${bm.message.sender.userImg})}" />
+											<div class="right_container">
+												<div class="bookmark_info">
+													<p class="user_name" th:text="${bm.message.sender.userName}"></p>
+													<p class="upload_date" th:text="${bm.message.createdDate}"></p>
+												</div>
+												<p class="bookmark_contents" th:text="${bm.message.content}"></p>
+											</div>
+										</div>
+									</div>
+
+								</div>
+
+							</div>
+						</div>
+
+						<div th:if="${chatrooms != null}">
+							<div class="create_task_total_container">
+								<p class="title">할 일</p>
+								<form
+									th:action="@{/workspace/{workspaceId}/{chatroomId}/taskcreate(workspaceId=${workspaceId}, chatroomId=${chatroomId})}"
+									method="post">
+									<div class="form_item">
+										<img th:src="@{/images/icons/chat.png}" alt="" />
+										<p class="team_name" th:text="${chatrooms.chatroomName}"></p>
+									</div>
+
+									<div class="form_item">
+										<img th:src="@{/images/icons/text.png}" alt="" />
+										<input type="text" maxlength="50" placeholder="할 일 제목" name="taskTitle" />
+									</div>
+
+									<div class="form_item">
+										<img th:src="@{/images/icons/double_quotes.png}" alt=""
+											aria-placeholder="할 일 내용" />
+										<textarea name="description" id="task_content" maxlength="500"></textarea>
+									</div>
+
+									<div class="form_item">
+										<img th:src="@{/images/icons/docs.png}" alt="" />
+										<input type="file" />
+									</div>
+
+									<div class="form_item">
+										<img th:src="@{/images/icons/date.png}" alt="" />
+										<label for="startDate">시작 일시</label>
+										<input type="datetime-local" id="startDate" name="startDate" required />
+									</div>
+
+									<div class="form_item">
+										<img th:src="@{/images/icons/date.png}" alt="" />
+										<label for="endDate">종료 일시</label>
+										<input type="datetime-local" id="endDate" name="endDate" required />
+									</div>
+
+									<div class="btns">
+										<button class="cancel_btn" type="button" id="createTaskClose">취소</button>
+										<button class="save_btn">저장하기</button>
+									</div>
+								</form>
+							</div>
+						</div>
+
+						<div th:if="${chatrooms != null}">
+							<div class="task_detail_total_container">
+								할일 자세히보기
+								<div th:each="task : ${tasks}" class="under_container" id="task_detail_container">
+									<p class="number_of_tasks" th:text="|${#lists.size(tasks)}개의 할일|">
+										<strong>2</strong>개의 할
+										일
+									</p>
+									<div class="tasks">
+										<p class="task_status" th:text="|진행률: ${task.status}%|">진행률 <strong>0</strong>%
+										</p>
+										<p class="task_title" th:text="${task.taskTitle}"></p>
+										<p class="task_content" th:text="${task.description}"></p>
+										<p class="task_date" th:text="${task.startDate}"></p>
+										<p class="team_name" th:text="${chatrooms.chatroomName}"></p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</main>
+
+			<div class="overlay" id="overlay"></div>
+			<div class="modal" id="modal">
+				<div class="notification_total_container">
+					<p class="title">공지등록</p>
+					<p class="title2">메시지</p>
+					<form
+						th:action="@{/workspace/{workspaceId}/{chatroomId}/notificationcreate(workspaceId=${workspaceId}, chatroomId=${chatroomId})}"
+						class="register_form" method="post">
+						<input type="hidden" name="createduserId" th:value="${user.userId}">
+						<textarea name="notification_content" id="notification_content" rows="10">공지를 입력하세요</textarea>
+						<p class="numbers_of_text">
+							<span class=""></span>
+							/ 5,000
+						</p>
+						<div class="btns">
+							<button class="cancel_btn" id="cancel_btn_notificlose">취소</button>
+							<button class="register_btn"
+								onclick="sendNotificationMessage(userName, userId, userImg, chatroomId)">등록하기</button>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="modal3" id="modal3">
+				<div class="notification_total_container">
+					<p class="title">메시지 수정</p>
+					<p class="title2">수정</p>
+					<form
+						th:action="@{/workspace/{workspaceId}/{chatroomId}/messageUpdate(workspaceId=${workspaceId}, chatroomId=${chatroomId})}"
+						class="register_form" method="post">
+						<input type="hidden" name="messageId" id="messageId">
+						<textarea name="message_content" id="message_content" rows="10">수정할 메시지</textarea>
+						<p class="numbers_of_text">
+							<span class=""></span>
+							/ 5,000
+						</p>
+						<div class="btns">
+							<button class="cancel_btn" id="cancel_btn_messageModifyClose">취소</button>
+							<button class="register_btn">수정하기</button>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="modal4" id="modal4">
+				<form
+					th:action="@{/workspace/{workspaceId}/{chatroomId}/delete(workspaceId=${workspaceId}, chatroomId=${chatroomId})}"
+					method="post">
+					<div class="alert_total_container">
+						<p class="alert_title">이 채팅을 정말 삭제하시겠습니까?</p>
+						<p class="discription">모든 메시지와 파일이 삭제되며 복구할 수 없습니다.</p>
+						<div class="alert_btn_box">
+							<button class="alert_f" id="chatroomDelClose">취소</button>
+							<button class="alert_y">확인</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal5" id="modal5">
+				<form
+					th:action="@{/workspace/{workspaceId}/{chatroomId}/leave(workspaceId=${workspaceId}, chatroomId=${chatroomId})}"
+					method="post">
+					<div class="alert_total_container">
+						<p class="alert_title">정말 나가시겠습니까?</p>
+						<p class="discription">다시 초대받을때 까지 들어오실 수 없습니다.</p>
+						<div class="alert_btn_box">
+							<button class="alert_f" id="chatroomOutClose">취소</button>
+							<button class="alert_y">확인</button>
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+
+			<!--<script th:inline="javascript">
+			const messages = /*[[${messagesJson}]]*/[];
+		</script>-->
+
+
+			<script>
+				scollTop();
+				fetchAlarmCreateOrNot();
+
+				let stompClient = null;
+				const userName = document.body.dataset.userName;
+				const userId = document.body.dataset.userId;
+				const userImg = document.body.dataset.userImg;
+				const chatroomId = document.body.dataset.chatroomId;
+
+				let mentionList;
+				document.addEventListener('DOMContentLoaded', async function () {
+
+					const chatroomId = Number(document.querySelector('.chat_main').dataset.chatroomId);
+
+					const res = await fetch(`/chatroom/${chatroomId}/members`);
+					chatroomMembers = await res.json();
+
+					const socket = new SockJS('/ws');
+					stompClient = Stomp.over(socket);
+
+					stompClient.connect({}, function () {
+
+						stompClient.subscribe('/topic/chatroom/' + chatroomId, function (message) {
+							const msg = JSON.parse(message.body);
+							// showMessage(msg.sender + ": " + msg.content); 기존엔 문자열로 넘기는거
+							const fileInput = document.getElementById("chat_file");
+							if (fileInput.files.length > 0) {
+								console.log("파일 불러옴");
+								console.log(msg.messageId);
+								uploadFileWithMessageId(msg.messageId);
+							}
+							showMessage(msg); // 이건 객체로 넘기는거
+							console.log(msg);
+
+						});
+					});
+
+					const input = document.getElementById("chat_input");
+					mentionList = document.getElementById('mention_list');
+
+					input.addEventListener('input', function () {
+						console.log('input 이벤트 발생 :', input.value);
+
+						const cursorPos = input.selectionStart;
+						const text = input.value;
+						const sliced = text.slice(0, cursorPos);
+						const match = /@([^\s@]{0,20})$/.exec(sliced);
+						console.log('매칭 결과 : ', match);
+						if (match) {
+							const keyword = match[1].toLowerCase();
+							const matched = chatroomMembers.filter(m =>
+								m.userName.toLowerCase().includes(keyword) &&
+								m.userId !== Number('[[${user.userId}]]')
+							);
+							console.log('필터된 멤버 : ', matched);
+							showMentionDropdown(matched, match.index + 1, cursorPos);
+						} else {
+							mentionList.style.display = 'none';
+						}
+					});
+				});
+
+				function sendMessage() {
+					const input = document.getElementById("chat_input");
+					const fileInput = document.getElementById("chat_file");
+					const chatroomId = document.querySelector('.chat_main').dataset.chatroomId;
+					const fileArea = document.getElementById('chat_file');
+
+
+					if (input.value.length <= 0) {
+						return;
+					}
+
+					let mentions = extractMentions(input.value);
+					if (!Array.isArray(mentions)) {
+						mentions = Object.values(mentions);
+					}
+
+					const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : null;
+					const msg = {
+						sender: userName,
+						content: input.value,
+						chatroomId: chatroomId,
+						senderId: userId,
+						mentions: mentions,
+						profile: userImg,
+						fileName: fileName
+					};
+
+					stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(msg));
+
+					input.value = '';
+
+					if (fileArea.style.display == 'block') {
+						fileArea.style.display = 'none';
+					}
+				}
+
+				function showMessage(message) {
+					const box = document.getElementById("chat_box");
+
+					const workspaceId = document.querySelector('.chat_main').dataset.workspaceId;
+
+
+					const messageIdInput = document.getElementById("messageIdInput");
+					if (message.messageId && messageIdInput) {
+						messageIdInput.value = message.messageId;
+					}
+
+					const messageContainer = document.createElement("div");
+					messageContainer.className = "chat_message";
+					messageContainer.setAttribute("data-message-id", message.messageId);
+
+					const infoDiv = document.createElement("div");
+					infoDiv.className = "chat_info";
+
+					const profileImg = document.createElement("img");
+					profileImg.className = "chat_profile";
+					profileImg.src = message.profile;
+					profileImg.alt = "profile_img";
+
+					const senderSpan = document.createElement("span");
+					senderSpan.className = "chat_sender";
+					senderSpan.textContent = message.sender || "알 수 없음	";
+
+					infoDiv.appendChild(profileImg);
+					infoDiv.appendChild(senderSpan);
+
+					let contentDiv;
+					if (message.isDeleted) {
+						contentDiv = document.createElement("div");
+						contentDiv.className = "chat_bubble_deleted";
+						contentDiv.textContent = "삭제된 메시지입니다.";
+					} else {
+						contentDiv = document.createElement("div");
+						contentDiv.className = "chat_bubble";
+
+						let contentText = message.content;
+						if (message.isEdited) {
+							contentText += " (수정됨)";
+						}
+
+						// contentDiv.innerHTML = highlightMentions(contentText, message.mentions || []);
+						const cleanMentions = message.mentions.map(m => m.startsWith('@') ? m.slice(1) : m);
+
+						console.log("contentText:", contentText);
+						console.log("cleanMentions:", cleanMentions);
+						console.log("highlighted:", highlightMentions(contentText, cleanMentions));
+
+						contentDiv.innerHTML = highlightMentions(contentText, cleanMentions || []);
+					}
+
+					const chatWrap = document.createElement("div");
+					chatWrap.className = "chat_wrap";
+					const chatIndex = document.querySelectorAll(".chat_message").length;
+					chatWrap.setAttribute("onmouseover", `openChatMenu(${chatIndex})`);
+					chatWrap.setAttribute("onmouseout", `closeChatMenu(${chatIndex})`);
+
+					const chatMenu = document.createElement("div");
+					chatMenu.className = "chat_menu";
+					chatMenu.id = `chatmenu-${chatIndex}`;
+
+					const createIcon = (src, alt, options = {}) => {
+						const img = document.createElement("img");
+						img.src = src;
+						img.alt = alt;
+						Object.entries(options).forEach(([k, v]) => {
+							if (k.startsWith("data-")) img.setAttribute(k, v);
+							else img[k] = v;
+						});
+						return img;
+					};
+
+					// 공지
+					const annouceIcon = createIcon("/images/icons/annoucement.png", "공지사항", {
+						"data-message-content": message.content
+					});
+					annouceIcon.addEventListener("click", function () {
+						shownotifiOnMessage(this);
+					});
+					chatMenu.appendChild(annouceIcon);
+
+					// 답글
+					const replyIcon = createIcon("/images/icons/comment.png", "답글", {
+						"data-message-id": message.messageId,
+						"data-workspace-id": workspaceId,
+						"data-chatroom-id": message.chatroomId
+					});
+					replyIcon.addEventListener("click", function () {
+						openSideMessage(this);
+					});
+					chatMenu.appendChild(replyIcon);
+
+					// 수정
+					chatMenu.appendChild(createIcon(
+						"/images/icons/edit.png", "메시지수정",
+						{
+							"data-message-content": message.content,
+							"data-message-id": message.messageId,
+							onclick: "showMessageEdit(this)"
+						}
+					));
+
+					// 삭제
+					const deleteForm = document.createElement("form");
+					deleteForm.method = "post";
+					deleteForm.className = "deletled_message_form";
+					deleteForm.action = `/workspace/${workspaceId}/${message.chatroomId}/message/${message.messageId}/delete`;
+
+					const deleteBtn = document.createElement("button");
+					deleteBtn.type = "submit";
+					deleteBtn.className = "deletled_message_btn";
+
+					const deleteImg = createIcon("/images/icons/recycle-bin-container.png", "메시지삭제");
+					deleteBtn.appendChild(deleteImg);
+					deleteForm.appendChild(deleteBtn);
+					chatMenu.appendChild(deleteForm);
+
+					// 할 일 등록
+					chatMenu.appendChild(createIcon(
+						"/images/icons/to-do-list.png", "할 일 등록",
+						{
+							"data-message-content": message.content,
+							onclick: "showTaskOnMessage(this)"
+						}
+					));
+
+					// 즐겨찾기 별 아이콘
+					const isBookmarked = (window.bookmarkedMessageIds || []).includes(message.messageId);
+					if (isBookmarked) {
+						chatMenu.appendChild(createIcon(
+							"/images/icons/star.png", "즐겨찾기O",
+							{
+								className: "star-icon",
+								onclick: "toggleStar(this)",
+								"data-type": "message",
+								"data-id": message.messageId
+							}
+						));
+					} else {
+						chatMenu.appendChild(createIcon(
+							"/images/icons/empty_star.png", "즐겨찾기X",
+							{
+								className: "star-icon",
+								onclick: "toggleStar(this)",
+								"data-type": "message",
+								"data-id": message.messageId
+							}
+						));
+					}
+
+					chatWrap.appendChild(chatMenu);
+					messageContainer.appendChild(infoDiv);
+					messageContainer.appendChild(contentDiv);
+
+					if (message.fileName) {
+						console.log("파일 태그 생성 시작");
+						const fileBoxes = document.createElement("div");
+						fileBoxes.className = "file-boxes";
+
+						const isImage = /\.(png|jpe?g|gif)$/i.test(message.fileName);
+						const fileBox = document.createElement("div");
+						fileBox.className = "file-box";
+
+						const fileImg = document.createElement("img");
+						fileImg.src = isImage ? `/uploads/files/${message.fileName}` : "/images/icons/file-icon.png";
+						fileImg.className = isImage ? "file-img" : "file-defult";
+
+						const fileForm = document.createElement("div");
+						fileForm.className = "file-form";
+
+						const fileLink = document.createElement("a");
+						fileLink.href = `/uploads/files/${message.fileName}`;
+						fileLink.textContent = message.fileName;
+						fileLink.download = true;
+						fileLink.className = "file-in-form";
+
+						fileForm.appendChild(fileLink);
+						fileBoxes.appendChild(fileImg);
+						fileBox.appendChild(fileForm);
+						fileBoxes.appendChild(fileBox);
+
+
+						messageContainer.appendChild(fileBoxes);
+					}
+
+					console.log("파일 태그 생성 끝");
+					messageContainer.appendChild(chatWrap);
+
+					const mentions = message.mentions || [];
+					// contentDiv.innerHTML = highlightMentions(message.content, mentions);
+					box.appendChild(messageContainer);
+					box.scrollTop = box.scrollHeight;
+				}
+
+
+				function extractMentions(text) {
+					const mentionRegex = /(@[^\s@]+)/g;
+					const matches = [];
+					let match;
+					while ((match = mentionRegex.exec(text)) !== null) {
+						matches.push(match[1]);
+					}
+					console.log("extractMentions : " + matches);
+					return matches;
+				}
+
+				function showMentionDropdown(matchedUsers, startIndex, cursorPos) {
+					console.log('showMentionDropdown 호출', matchedUsers);
+					const input = document.getElementById("chat_input");
+
+					if (matchedUsers.length === 0) {
+						mentionList.style.display = 'none';
+						return;
+					}
+
+					mentionList.innerHTML = '';
+					matchedUsers.forEach(user => {
+						const li = document.createElement('li');
+						const liCount = mentionList.length;
+						li.textContent = user.userName;
+						li.addEventListener('click', () => {
+							insertMention(user.userName, startIndex, cursorPos);
+							mentionList.style.display = 'none';
+							input.focus();
+						});
+						mentionList.appendChild(li);
+					});
+
+					const rect = input.getBoundingClientRect();
+
+					mentionList.style.position = "absolute";
+					mentionList.style.left = `${rect.left + window.scrollX}px`;
+					mentionList.style.top = `${rect.top + window.scrollY - mentionList.offsetHeight}px`;
+					mentionList.style.width = `calc(${rect.width}px / 2)`;
+					mentionList.style.maxHeight = `98.5px`;
+					mentionList.style.display = "block";
+					mentionList.overflox = "scroll";
+					const mentionHeight = mentionList.offsetHeight;
+					mentionList.style.top = `${rect.top + window.scrollY - mentionHeight}px`;
+				}
+
+
+				function insertMention(userName, startIndex, cursorPos) {
+					const input = document.getElementById("chat_input");
+					const text = input.value;
+					const before = text.substring(0, startIndex);
+					const after = text.substring(cursorPos);
+					input.value = before + userName + ' ' + after;
+
+					const newCursorPos = (before + userName + ' ').length;
+					input.setSelectionRange(newCursorPos, newCursorPos);
+				}
+
+				function highlightMentions(messageContent, mentionList) {
+					if (!mentionList || mentionList.length === 0) return messageContent;
+
+					mentionList.forEach(name => {
+						const mentionRegex = new RegExp(`(?<!\\w)@${name}(?!\\w)`, 'g');
+						messageContent = messageContent.replace(
+							mentionRegex,
+							`<span class="mention">@${name}</span>`
+						);
+					});
+
+					return messageContent;
+				}
+
+				function fetchAlarmCreateOrNot() {
+					fetch("/alarm/count")
+						.then(response => response.text())
+						.then(count => {
+							const dot = document.querySelector(".is_new_alarm");
+							if (parseInt(count) > 0) {
+								dot.style.visibility = "visible";
+							} else {
+								dot.style.visibility = "hidden";
+							}
+						});
+				}
+
+				function uploadFileWithMessageId(messageId) {
+					const fileInput = document.getElementById("chat_file");
+					const file = fileInput.files[0];
+
+					if (!file) return;
+
+					const formData = new FormData();
+					formData.append("file", file);
+					formData.append("messageId", messageId);
+
+					const workspaceId = Number(document.querySelector('.chat_main').dataset.workspaceId);
+					const chatroomId = Number(document.querySelector('.chat_main').dataset.chatroomId);
+					const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+					const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+					fetch(`/workspace/${workspaceId}/${chatroomId}/message/upload`, {
+						method: 'POST',
+						headers: {
+							[header]: token
+						},
+						body: formData,
+						credentials: 'include'
+					})
+						.then(res => {
+							if (res.ok) {
+								console.log("파일 업로드 성공");
+								fileInput.value = '';
+							}
+						});
+				}
+
+				function scollTop() {
+					const box = document.querySelector(".chat_box");
+					box.scrollTop = box.scrollHeight;
+				}
+
+				function updateFileName(input) {
+					if (input.files && input.files.length > 0) {
+						const fileName = input.files[0].name;
+						input.setAttribute('data-file-name', fileName);
+						console.log('선택된 파일:', fileName);
+					}
+				}
+
+				function sendNotificationMessage(userName, userId, userImg, chatroomId) {
+					console.log("공지 등록했습니다");
+					const msg = {
+						sender: userName,
+						content: `${userName}님이 공지를 등록했습니다.`,
+						chatroomId: chatroomId,
+						senderId: userId,
+						mentions: [],
+						profile: userImg,
+						fileName: null
+					};
+
+					stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(msg));
+				}
+
+				function fetchAlarms() {
+					const workspaceId = Number(document.querySelector('.chat_main').dataset.workspaceId);
+					console.log("알람 패치");
+					fetch(`/${workspaceId}/alarm/list`)
+						.then(response => response.text())
+						.then(html => {
+							const container = document.querySelector(".bottom_alarm_container");
+							container.innerHTML = html;
+						})
+						.catch(error => console.error("알람 가져오기 실패:", error));
+				}
+				setInterval(fetchAlarms, 5000);
+				fetchAlarms();
+
+
+				setInterval(fetchAlarmCreateOrNot, 5000);
+			</script>
+			<script th:src="@{/javascript/workspace/workspace.js}"></script>
+		</body>
+	</div>
+
+	</html>

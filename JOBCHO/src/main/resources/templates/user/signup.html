@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{includes/layout}" lang="ko">
+
+<head>
+	<title layout:title="회원가입">회원가입</title>
+	<link rel="stylesheet" th:href="@{/css/user/sign_form.css}" />
+	<script th:src="@{/javascript/user/signup.js}" defer></script>
+</head>
+
+<body>
+	<div class="main" layout:fragment="content">
+		<div class="login_container signup_container">
+			<h1>회원가입</h1>
+			<form th:action="@{/user/signup}" th:object="${userCreateForm}" class="signup_form" method="post">
+				<div th:replace="~{includes/form_errors :: formErrorsFragment}"></div>
+
+				<label for="username" class="signup_label">이름</label>
+				<input type="text" placeholder="이름 입력" class="login_input input_name" th:field="*{userName}" />
+
+				<label for="useremail" class="signup_label">이메일</label>
+				<input type="email" placeholder="이메일 입력" class="login_input email_input" th:field="*{userEmail}" />
+				<p class="caution email_caution">이메일 형식이 올바르지 않습니다.</p>
+
+				<label for="user_password" class="signup_label">비밀번호</label>
+				<p class="shown_caution password_regex_caution">
+					비밀번호는 8~20자 영문, 숫자, 특수문자로 입력해주세요.
+				</p>
+				<input type="password" placeholder="비밀번호 입력" class="login_input input_password"
+					th:field="*{userPassword}" />
+				<input type="password" placeholder="비밀번호 확인" class="login_input input_checked_password"
+					th:field="*{userCheckPassword}" />
+				<p class="caution password_caution">비밀번호가 서로 다릅니다.</p>
+
+				<button class="next_btn" disabled>회원가입</button>
+
+				<p class="signup">
+					이미 가입하셨나요?
+					<a th:href="@{/user/login}">로그인</a>
+				</p>
+			</form>
+		</div>
+	</div>
+</body>
+
+</html>

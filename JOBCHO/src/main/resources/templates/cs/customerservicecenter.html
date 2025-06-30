@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{includes/layout}" lang="ko">
+
+  <head>
+    <link rel="stylesheet" th:href="@{/css/cs/customerservicecenter.css}" />
+    <script th:src="@{/javascript/cs/close_service_center.js}" defer></script>
+    <title>문의사항 | 고객센터</title>
+  </head>
+  <body>
+    <div class="main" layout:fragment="content">
+      <div class="total_container">
+        <div class="customer_service_center_container">
+          <div class="upper_container">
+            <p class="service_center_text">
+              잡초에 <strong>궁금한 점</strong>이 있다면?
+            </p>
+            <p class="service_center_text">
+              저희가 <strong>답변</strong>드립니다.
+            </p>
+            <h2 class="service_center_text">유저<small>의</small> 소리</h2>
+          </div>
+          <h2 class="service_center_text">JOBCHO</h2>
+		  
+          <div class="lower_container">
+            <div class="pop_container">
+              <p>JOBCHO</p>
+              <p>이름(송효준)님, 궁금한 점이 있으신가요?</p>
+              <a href="" class="">
+                <p>문의하기</p>
+                <img th:src="@{/images/icons/paper-aeroplane.png}" alt="" />
+              </a>
+            </div>
+            <div class="btn_container">
+              <a href="">
+                <img
+                  th:src="@{/images/icons/home-icon-silhouette (1).png}"
+                  alt=""
+                />
+              </a>
+              <a href="">
+                <img th:src="@{/images/icons/conversation.png}" alt="" />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="x_btn">
+          <img th:src="@{/images/icons/cross-mark.png}" alt="" />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{includes/layout}" lang="ko">
+
+<head>
+	<title layout:title="조직도">조직도</title>
+	<link rel="stylesheet" th:href="@{/css/workspace/organization_chart.css}" />
+	<script th:src="@{/javascript/workspace/organization_search.js}" defer></script>
+</head>
+
+<body>
+	<div class="main" layout:fragment="content" id="organization_chart">
+		<div class="organization_container">
+			<h2>조직도 <span>총 </span><span th:text="${members.size()}"></span><span>명</span></h2>
+			<input type="text" placeholder="참여 멤버" class="search_input">
+			<p class="team_member_text">팀 멤버</p>
+
+			<div class="member_list_container">
+				<div class="member_list_item" th:each="member:${members}">
+					<div th:if="${member.userImg == null} and ${member.isAdmin != 1}">
+						<img th:src="@{/images/profileImg/default_profile.png}" class="profile_img"
+							alt="default_profile_img" />
+					</div>
+					<div th:if="${member.userImg != null} and ${member.isAdmin != 1}">
+						<img th:src="@{/uploads/profileImg/{img}(img=${member.userImg})}" class="profile_img"
+							alt="profile_img">
+					</div>
+					<p class="member_name" th:text="${member.userName}"></p>
+					<div th:if="${member.isActive == 1}" class="is_active">
+						<img th:src="@{/images/icons/is_active.png}">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

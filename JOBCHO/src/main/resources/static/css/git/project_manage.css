@@ -1,0 +1,391 @@
+.project_name {
+	color: rgb(125, 125, 125);
+}
+
+.main {
+	display: flex;
+	flex-direction: row;
+}
+
+.folder {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.folder {
+	display: flex;
+	flex-direction: column;
+}
+
+.search_chat_line {
+	width: 100%;
+	height: 3rem;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.workroom {
+	width: 248px;
+}
+
+.workroom>.search_chat_line:nth-child(2) {
+	height: 2rem;
+}
+
+.folder img,
+.search_chat_line img {
+	width: 1rem;
+	height: 1rem;
+	margin-left: 3px;
+}
+
+.folder>.icon_box,
+.search_chat_line>.icon_box {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	border-radius: 6px;
+}
+
+.search_chat_line>.icon_box:nth-child(1) {
+	width: 6rem;
+	height: 2rem;
+	margin-left: 0.5rem;
+
+}
+
+.search_chat_line:nth-child(2)>.icon_box:nth-child(1) {
+	width: 90%;
+	height: 2rem;
+	margin-left: 0.5rem;
+}
+
+.search_chat_line>.icon_box:nth-child(2) {
+	width: 2rem;
+	height: 2rem;
+	margin-left: 7rem;
+}
+
+.search_chat_line>div>p {
+	font-weight: bold;
+	font-size: 0.8rem;
+	margin-left: 3px;
+}
+
+.side_bar {
+	width: 248px;
+	border-right: 1px solid rgb(228, 228, 227);
+	/*height: calc(100vh - 4.4rem);*/
+}
+
+.icon_box_chat {
+	width: 14rem;
+	height: 1.8rem;
+	display: flex;
+	align-items: center;
+	border-radius: 8px;
+}
+
+.icon_box_chat:hover {
+	background-color: rgb(240, 240, 240);
+}
+
+.icon_box_chat>img:nth-child(1) {
+	width: 0.9rem;
+	height: 0.9rem;
+	margin-left: 0.5rem;
+}
+
+.icon_box_chat>img:nth-child(2) {
+	width: 1.4rem;
+	height: 1.4rem;
+	margin-left: 3px;
+}
+
+.icon_box_chat a {
+	font-size: 0.9rem;
+}
+
+.folder>.icon_box {
+	margin-left: 0.5rem;
+	width: 14rem;
+	height: 1.8rem;
+	margin-bottom: 5px;
+}
+
+.folder>.icon_box:hover {
+	background-color: rgb(240, 240, 240);
+}
+
+.folder a {
+	font-size: 0.9rem;
+	font-weight: bold;
+	color: rgb(169, 169, 169);
+}
+
+.folder_in a {
+	font-weight: 400;
+	color: rgb(69, 69, 69);
+}
+
+.folder_in>.icon_box_chat {
+	margin-bottom: 5px;
+}
+
+.folder img:nth-child(1) {
+	width: 0.9rem;
+	height: 0.9rem;
+	margin-right: 4px;
+}
+
+.project_main {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.git_chart {
+	width: 100%;
+	height: 50%;
+	border-bottom: 2px solid rgb(228, 228, 227);
+	background-color: aliceblue;
+	align-items: center;
+}
+
+.Activity {
+	display: flex;
+}
+
+.Activity>p {
+	color: black;
+	margin-left: 1rem;
+	font-size: 1.5rem;
+}
+
+.Activityline {
+	width: 97%;
+	border: 1px solid rgb(169, 169, 169);
+	margin-top: 1rem;
+	margin-left: 1rem;
+}
+
+.chart_main_bar {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-top: 2rem;
+	margin: 1rem;
+}
+
+.chart_main_bar2 {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	border-bottom: 1px solid rgb(228, 228, 227);
+}
+
+.branches_button,
+.align_button,
+.activity_main_bar {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-top: 0.5rem;
+}
+
+.activity_container {
+	display: flex;
+	flex-direction: column;
+	margin: 1rem;
+	width: 97%;
+	height: 20rem;
+	overflow-y: scroll;
+	border-radius: 0.5rem;
+	border: 1px solid rgb(200, 200, 200);
+}
+
+.activity_item {
+	border: 1px solid rgb(200, 200, 200);
+	border-top: none;
+	padding: 0.5rem;
+}
+
+.activity_container>.activity_item:first-child {
+	border-top-right-radius: 0.5rem;
+	border-top-left-radius: 0.5rem;
+}
+
+.activity_item_row1,
+.activity_item_row2 {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.activity_main_bar {
+	justify-content: space-between;
+	margin-left: 1rem;
+	margin-right: 1rem;
+}
+
+.branches_button {
+	width: 9.5rem;
+	background-color: rgb(228, 228, 228);
+	border-radius: 0.5rem;
+	border: 1px solid rgb(200, 200, 200);
+	padding: 0.25rem;
+}
+
+.align_button {
+	margin-right: 0.5rem;
+	padding: 0.3rem;
+}
+
+.branches_button:hover,
+.align_button:hover {
+	background-color: rgb(200, 200, 200);
+}
+
+.activity_container img {
+	width: 2rem;
+	height: 2rem;
+	border-radius: 30rem;
+}
+
+.activity_item_row1>p {
+	margin-bottom: 0.5rem;
+	font-weight: bold;
+}
+
+.activity_item_row2>p {
+	margin-left: 0.5rem;
+	font-size: 0.9rem;
+}
+
+.activity_item_row2>p:nth-child(2) {
+	font-weight: bold;
+}
+
+.activity_item_row2>p:nth-child(3) {
+	color: rgb(169, 169, 169);
+}
+
+.activity_item_row2>p:nth-child(4) {
+	color: rgb(6, 195, 115);
+}
+
+.branches_button img:nth-child(1) {
+	margin-top: 2px;
+	margin-right: 0.5rem;
+}
+
+.branches_button img:nth-child(3) {
+	margin-top: 4px;
+	margin-left: 0.5rem;
+}
+
+.align_button img {
+	margin-left: 0.3rem;
+}
+
+.chart_main_bar img:nth-child(1) {
+	width: 1.5rem;
+	height: 1.5rem;
+	margin-left: 1rem;
+}
+
+.chart_main_bar img:nth-child(3) {
+	width: 1rem;
+	height: 1rem;
+	margin-left: 1rem;
+}
+
+.chart_main_bar p:nth-child(2) {
+	font-size: 1rem;
+	margin-left: 10px;
+}
+
+.chart_main_bar2 p:nth-child(1) {
+	margin-left: 2rem;
+	border-bottom: 2px solid rgb(6, 195, 115);
+	color: rgb(6, 195, 115);
+}
+
+.chart_main_bar2 p:nth-child(2) {
+	margin-left: 31rem;
+}
+
+.chart_main_bar2 p:nth-child(3) {
+	margin-left: 1rem;
+	color: rgb(169, 169, 169);
+}
+
+.activity_main_bar img {
+	width: 1rem;
+	height: 1rem;
+}
+
+.btn_line{
+	display: flex;
+	flex-direction: row;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	align-items: center;
+	justify-content: right;
+	margin-right: 1.5rem;
+}
+
+.commitBtn{
+	padding: 6px;
+	width: 7rem;
+}
+
+.more-options-wrapper {
+	position: relative;
+	display: inline-block;
+}
+
+#branchModal{
+	position: absolute;
+	display:none; 
+	background:rgb(240, 240, 240); 	
+	border:1px solid rgb(169, 169, 169); 
+	border-radius: 5px;
+	padding:0.5rem; 
+	z-index:1000;
+}
+
+#branchModal p {
+	font-size: 0.9rem;
+}
+
+#branchModal button{
+	width: 100%;
+	color: rgb(169, 169, 169);
+	background-color: rgb(200, 200, 200);
+}
+
+#branchList p{
+	border-bottom: 1px solid rgb(169, 169, 169);
+	cursor:pointer; 
+	margin: 5px 0;
+}
+
+.p_title{
+	border-bottom: 2px solid rgb(169, 169, 169);
+		cursor:pointer; 
+		margin: 5px 0;
+}
+
+.branch-color-dot {
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	margin-right: 5px;
+	vertical-align: middle;
+}
+

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{includes/layout}" lang="ko">
+
+<head>
+	<title layout:title="팀 생성">팀 생성</title>
+	<link rel="stylesheet" th:href="@{/css/workspace/create_workspace.css}" />
+	<script th:src="@{/javascript/workspace/create_workspace.js}"></script>
+</head>
+
+<body>
+	<div class="main" layout:fragment="content">
+		<div class="create_team_container">
+			<p class="title">팀 생성하기</p>
+			<hr>
+			<form th:action="@{/workspace/create}" method="post" class="team_create_form"
+				th:object="${workspaceCreateForm}">
+				<div th:replace="~{includes/form_errors :: formErrorsFragment}"></div>
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+				<div class="input_items">
+					<label for="workspace_name">팀 이름 (회사 또는 단체명)</label>
+					<input type="text" th:field="*{workspaceName}" placeholder="팀 이름 (회사 또는 단체명)">
+				</div>
+				<div class="input_items">
+					<label for="workspace_domain">팀 도메인</label>
+					<div class="input">
+						<input type="text" th:field="*{workspaceDomain}" placeholder="팀 도메인">
+						<p>.jobcho.com</p>
+					</div>
+				</div>
+				<p class="domain_caution">영문, 숫자, 하이픈(-) 5자 이상 입력해주세요.</p>
+				<button type="submit">팀으로 이동하기</button>
+			</form>
+		</div>
+	</div>
+</body>
+
+</html>

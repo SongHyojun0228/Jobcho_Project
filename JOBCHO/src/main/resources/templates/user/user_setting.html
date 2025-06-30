@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{includes/layout}" lang="ko">
+
+<head>
+	<title layout:title="계정설정">계정설정</title>
+	<link rel="stylesheet" th:href="@{/css/user/user_setting.css}" />
+	<script th:src="@{/javascript/user/user_setting.js}" defer></script>
+	<script th:if="${alert_msg != null}">
+		alert('[[${alert_msg}]]');
+	</script>
+</head>
+
+<body>
+	<div class="main" layout:fragment="content">
+		<div class="path">
+			<a class="go_to_index" th:href="@{/index}">잔디 메인</a>
+			<span> > </span>
+			<a class="here" th:href="@{/user/setting}">계정 설정</a>
+		</div>
+		<div class="main_container">
+			<div class="profile_img personal_info_items">
+				<div class="info_texts">
+					<p class="personal_info_items_title">프로필 사진</p>
+					<form class="profile_img_form" th:action="@{/user/upload/profile}" method="post"
+						enctype="multipart/form-data">
+						<div th:if="${user.userImg == null} and ${user.isAdmin != 1}">
+							<img th:src="@{/images/profileImg/default_profile.png}" class="origin_profile_img"
+								alt="default_profile_img" />
+							<img class="preview" />
+						</div>
+						<div th:if="${user.userImg != null} and ${user.isAdmin != 1}">
+							<img th:src="@{/uploads/profileImg/{img}(img=${user.userImg})}" class="origin_profile_img"
+								alt="profile_img">
+							<img class="preview" />
+						</div>
+						<div class="profile_label_input_btn_flex">
+							<label for="user_img" class="btn_upload">
+								프로필 변경
+							</label>
+							<div class="profile_none_block">
+								<input type="file" accept="image/*" name="user_img" class="profile_img_input"
+									onchange="readURL(this)">
+								<div class="profile_btns">
+									<button type="button" class="profile_cancel_btn cancel_btn">취소</button>
+									<button type="submit" class="profile_confirm_btn confirm_btn">확인</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="profile_name personal_info_items">
+				<div class="info_texts">
+					<p class="personal_info_items_title">이름</p>
+					<p class="user_info" th:text="${user.userName}"></p>
+					<form th:action="@{/user/username/change}" class="change_form" th:method="post">
+						<input type="text" class="name_input" name="new_user_name" th:placeholder="${user.userName}" />
+						<div class="change_btns">
+							<button type="button" class="cancel_btn">취소</button>
+							<button type="submit" class="confirm_btn">확인</button>
+						</div>
+					</form>
+				</div>
+				<img th:src="@{/images/arrow-down.png}" class="toggle_btn" alt="arrow_down" />
+			</div>
+
+			<div class="profile_email personal_info_items">
+				<div class="info_texts">
+					<p class="personal_info_items_title">이메일 관리</p>
+					<p class="user_info" th:text="${user.userEmail}"></p>
+					<form th:action="@{/user/useremail/change}" class="change_form email_form" method="post">
+						<p class="caution_notice">이메일 변경 시, 다시 로그인해주세요.</p>
+						<input type="email" class="email_input" name="new_user_email"
+							th:placeholder="${user.userEmail}" />
+						<p class="caution email_caution">이메일 형식이 올바르지 않습니다.</p>
+						<div class="change_btns">
+							<button type="button" class="cancel_btn">취소</button>
+							<button class="confirm_btn">확인</button>
+						</div>
+					</form>
+				</div>
+				<img th:src="@{/images/arrow-down.png}" class="toggle_btn" alt="arrow_down" />
+			</div>
+
+			<div class="profile_pw personal_info_items">
+				<div class="info_texts">
+					<p class="personal_info_items_title">비밀번호 변경</p>
+					<p class="user_info">*******</p>
+					<form th:action="@{/user/userpassword/change}" class="change_form" method="post">
+						<p class="caution_notice">비밀번호 변경 시, 다시 로그인해주세요.</p>
+						<input type="password" class="curr_pw_input" placeholder="현재 비밀번호" name="user_password" />
+						<input type="password" class="new_pw_input" placeholder="변경할 비밀번호" name="new_user_password" />
+						<p class="caution pw_caution"> 비밀번호는 8~20자 영문, 숫자, 특수문자로 입력해주세요.</p>
+						<div class="change_btns">
+							<button type="button" class="cancel_btn">취소</button>
+							<button type="submit" class="confirm_btn">확인</button>
+						</div>
+					</form>
+				</div>
+				<img th:src="@{/images/arrow-down.png}" class="toggle_btn" alt="arrow_down" />
+			</div>
+
+			<div class="profile_delete personal_info_items">
+				<div class="info_texts">
+					<p class="personal_info_items_title user_info">잡초 계정 삭제</p>
+					<form th:action="@{/user/account/delete}" class="change_form" method="post">
+						<div class="change_btns">
+							<input type="hidden" value="dummy" />
+							<p class="last_confirm">잔디 계정을 삭제하시겠습니까?</p>
+							<button type="button" class="cancel_btn">취소</button>
+							<button class="delete_btn">잔디 계정을 삭제</button>
+						</div>
+					</form>
+				</div>
+				<img th:src="@{/images/arrow-down.png}" class="toggle_btn" alt="arrow_down" />
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

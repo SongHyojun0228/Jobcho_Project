@@ -1,0 +1,73 @@
+<html layout:decorate="~{workspace/workspace}">
+<div layout:fragment="sideblock" class="container-my-3">
+	<haed>
+		<link rel="stylesheet" th:href="@{/css/workspace/workspace_sidebar.css}" />
+		<link rel="stylesheet" th:href="@{/css/workspace/workspace_sidebar_message.css}" />
+		<link rel="stylesheet" th:href="@{/css/workspace/create_chat.css}" />
+		<script>
+			function closeSideTask(btn) {
+				const workspaceId = btn.getAttribute("data-workspace-id");
+				const chatroomId = btn.getAttribute("data-chatroom-id");
+				const url = `/workspace/${workspaceId}/${chatroomId}`;
+				window.location.href = url;
+			}
+		</script>
+	</haed>
+
+	<div class="side_chat">
+		<div class="side_chat_header">
+			<p>메시지</p>
+			<img th:src="@{/images/icons/cross-mark.png}" alt="답글 닫기" id="task_close"
+				th:data-workspace-id="${workspaceId}" th:data-chatroom-id="${chatroomId}" onclick="closeSideTask(this)">
+		</div>
+		<div class="side_chat_info_box">
+			<div class="message_profile">
+				<img th:src="@{/images/profileImg/default_profile.png}" alt="profile_img" />
+				<div class="profile_info">
+					<p th:text="${searchMessage.sender.userName}">사용자 이름</p>
+					<p th:text="${searchMessage.createdDate}">2025/06/10</p>
+				</div>
+			</div>
+			<div class="message_room">
+				<p>채팅방</p>
+				<p th:text="${chatrooms.chatroomName}">채팅방명</p>
+			</div>
+			<div class="message_content">
+				<p th:text="${searchMessage.content}"></p>
+			</div>
+		</div>
+		<div class="answer_box" id="answer_box">
+			<div class="answer_header">
+				<p>댓글</p>
+				<p>0</p>
+			</div>
+			<div class="answer_form_box">
+				<div th:each="replie : ${replies}" class="answer_form">
+					<div class="message_profile">
+						<img th:src="@{/images/profileImg/default_profile.png}" alt="profile_img" />
+						<div class="profile_info">
+							<p th:text="${replie.sender.userName}">사용자 이름</p>
+							<p th:text="${replie.createdDate}">2025/06/10</p>
+						</div>
+					</div>
+					<div class="answer_content">
+						<p th:text="${replie.content}">답글 내용</p>
+					</div>
+				</div>
+			</div>
+			<form
+				th:action="@{/workspace/{workspaceId}/{chatroomId}/chatAnswerAdd/{messageId}(workspaceId=${workspaceId}, chatroomId=${chatroomId}, messageId=${searchMessage.messageId})}"
+				method="post">
+				<div class="chat_input_box">
+					<input name="answer_input" id="chat_input" type="text" placeholder="메시지를 입력하세요.">
+				</div>
+				<div class="chat_emoticon">
+					<img th:src="@{/images/icons/emoticon.png}" alt="채팅 메뉴">
+					<button type="submit"><img th:src="@{/images/icons/arrow-chat.png}" alt=""></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+</html>

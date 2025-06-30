@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{includes/layout}" lang="ko">
+
+<head>
+	<title layout:title="메인화면">메인화면</title>
+	<link rel="stylesheet" th:href="@{/css/user/index.css}" />
+</head>
+
+<body>
+	<div class="main" layout:fragment="content">
+		<div class="profile_container">
+			<h3>프로필</h3>
+			<div class="profile">
+				<div class="right_items">
+					<div th:if="${user.userImg == null} and ${user.isAdmin != 1}">
+						<img th:src="@{/images/profileImg/default_profile.png}" class="origin_profile_img"
+							alt="default_profile_img" />
+					</div>
+					<div th:if="${user.userImg != null} and ${user.isAdmin != 1}">
+						<img th:src="@{/uploads/profileImg/{img}(img=${user.userImg})}" class="origin_profile_img"
+							alt="profile_img">
+					</div>
+					<div th:if="${user.isAdmin != 0}">
+						<img th:src="@{/images/icons/admin2.png}" alt="admin_profile_img" />
+					</div>
+					<div class="profile_info">
+						<p class="profile_info_name" th:text="${user.userName}"></p>
+						<p class="profile_info_email" th:text="${user.userEmail}"></p>
+					</div>
+				</div>
+				<div class="left_items">
+					<img th:src="@{/images/settings.png}" alt="">
+					<a th:href="@{/user/setting}">계정설정</a>
+				</div>
+			</div>
+		</div>
+
+		<div th:if="${user.isAdmin != 1}" class="team_list_container">
+			<h3>팀 리스트</h3>
+			<div class="team_list">
+				<div th:each="workspace : ${workspaces}">
+					<div class="team_list_item">
+						<div class="team">
+							<div class="right_items">
+								<img th:src="@{/images/profileImg/default_team.png}" alt="profile_img" />
+								<div class="team_info">
+									<div class="team_name_alarm">
+										<p class="team_info_team_name" th:text="${workspace.workspaceName}"></p>
+										<span class="alarm_size" th:attr="data-workspace-id=${workspace.workspaceId}"
+											style="visibility: hidden;"></span>
+									</div>
+									<a class="team_info_team_domain" th:text="${workspace.workspaceDomain}"
+										th:href="${workspace.workspaceDomain}"></a>
+									<div class="owner_info sender_info">
+										<p>소유자</p>
+										<p class="team_info_team_owner sender_email"
+											th:text="${workspace.owner.userName} + '(' + ${workspace.owner.userEmail} + ')'">
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="team_btn">
+								<a href="">팀 관리</a>
+								<a th:href="@{|/workspace/${workspace.workspaceId}|}">팀으로 가기</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="team_creat_btn">
+				<a th:href="@{/workspace/create}">+팀 생성하기</a>
+			</div>
+		</div>
+
+		<div th:if="${user.isAdmin == 1}" class="cs_chatroom_list_container team_list_container">
+			<h3>고객 문의</h3>
+			<div class="cs_chatroom_list">
+				<div th:each="csChatroom : ${allCsChatrooms}">
+					<a th:href="@{|cs/chat/${csChatroom.csChatroom.csChatroomId}|}">
+						<div class="team_list_item" data-update-time="0">
+							<div class="team">
+								<div class="right_items">
+									<img th:src="@{/uploads/profileImg/{img}(img=${csChatroom.csChatroom.user.userImg})}"
+										alt="profile_img" />
+									<div class="team_info">
+										<div class="team_name_alarm">
+											<p class="team_info_team_name"
+												th:text="${csChatroom.csChatroom.user.userName}">
+											</p>
+										</div>
+										<div class="owner_info sender_info">
+											<p class="team_info_team_owner"
+												th:text="${csChatroom.csChatroom.user.userEmail}">
+											</p>
+										</div>
+										<p th:text="${csChatroom.content}" class="cs_text"></p>
+									</div>
+								</div>
+								<span class="cs-chat-badge"
+									th:attr="data-chatroom-id=${csChatroom.csChatroom.csChatroomId}"
+									style="visibility: hidden;"></span>
+							</div>
+					</a>
+				</div>
+			</div>
+		</div>
+		<script>
+			const userIsAdmin = '[[${user.isAdmin}]]';
+
+			if (userIsAdmin == 1) {
+				fetchLastMsgAndSort();
+				fetchCsChatCount();
+				console.log("관리자 메서드 실행 : " + userIsAdmin);
+			} else {
+				fetchWorkspaceAlarmCounts();
+			}
+
+			// 알람 수 
+			function fetchWorkspaceAlarmCounts() {
+				fetch("/alarm/workspace-count")
+					.then(response => response.json())
+					.then(map => {
+						console.log("받아온 map:", map)
+						for (const [workspaceId, count] of Object.entries(map)) {
+							const alarmTag = document.querySelector(`.alarm_size[data-workspace-id="${workspaceId}"]`);
+							if (!alarmTag) continue;
+							if (parseInt(count) > 0) {
+								alarmTag.textContent = count;
+								alarmTag.style.visibility = "visible";
+							} else {
+								alarmTag.textContent = "";
+								alarmTag.style.visibility = "hidden";
+							}
+						}
+					});
+			}
+
+			// 마지막 메시지 컨텐트
+			function fetchLastMsgAndSort() {
+				fetch("/csChat/last")
+					.then(response => response.json())
+					.then(lastMsgList => {
+						const chatroomList = document.querySelector(".cs_chatroom_list");
+						if (chatroomList == null) return;
+
+						const chatroomItems = Array.from(chatroomList.querySelectorAll(".team_list_item"));
+
+						lastMsgList.forEach(msg => {
+							const chatroomId = msg.chatroomId;
+							let content = msg.content;
+							const sentDate = new Date(msg.sentDate).getTime();
+
+							if (content.length > 10) {
+								content = content.substring(0, 10) + "...";
+							}
+
+							const chatroomItem = chatroomItems.find(item => {
+								return item.querySelector(".cs-chat-badge").getAttribute("data-chatroom-id") == chatroomId;
+							});
+
+							// 마지막 내용과 시간
+							if (chatroomItem) {
+								chatroomItem.querySelector(".cs_text").textContent = content;
+								chatroomItem.setAttribute("data-update-time", sentDate);
+							}
+						});
+
+						// data-update-time으로 채팅방 정렬
+						chatroomItems.sort((a, b) => {
+							return b.getAttribute("data-update-time") - a.getAttribute("data-update-time");
+						});
+
+						// 재배치
+						chatroomItems.forEach(item => {
+							chatroomList.appendChild(item.closest("div"));
+						});
+					});
+			}
+
+			// 문의사항 메시지 수 
+			function fetchCsChatCount() {
+				fetch("/csChat/count")
+					.then(response => response.json())
+					.then(data => {
+						Object.keys(data).forEach(chatroomId => {
+							const badge = document.querySelector(`.cs-chat-badge[data-chatroom-id="${chatroomId}"]`);
+							if (badge) {
+								const count = data[chatroomId];
+								if (count > 0) {
+									badge.textContent = count;
+									badge.style.visibility = "visible";
+								} else {
+									badge.style.visibility = "hidden";
+								}
+							}
+						});
+					});
+			}
+
+			setInterval(fetchWorkspaceAlarmCounts, 5000);
+			setInterval(fetchCsChatCount, 5000);
+			setInterval(fetchLastMsgAndSort, 5000);
+		</script>
+	</div>
+</body>
+
+</html>

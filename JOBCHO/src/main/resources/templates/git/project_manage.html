@@ -1,0 +1,214 @@
+<html layout:decorate="~{git/layout_project_manage}">
+<div layout:fragment="content" class="container my-3">
+
+	<head>
+		<title>Team명 | 프로젝트 이름</title>
+		<link rel="stylesheet" th:href="@{/css/git/project_manage.css}" />
+	</head>
+
+	<body>
+		<header>
+			<div class="jobcho_logo">
+				<img th:src="@{/images/Jobcho_logo.png}" alt="Jobcho_logo" />
+				<p>Jobcho</p>
+			</div>
+			<p class="project_name">프로젝트 명</p>
+			<p>&nbsp;</p>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+		</header>
+
+		<main>
+			<div class="main">
+				<div class="side_bar">
+					<div class="workroom">
+						<div class="search_chat_line">
+							<div class="icon_box">
+								<img th:src="@{/images/icons/icon-chart.png}" alt="대시보드 아이콘">
+								<p>대시보드</p>
+							</div>
+						</div>
+						<div class="search_chat_line">
+							<div class="icon_box">
+								<img th:src="@{/images/icons/arrow-down.png}" alt="숨기기,보이기 화살표">
+								<p>프로젝트</p>
+							</div>
+						</div>
+						<div class="folder">
+							<div class="folder_in">
+								<div class="icon_box_chat" th:each="branch:${branchs}">
+									<img th:src="@{/images/icons/commit-git.png}" alt="레퍼지토리">
+									<span class="branch-color-dot"
+										th:style="'background-color: rgb' + ${branch.color}"	></span>
+									<a href="#" th:text="${branch.title}">main</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="project_main">
+					<div class="chart_main_bar">
+						<img th:src="@{/images/icons/icon-chart.png}" alt="대시보드 아이콘">
+						<p>대시보드</p>
+						<img th:src="@{/images/icons/commit-git.png}" alt="레퍼지토리">
+						<p>main</p>
+					</div>
+					<div class="chart_main_bar2">
+						<p>All Commits</p>
+					</div>
+					<div class="git_chart">
+						<canvas id="line-chart" width="1134" height="358.7"></canvas>
+					</div>
+					<div class="btn_line">
+						<button class="commitBtn"><a
+								th:href="@{/workspace/{workspaceId}/github(workspaceId=${workspaceId})}">commit</a></button>
+					</div>
+					<div class="Activity">
+						<p>Activity</p>
+					</div>
+					<div class="Activityline"></div>
+					<div class="activity_main_bar">
+						<div class="more-options-wrapper">
+							<div class="branches_button">
+								<img th:src="@{/images/icons/commit-git.png}" alt="레퍼지토리">
+								<a href="javascript:void(0)" onclick="openModal()">All branches</a>
+								<img th:src="@{/images/icons/arrow-down.png}" alt="숨기기,보이기 화살표">
+							</div>
+							<div id="branchModal" class="modal">
+								<p class="p_title">Choose branch...</p>
+								<div id="branchList">
+									<p data-branch="ALL">모든 브랜치</p>
+									<p th:each="branch : ${branchs}" th:text="${branch.title}"
+										th:attr="data-branch=${branch.title}"></p>
+								</div>
+								<button onclick="closeModal()">닫기</button>
+							</div>
+						</div>
+						<div class="align_button">
+							<p>showing most recent first</p>
+							<img th:src="@{/images/icons/arrow-down.png}" alt="숨기기,보이기 화살표">
+						</div>
+					</div>
+					<div class="activity_container">
+						<div th:each="branch:${branchs}" th:with="title=${branch.title}">
+							<div class="activity_item" th:each="commit:${branch.commit}">
+								<div class="activity_item_row1" th:attr="data-uploaded-date=${#temporals.format(commit.uploadedDate, 'MM/dd')},
+									         data-branch-title=${branch.title},
+									         data-branch-color=${branch.color}">
+									<p th:text="${commit.content}"></p>
+								</div>
+								<div class="activity_item_row2">
+									<img th:src="@{/uploads/profileImg/{img}(img=${branch.user.userImg})}">
+									<p th:text="${branch.user.userName}"></p>
+									<p>pushed 1 commit to</p>
+									<p th:text="${branch.title}">main</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<script>
+			function convertionMonth(month, day) {
+				let resultMonth = month;
+				let resultDay = day + 1;
+				if (resultDay > 30) {
+					resultMonth = month + 1 > 12 ? 1 : month + 1;
+					resultDay = 1;
+				}
+				return [resultMonth, resultDay];
+			}
+
+			let mainStartDate = '';
+			const countsPerBranch = {};
+			const colorPerBranch = {};
+			const labels = [];
+
+			document.querySelectorAll('.activity_item_row1').forEach(item => {
+				const date = item.dataset.uploadedDate;
+				const title = item.dataset.branchTitle;
+				const color = "rgb" + item.dataset.branchColor;
+				
+				console.log("color : " + color);
+				
+				console.log("branch_title : "  + title);
+
+				if (!mainStartDate) mainStartDate = date;
+
+				if (!countsPerBranch[title]) countsPerBranch[title] = {};
+				if (!colorPerBranch[title]) colorPerBranch[title] = color;
+
+				countsPerBranch[title][date] = (countsPerBranch[title][date] || 0) + 1;
+			});
+
+			const [monthStr, dayStr] = mainStartDate.split("/");
+			let todayDateMonth = Number(monthStr);
+			let todayDateDay = Number(dayStr);
+			for (let i = 0; i < 10; i++) {
+				let m = todayDateMonth < 10 ? `0${todayDateMonth}` : `${todayDateMonth}`;
+				let d = todayDateDay < 10 ? `0${todayDateDay}` : `${todayDateDay}`;
+				labels.push(`${m}/${d}`);
+				[todayDateMonth, todayDateDay] = convertionMonth(todayDateMonth, todayDateDay);
+			}
+
+			const datasets = Object.keys(countsPerBranch).map(title => {
+				const dateCounts = countsPerBranch[title];
+				const data = labels.map(date => dateCounts[date] || 0);
+				return {
+					label: title,
+					data: data,
+					borderColor: colorPerBranch[title] || '#000000',
+					fill: false
+				};
+			});
+
+			new Chart(document.getElementById("line-chart"), {
+				type: 'line',
+				data: {
+					labels: labels,
+					datasets: datasets
+				},
+				options: {
+					title: {
+						display: true,
+						text: 'Activity insights'
+					}
+				}
+			});
+
+			function openModal() {
+				document.getElementById("branchModal").style.display = "block";
+			}
+
+			function closeModal() {
+				document.getElementById("branchModal").style.display = "none";
+			}
+
+			// 필터링 동작
+			document.addEventListener("DOMContentLoaded", () => {
+				document.querySelectorAll("#branchList p").forEach(li => {
+					li.addEventListener("click", () => {
+						const selectedBranch = li.dataset.branch;
+						const allItems = document.querySelectorAll(".activity_item");
+
+						allItems.forEach(item => {
+							const itemBranch = item.querySelector(".activity_item_row1")?.dataset.branchTitle;
+							if (selectedBranch === "ALL" || itemBranch === selectedBranch) {
+								item.style.display = "block";
+							} else {
+								item.style.display = "none";
+							}
+						});
+
+						closeModal();
+					});
+				});
+			});
+		</script>
+	</body>
+
+</div>
+
+</html>

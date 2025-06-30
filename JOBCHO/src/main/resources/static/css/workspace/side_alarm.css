@@ -1,0 +1,111 @@
+#side_alarm {
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: -8rem;
+	z-index: 3;
+	border: 1px solid rgb(169, 169, 169);
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.total_side_alarm_container {
+	width: 25rem;
+	/*height: calc(100vh - 4.399875rem);*/
+	background-color: white;
+}
+
+.top_alarm_container {
+	padding: 1rem;
+	background-color: white;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 1px solid rgb(169, 169, 169);
+}
+
+.top_alarm_container p {
+	font-size: 1.2rem;
+	font-weight: 600;
+}
+
+.top_alarm_container a {
+	color: rgb(169, 169, 169);
+	font-size: 1.2rem;
+}
+
+.bottom_alarm_container {
+	overflow: scroll;
+	max-height: 25rem;
+}
+
+.alarm_items {
+	padding: 1rem;
+	border-bottom: 1px solid rgb(169, 169, 169);
+	background-color: white;
+}
+
+.chatroom_name {
+	color: rgb(79, 130, 252);
+	margin-bottom: 0.5rem;
+}
+
+.author_info {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin-bottom: 0.5rem;
+}
+
+.author_info img {
+	width: 2.7rem;
+	height: 2.7rem;
+	border-radius: 30%;
+}
+
+.author_name_and_created_date {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 0.3rem;
+}
+
+.author_name {
+	font-weight: 600;
+}
+
+.created_date {
+	color: rgb(125, 125, 125);
+	font-size: 0.9rem;
+}
+
+.alarm_text {
+	margin-left: 3.2rem;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.5rem;
+}
+
+.alarm_content {
+	color: rgb(6, 195, 115);
+	font-weight: 600;
+}
+
+.mention_text {
+	display: flex;
+	flex-direction: row;
+}
+
+.mention_text span,
+.mention_content {
+	color: rgb(6, 195, 115);
+	font-weight: 600;
+}
+
+.mention_content {
+	margin-left: 3.2rem;
+	margin-top: 0.5rem;
+
+}

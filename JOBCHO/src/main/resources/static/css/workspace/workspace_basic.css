@@ -1,0 +1,31 @@
+.chat>img{
+	width: 20rem;
+	height: 30rem;
+	object-fit: cover;
+	border-radius: 10px;
+}
+
+.chat{
+	display: flex;
+	justify-content: center;
+	align-items: center;	
+}
+
+.chat>p:nth-child(2){
+	margin-top: 1rem;
+	font-weight: bold;
+	font-size: 1.2rem;
+}
+
+.side_bar{
+	width: 258px;
+}
+
+.addChatroombtn{
+	margin-right: 5rem;
+}
+
+.folder{
+	width: 200px;
+	margin-left: 36px;
+}

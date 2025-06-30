@@ -1,0 +1,120 @@
+.modal_backdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 999;
+	display: none;
+}
+
+.modal_overlay {
+	position: fixed;
+	top: 10rem;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	display: none;
+	z-index: 999;
+	justify-content: center;
+	align-items: center;
+}
+
+.modal_content {
+	width: 30rem;
+	margin: auto;
+	border: 1px solid black;
+	border-radius: 10px;
+	z-index: 1000;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+	max-height: 90vh;
+	overflow-y: auto;
+}
+
+.invite_chat_new_total_container {
+	background-color: rgb(250, 250, 250);
+	width: 30rem;
+	padding: 2rem;
+}
+
+.title {
+	display: flex;
+	justify-content: space-between;
+	font-size: 1.3rem;
+	font-weight: 700;
+	margin-bottom: 1rem;
+}
+
+.title2 {
+	color: rgb(125, 125, 125);
+	font-size: 0.9rem;
+	margin-block: 0.5rem;
+}
+
+input {
+	padding: 0.7rem;
+	font-size: 0.9rem;
+	width: 26rem;
+	margin-bottom: 0;
+}
+
+hr {
+	color: rgb(125, 125, 125);
+	margin-block: 2rem;
+}
+
+.search_result_container {
+	margin-top: 1rem;
+}
+
+.search_result {
+	background-color: rgb(242, 244, 248);
+	padding: 1rem;
+	border-radius: 12px;
+}
+
+.none_member {
+	color: rgb(125, 125, 125);
+	text-align: center;
+}
+
+.btns {
+	text-align: right;
+}
+
+.btns {
+	text-align: right;
+	margin-top: 1rem;
+}
+
+.btns button {
+	padding: 0.5rem 1rem;
+}
+
+.close_btn {
+	background-color: rgb(250, 250, 250);
+	color: rgb(169, 169, 169);
+	padding: 0.5rem;
+}
+
+.close_btn:hover {
+	background-color: rgb(228, 228, 228);
+	color: rgb(169, 169, 169);
+}
+
+.invite_btn {
+	background-color: rgb(250, 250, 250);
+	color: rgb(200, 200, 200);
+}
+
+.member_label {
+	display: flex;
+	gap: 1rem;
+	align-items: center;
+}
+
+.member_checkbox {
+	width: 1.5rem;
+	height: 1.5rem;
+}

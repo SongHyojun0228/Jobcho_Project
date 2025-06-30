@@ -1,0 +1,49 @@
+.main {
+	min-height: calc(100vh - 65.5px);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.invite_container {
+	width: 30rem;
+	margin: auto;
+	padding: 3.5rem 2.5rem;
+	background-color: white;
+	border: 1px solid rgb(228, 228, 227);
+	border-radius: 4px;
+}
+
+h1 {
+	margin-bottom: 2rem;
+}
+
+input[type="email"] {
+	width: 25rem;
+	font-size: 1rem;
+	padding: 1rem;
+	margin-bottom: 1rem;
+	border: 1px solid rgb(228, 228, 227);
+}
+
+input::placeholder {
+	color: rgb(200, 200, 200);
+}
+
+button {
+	background-color: rgb(151, 231, 198);
+	color: rgb(250, 250, 250);
+	padding: 1rem;
+	margin-top: 0.5rem;
+	border: none;
+}
+
+button:hover {
+	background-color: rgb(6, 195, 115);
+}
+
+.message {
+	margin-top: 15px;
+	font-size: 14px;
+	color: #555;
+}

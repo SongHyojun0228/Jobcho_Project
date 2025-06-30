@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{includes/layout}" lang="ko">
+
+<head>
+	<title layout:title="메인화면">메인화면</title>
+	<link rel="stylesheet" th:href="@{/css/user/index.css}" />
+	<link rel="stylesheet" th:href="@{/css/workspace/side_alarm.css}" />
+</head>
+
+<body>
+	<div class="main" layout:fragment="content">
+		<div class="total_side_alarm_container">
+			<div class="top_alarm_container">
+				<p>알림센터</p>
+				<a>x</a>
+			</div>
+			<div class="bottom_alarm_container">
+				<div th:each="alarmItem : ${alarmList}" class="alarm_items" th:fragment="alarmListFragment">
+					<!-- 공지사항 알림 -->
+					<div th:if="${alarmItem.notification != null}">
+						<p class="chatroom_name" th:text="${alarmItem.notification.chatroom.chatroomName}">채팅방 이름
+						</p>
+						<div class="author_info">
+							<img th:src="@{/uploads/profileImg/{img}(img=${alarmItem.notification.author.userImg})}"
+								alt="profile_img" />
+							<div class="author_name_and_created_date">
+								<p class="author_name" th:text="${alarmItem.notification.author.userName}">작성자 이름
+								</p>
+								<p class="created_date" th:text="${alarmItem.createdDate}"></p>
+							</div>
+						</div>
+						<div class="alarm_text">
+							<p class="alarm_sign">공지를 등록했습니다.</p>
+							<p class="alarm_content" th:text="${alarmItem.notification.content}"></p>
+						</div>
+					</div>
+
+					<!-- 할 일 알림 -->
+					<div th:if="${alarmItem.task != null}">
+						<p class="chatroom_name" th:text="${alarmItem.task.chatroom.chatroomName}">채팅방 이름</p>
+						<div class="author_info">
+							<img th:src="@{/uploads/profileImg/{img}(img=${alarmItem.task.author.userImg})}"
+								alt="profile_img" />
+							<div class="author_name_and_created_date">
+								<p class="author_name" th:text="${alarmItem.task.author.userName}">작성자 이름</p>
+								<p class="created_date" th:text="${alarmItem.createdDate}"></p>
+							</div>
+						</div>
+						<div class="alarm_text">
+							<p class="alarm_sign">할 일을 등록했습니다.</p>
+							<p class="alarm_content" th:text="${alarmItem.task.taskTitle}"></p>
+						</div>
+					</div>
+
+					<!-- 멘션 알림 -->
+					<div th:if="${alarmItem.mention != null}">
+						<p class="chatroom_name" th:text="${alarmItem.mention.chatroom.chatroomName}">채팅방 이름</p>
+						<div class="author_info">
+							<img th:src="@{/uploads/profileImg/{img}(img=${alarmItem.mention.sender.userImg})}"
+								alt="profile_img" />
+							<div class="author_name_and_created_date">
+								<p class="author_name" th:text="${alarmItem.mention.sender.userName}">작성자 이름</p>
+								<p class="created_date" th:text="${alarmItem.createdDate}"></p>
+							</div>
+						</div>
+						<div class="alarm_text mention_text">
+							<span th:text="${alarmItem.mention.sender.userName}"></span>
+							<p class="alarm_sign">님이 멘션했습니다.</p>
+						</div>
+						<p class="mention_content" th:text="${alarmItem.mention.message.content}"></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/javascript/workspace/side_alarm.js}" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.buildship.ui.wizard.project.import">
+		<item key="project_location" value="/Users/hyojun/Documents/(과정평가형) 정보처리산업기사 취득과정/JOBCHO"/>
+		<section name="ProjectImportWizard.dialogBounds">
+			<item key="DIALOG_X_ORIGIN" value="528"/>
+			<item key="DIALOG_Y_ORIGIN" value="238"/>
+			<item key="DIALOG_WIDTH" value="628"/>
+			<item key="DIALOG_HEIGHT" value="772"/>
+			<item key="DIALOG_FONT_NAME" value="1|.AppleSystemUIFont|11.0|0|COCOA|1|.AppleSystemUIFont"/>
+		</section>
+	</section>
+</section>

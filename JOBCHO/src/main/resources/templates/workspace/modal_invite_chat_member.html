@@ -1,0 +1,33 @@
+<div id="inviteModal" class="modal_overlay" style="display: none;" th:fragment="modal">
+	<div class="modal_content">
+		<div class="invite_chat_new_total_container">
+			<form th:action="@{|/${workspaceId}/${chatroomId}/invite|}" method="post">
+				<h2>멤버 초대하기</h2>
+				<input type="text" placeholder="멤버 검색" class="search_input" />
+				<hr />
+				<div class="search_result_container">
+					<p class="title2">팀 멤버</p>
+					<div class="member_list_container">
+						<div class="search_result">
+							<div class="member_list_item" th:each="member : ${members}">
+								<label class="member_label">
+									<input type="checkbox" name="inviteMembers" th:value="${member.userId}"
+										class="member_checkbox" />
+									<img th:src="@{/uploads/profileImg/{img}(img=${member.userImg})}" alt="profile_img"
+										class="profile_img" />
+									<p class="member_name" th:text="${member.userName}"></p>
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="btns">
+					<button type="button" class="close_btn">닫기</button>
+					<button type="submit" class="invite_btn">초대하기</button>
+				</div>
+				<p>선택된 인원: <span id="selectedCount">0</span>명</p>
+
+			</form>
+		</div>
+	</div>
+</div>

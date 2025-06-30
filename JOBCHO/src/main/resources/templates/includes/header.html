@@ -1,0 +1,26 @@
+<th:block th:fragment="commonHeader">
+	<header>
+		<a th:href="@{/index}">
+			<div class="jobcho_logo">
+				<img th:src="@{/images/Jobcho_logo.png}" alt="Jobcho_logo">
+				<p>Jobcho</p>
+			</div>
+		</a>
+
+		<div sec:authorize="isAuthenticated()" class="isLogin">
+			<div class="login_profile">
+				<th:block th:if="${user != null}">
+					<div th:if="${user.isAdmin != 1}">
+						<img th:src="@{/uploads/profileImg/{img}(img=${user.userImg})}" alt="profile_img" />
+					</div>
+					<div th:if="${user.isAdmin != 0}">
+						<img th:src="@{/images/icons/admin2.png}" alt="admin_profile_img" />
+					</div>
+					<p class="login_username" th:text="${user.userName}"></p>
+				</th:block>
+			</div>
+			<span>|</span>
+			<a th:href="@{/user/logout}">로그아웃</a>
+		</div>
+	</header>
+</th:block>

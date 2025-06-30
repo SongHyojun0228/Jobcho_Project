@@ -1,0 +1,35 @@
+.error_container {
+	margin: auto;
+	margin-top: 5rem;
+	background-color: white;
+	padding: 3.5rem 2.5rem;
+	width: 55rem;
+	border: 1px solid rgb(228, 228, 227);
+	border-radius: 4px;
+}
+
+h1 {
+	color: rgb(6, 195, 115);
+	text-align: center;
+	font-size: 2.5rem;
+}
+
+.description {
+	margin-top: 3rem;
+	text-align: center;
+	font-size: 1.7rem;
+	font-weight: 500;
+}
+
+.index_btn {
+	display: block;
+	margin-top: 3rem;
+	text-align: center;
+	text-decoration: underline;
+	color: rgb(6, 195, 115);
+	font-size: 1.5rem;
+}
+
+.index_btn:hover {
+	font-weight: 500;
+}

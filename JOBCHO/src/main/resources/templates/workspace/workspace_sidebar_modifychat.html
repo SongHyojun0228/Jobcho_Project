@@ -1,0 +1,41 @@
+<html layout:decorate="~{workspace/workspace}">
+<div layout:fragment="sideblock" class="container-my-3">
+	<haed>
+		<link rel="stylesheet" th:href="@{/css/workspace/workspace_sidebar.css}" />
+		<link rel="stylesheet" th:href="@{/css/workspace/workspace_sidebar_modifychat.css}" />
+		<link rel="stylesheet" th:href="@{/css/workspace/create_chat.css}" />
+	</haed>
+	<div class="side_chat">
+		<div class="createchat_total_container">
+			<p class="title">채팅방 수정하기</p>
+			<form th:action="@{/workspace/{workspaceId}/{chatroomId}/chatroomModify(workspaceId=${workspaceId}, chatroomId=${chatroomId})}"
+				class="register_form" method="post">
+				<p class="title2">채팅방 이름</p>
+				<div class="form_item">
+					<input type="text" maxlength="50" placeholder="채팅 이름" name="chatName"  th:value="${chatrooms.chatroomName}" />
+				</div>
+
+				<p class="title2">채팅방 공개 여부</p>
+				<div class="form_item">
+					<select name="isPrivate" id="">
+						<option value="1">공개</option>
+						<option value="2">비공개</option>
+					</select>
+				</div>
+
+				<p class="title2">설명 변경</p>
+				<textarea name="chatroom_discription" id="chatroom_content" rows="10" th:text="${chatrooms.description}">채팅방에 대한 설명을 입력하세요</textarea>
+				<p class="numbers_of_text">
+					<span class=""></span>
+					/ 5,000
+				</p>
+				<div class="btns">
+					<button class="cancel_btn">취소</button>
+					<button class="register_btn">수정하기</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+</html>

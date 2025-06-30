@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{includes/layout}" lang="ko">
+
+<head>
+	<title layout:title="멤버 초대">멤버 초대</title>
+	<link rel="stylesheet" th:href="@{/css/workspace/organization_chart.css}" />
+	<link rel="stylesheet" th:href="@{/css/workspace/invite_chat_member.css}" />
+	<script th:src="@{/javascript/workspace/organization_search.js}" defer></script>
+</head>
+
+<body>
+	<div class="main" layout:fragment="content">
+		<div class="invite_chat_new_total_container">
+			<form th:action="@{|/${workspaceId}/${chatroomId}/invite|}" method="post">
+				<input type="text" placeholder="멤버 검색" class="search_input" />
+				<hr />
+				<div class="search_result_container">
+					<p class="title2">팀 멤버</p>
+					<div class="member_list_container">
+						<div class="search_result">
+							<div class="member_list_item" th:each="member : ${members}">
+								<label class="member_label">
+									<input type="checkbox" name="inviteMembers" th:value="${member.userId}"
+										class="member_checkbox" />
+
+									<div th:if="${member.userImg == null} and ${member.isAdmin != 1}">
+										<img th:src="@{/images/profileImg/default_profile.png}" class="profile_img"
+											alt="default_profile_img" />
+									</div>
+									<div th:if="${member.userImg != null} and ${member.isAdmin != 1}">
+										<img th:src="@{/uploads/profileImg/{img}(img=${member.userImg})}"
+											class="profile_img" alt="profile_img">
+									</div>
+									<p class="member_name" th:text="${member.userName}"></p>
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="btns">
+					<button type="button" class="close_btn">닫기</button>
+					<button type="submit" class="invite_btn">초대하기</button>
+				</div>
+			</form>
+
+		</div>
+	</div>
+</body>
+
+</html>

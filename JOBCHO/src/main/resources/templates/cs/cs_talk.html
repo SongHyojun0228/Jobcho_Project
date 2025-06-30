@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{includes/layout}" lang="ko">
+
+<head>
+	<title layout:title="문의사힝">문의사힝</title>
+	<link rel="stylesheet" th:href="@{/css/user/index.css}" />
+	<link rel="stylesheet" th:href="@{/css/customerservicetalk.css}" />
+	<script th:src="@{/javascript/closeServiceCenter.js}" defer></script>
+
+	<script th:src="@{https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js}"></script>
+	<script th:src="@{https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js}"></script>
+	<script th:src="@{/javascript/customerservicechat.js}" defer></script>
+</head>
+
+<body>
+	<div class="main" layout:fragment="content">
+
+		<div class="total_container">
+			<div class="talk_container">
+				<div class="talk_header">
+					<img src="../static/images/Jobcho_logo.png" alt="" />
+					<p>JOBCHO</p>
+				</div>
+				<div class="talk_main">
+					<img src="../static/images/Jobcho_logo.png" alt="" />
+					<p>JOBCHO에 문의하기</p>
+					<div class="talk_content_container">
+						<div class="talk_table">
+							<p class="talk_date">2025년 4월 18일</p>
+							<div class="basic_talk">
+								<p>
+									송효준님, ​잔디를 ​어떻게 활용해야 할 지 막막하신가요?
+									팀워크를 극대화하는 핵심 기능 3가지를 지금 바로
+									알려드리겠습니다. speaking_head_in_silhouette주제별 대화방
+									만들기 heavy_check_mark할 일 기능 활용
+									card_index_dividers자체 드라이브 활용 위 키워드를 눌러
+									잔디의 다양한 활용법을 확인해보세요! 이 외 궁금한 점이
+									있다면 잔디 이용 가이드 혹은 PC 기준 우측 상단 [≡] - [1:1
+									문의하기] 로 문의주세요!
+								</p>
+							</div>
+							<div class="mine_talk">
+								<p>
+									송효준님, ​잔디를 ​어떻게 활용해야 할 지 막막하신가요?
+									팀워크를 극대화하는 핵심 기능 3가지를 지금 바로
+									알려드리겠습니다. speaking_head_in_silhouette주제별 대화방
+									만들기 heavy_check_mark할 일 기능 활용
+									card_index_dividers자체 드라이브 활용 위 키워드를 눌러
+									잔디의 다양한 활용법을 확인해보세요! 이 외 궁금한 점이
+									있다면 잔디 이용 가이드 혹은 PC 기준 우측 상단 [≡] - [1:1
+									문의하기] 로 문의주세요!
+								</p>
+							</div>
+							<div class="other_person_talk">
+								<p>
+									송효준님, ​잔디를 ​어떻게 활용해야 할 지 막막하신가요?
+									팀워크를 극대화하는 핵심 기능 3가지를 지금 바로
+									알려드리겠습니다. speaking_head_in_silhouette주제별 대화방
+									만들기 heavy_check_mark할 일 기능 활용
+									card_index_dividers자체 드라이브 활용 위 키워드를 눌러
+									잔디의 다양한 활용법을 확인해보세요! 이 외 궁금한 점이
+									있다면 잔디 이용 가이드 혹은 PC 기준 우측 상단 [≡] - [1:1
+									문의하기] 로 문의주세요!
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 📍 talk_content_container 아래에 입력 폼 추가 -->
+			<div class="talk_content_container">
+				<div class="talk_table" id="chatMessages">
+					<!-- 기존 메시지들 위치 -->
+				</div>
+
+				<!-- ✏️ 입력창 + 전송 버튼 -->
+				<form id="chatForm" class="chat_input_form">
+					<input type="text" id="chatInput" placeholder="메시지를 입력하세요" required />
+					<button type="submit">전송</button>
+				</form>
+			</div>
+
+			<div class="x_btn" onclick="close_window">
+				<img src="../static/images/icons/cross-mark.png" alt="" />
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

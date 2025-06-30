@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{includes/layout}" lang="ko">
+
+<head>
+	<title layout:title="커밋페이지">커밋페이지</title>
+	<link rel="stylesheet" th:href="@{/css/git/git_commit.css}">
+	<link rel="stylesheet" th:href="@{/css/git/git_view.css}">
+</head>
+
+<body>
+	<div class="main" layout:fragment="content">
+		<div id="total_git_commit_controller">
+			<div id="right_total_container">
+				<div id="file_upload_history_container">
+					<div id="upper_container">
+						<div id="last_container_container">
+							<div th:if="${lastCommit != null}" id="commit_user_info">
+								<img class="mine_chat_sender_profile"
+									th:src="@{/uploads/profileImg/{img}(img=${lastCommit.branch.user.userImg})}"
+									alt="마지막으로 커밋한 유저 프로필">
+								<p id="last_commit_user" th:text="${lastCommit.branch.user.userName}">마지막 커밋한 유저명</p>
+								<p id="last_commit_content" class="eclipse_text" th:text="${lastCommit.content}">마지막
+									커밋내용</p>
+							</div>
+							<div th:if="${lastCommit != null}" id="commit_details_info">
+								<p id="last_commit_date" th:text="${lastCommit.timeAgo}">마지막 커밋 이후로 지난 날짜</p>
+								<p id="last_commit_file_count" th:text="${countOfLastCommitFile} + ' Commits'">12
+									Commits</p>
+							</div>
+						</div>
+
+						<div th:if="${currentPath != ''}" id="upper_folder_container"
+							class="file_or_forder_list_container">
+							<img th:src="@{/images/icons/git_folder.png}" style="width: 20px;">
+							<a class="uploaded_folder_name"
+								th:href="@{|/workspace/${workspace.workspaceId}/github/${currentPath.contains('/') ? currentPath.substring(0, currentPath.lastIndexOf('/')) : ''}|}">
+								상위폴더...
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="view_file_container">
+				<p th:text="${file.fileName}"></p>
+				<a th:href="@{|/uploads/git/${file.filePath}|}" download
+					id="download_link">다운로드</a>
+				<div th:if="${fileType == 'jpg' or fileType == 'jpeg' or fileType == 'png' or fileType == 'gif'}">
+					<img th:src="@{|/uploads/git/${file.filePath}|}" alt="Image Preview" style="max-width: 100%;">
+				</div>
+
+				<div th:if="${fileType == 'pdf'}">
+					<canvas id="pdf-render" style="border:1px solid #000; width:100%;"></canvas>
+
+					<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+					<script th:inline="javascript">
+						/*<![CDATA[*/
+						const url = /*[[${'/uploads/git/' + file.filePath}]]*/ '';
+
+						const pdfjsLib = window['pdfjsLib'];
+						pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+						let pdfDoc = null;
+						const scale = 1.5;
+						const canvas = document.getElementById('pdf-render');
+						const ctx = canvas.getContext('2d');
+
+						pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
+							pdfDoc = pdfDoc_;
+							pdfDoc.getPage(1).then(function (page) {
+								const viewport = page.getViewport({scale: scale});
+								canvas.height = viewport.height;
+								canvas.width = viewport.width;
+
+								const renderContext = {
+									canvasContext: ctx,
+									viewport: viewport
+								};
+								page.render(renderContext);
+							});
+						});
+						/*]]>*/
+					</script>
+				</div>
+
+				<div th:if="${fileType == 'txt' or fileType == 'md' or fileType == 'log'}">
+					<pre style="background: #f4f4f4; padding: 10px;">
+				        <code th:text="${@gitFileService.readTextFile(file.filePath)}"></code>
+				    </pre>
+				</div>
+
+				<div
+					th:if="${fileType != 'pdf' and fileType != 'jpg' and fileType != 'jpeg' and fileType != 'png' and fileType != 'gif' and fileType != 'txt' and fileType != 'md' and fileType != 'log'}">
+					<p>해당 파일은 미리보기를 지원하지 않습니다.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

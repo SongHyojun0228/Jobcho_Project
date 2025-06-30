@@ -1,0 +1,10 @@
+<div class="chatroom_member_list" th:fragment="chatroom_member">
+	<p class="team_member_text">팀멤버</p>
+	<div class="chatroom_member_list_item" th:each="chatroom_member:${chatroomMembers}">
+		<img th:src="@{/uploads/profileImg/{img}(img=${chatroom_member.userImg})}" alt="chatroom_member_profile_img" class="profile_img" />
+		<p class="chatroom_member_name" th:text="${chatroom_member.userName}"></p>
+		<div th:if="${chatroom_member.isActive == 1}" class="is_active">
+			<img th:src="@{/images/icons/is_active.png}">
+		</div>
+	</div>
+</div>

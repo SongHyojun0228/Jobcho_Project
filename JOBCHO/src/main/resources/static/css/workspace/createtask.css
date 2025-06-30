@@ -1,0 +1,71 @@
+.create_task_total_container {
+	display: none;
+	background-color: rgb(250, 250, 250);
+	width: 30rem;
+	padding: 1rem;
+}
+
+.title {
+	padding: 1rem 1rem 0.8rem 1rem;
+	display: flex;
+	justify-content: space-between;
+	font-size: 1.3rem;
+	font-weight: 700;
+}
+
+.form_item {
+	width: 28rem;
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	margin-bottom: 3rem;
+}
+
+.form_item img {
+	width: 2rem;
+	height: 2rem;
+}
+
+.form_item input,
+.form_item select,
+.form_item textarea {
+	width: 25rem;
+	padding: 0.7rem;
+	font-size: 1rem;
+	border-radius: 6px;
+	resize: none;
+	background-color: rgb(250, 250, 250);
+}
+
+.form_item input:focus,
+.form_item select:focus,
+.form_item textarea:focus {
+	outline: none;
+}
+
+.btns {
+	text-align: right;
+}
+
+.btns button {
+	padding: 0.5rem 0.7rem;
+}
+
+.cancel_btn {
+	background: none;
+	color: rgb(125, 125, 125);
+}
+
+.cancel_btn:hover {
+	color: rgb(250, 250, 250);
+	background-color: rgb(200, 200, 200);
+}
+
+.save_btn {
+	background-color: rgb(200, 200, 200);
+	color: rgb(250, 250, 250);
+}
+
+.save_btn:hover {
+	background-color: rgb(6, 195, 115);
+}

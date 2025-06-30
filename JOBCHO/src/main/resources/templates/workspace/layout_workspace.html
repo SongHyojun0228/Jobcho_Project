@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="_csrf" th:content="${_csrf.token}"/>
+	<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+	<title>Welcome | team_name</title>
+	<link rel="stylesheet" th:href="@{/css/includes/shared.css}" />
+	<title>WorkSpace Main</title>
+</head>
+<body>
+	<!-- 기 본 템 플 릿 안 에 삽 입 될 내 용 Start -->
+	<th:block layout:fragment="content"></th:block>
+	<!-- 기 본 템 플 릿 안 에 삽 입 될 내 용 End -->
+</body>
+</html>

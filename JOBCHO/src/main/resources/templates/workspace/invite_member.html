@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{includes/layout}" lang="ko">
+
+<head>
+	<title layout:title="멤버 초대">멤버 초대</title>
+	<link rel="stylesheet" th:href="@{/css/workspace/invite_member.css}" />
+	<script th:src="@{/javascript/workspace/invite_member.js}" defer></script>
+</head>
+
+<body>
+	<div class="main" layout:fragment="content">
+		<div class="invite_container">
+			<h1>팀 초대 메일 보내기</h1>
+			<form th:action="@{|/${workspaceId}/invite|}" method="post">
+				<input type="email" id="email" name="email" placeholder="이메일 입력" class="input_email" required>
+				<p class="caution email_caution">이메일 형식이 올바르지 않습니다.</p>
+
+				<button type="submit" class="send_btn">초대 메일 보내기</button>
+			</form>
+		</div>
+	</div>
+</body>
+
+</html>

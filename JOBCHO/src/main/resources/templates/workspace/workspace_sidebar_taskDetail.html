@@ -1,0 +1,67 @@
+<html layout:decorate="~{workspace/workspace}">
+<div layout:fragment="sideblock" class="container-my-3">
+	<haed>
+		<link rel="stylesheet" th:href="@{/css/workspace/workspace_sidebar.css}" />
+		<script>
+			function closeSideTask(btn) {
+				const workspaceId = btn.getAttribute("data-workspace-id");
+				const chatroomId = btn.getAttribute("data-chatroom-id");
+				const url = `/workspace/${workspaceId}/${chatroomId}`;
+				window.location.href = url;
+			}
+		</script>
+	</haed>
+
+	<div class="side_task">
+		<div class="side_task_header">
+			<p>할 일</p>
+			<img th:src="@{/images/icons/cross-mark.png}" alt="할 일 닫기" id="task_close"
+				th:data-workspace-id="${workspaceId}" th:data-chatroom-id="${chatroomId}" onclick="closeSideTask(this)">
+		</div>
+		<div class="side_task_profile">
+			<img th:src="@{/uploads/profileImg/{img}(img=${tasksDetail.author.userImg})}" alt="profile_img" />
+			<div class="side_task_profile_colume">
+				<p><strong th:text="${tasksDetail.author.userName}">사용자 이름</strong> 님이 할 일을 추가했습니다.</p>
+				<p th:text="${tasksDetail.createdDate}">created_date 나오는 곳 / 2025/5/14 PM05:35</p>
+			</div>
+		</div>
+		<p th:text="${tasksDetail.taskTitle}">할 일 제목</p>
+		<div class="under_container" id="task_detail_container">
+			<div class="tasks_detail">
+				<p class="task_status">진행률 : &nbsp;<strong th:text="${tasksDetail.status}">0</strong>%</p>
+				<p class="task_status">대화방 : &nbsp;<strong th:text="${chatrooms.chatroomName}">챗룸이름</strong></p>
+				<div class="tasks_detail_row">
+					<div class="tasks_detail_row_inbox">
+						<img th:src="@{/images/profileImg/default_profile.png}" alt="사용자 프로필">
+						<p th:text="${tasksDetail.author.userName}">할 일 추가한 사람 이름</p>
+					</div>
+					<form
+						th:action="@{/workspace/{workspaceId}/{chatroomId}/side/{taskId}/modify (workspaceId=${workspaceId}, chatroomId=${chatroomId}, taskId=${tasksDetail.taskId})}"
+						method="post" id="modifyForm">
+						<select name="status" id="detail_status">
+							<option value=0 selected>0%</option>
+							<option value=25>25%</option>
+							<option value="50">50%</option>
+							<option value="75">75%</option>
+							<option value="100">100%</option>
+						</select>
+					</form>
+				</div>
+				<button type="submit" form="modifyForm">진도 업데이트</button>
+				<p>일정</p>
+				<div class="tasks_detail_row2">
+					<img th:src="@{/images/icons/currunt_users.png}" alt="날짜 아이콘">
+					<p th:text="${tasksDetail.startDate}">2025/5/14 PM05:35</p>
+					<p> &nbsp;~&nbsp; </p>
+					<p th:text="${tasksDetail.endDate}">2025/5/15 AM02:35</p>
+				</div>
+				<div class="tasks_detail_row2">
+					<img th:src="@{/images/icons/alarm.png}" alt="시계 모양">
+					<p>없음</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</html>

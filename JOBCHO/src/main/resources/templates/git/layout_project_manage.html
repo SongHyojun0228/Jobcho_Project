@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="_csrf" th:content="${_csrf.token}" />
+	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+	<link rel="stylesheet" th:href="@{/css/includes/shared.css}" />
+</head>
+
+<body>
+	<th:block layout:fragment="content"></th:block>
+</body>
+
+</html>

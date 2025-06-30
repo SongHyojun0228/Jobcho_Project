@@ -1,0 +1,65 @@
+.notification_total_container {
+	background-color: rgb(250, 250, 250);
+	width: 30rem;
+	padding: 1rem;
+}
+
+.title {
+	display: flex;
+	justify-content: space-between;
+	font-size: 1.3rem;
+	font-weight: 700;
+	margin-bottom: 1rem;
+}
+
+.title2 {
+	font-weight: 600;
+	margin-bottom: 1rem;
+}
+
+form textarea {
+	width: 28rem;
+	resize: none;
+	font-size: 0.9rem;
+}
+
+form textarea:focus {
+	outline: none;
+}
+
+.numbers_of_text {
+	text-align: right;
+	font-size: 0.8rem;
+	font-weight: 500;
+	color: rgb(125, 125, 125);
+}
+
+.numbers_of_text span {
+	font-weight: 800;
+	color: black;
+}
+
+.btns {
+	text-align: right;
+	margin-top: 1rem;
+}
+
+.btns button {
+	padding: 0.5rem 1rem;
+}
+
+.cancel_btn {
+	background-color: rgb(250, 250, 250);
+	color: rgb(169, 169, 169);
+	padding: 0.5rem;
+}
+
+.cancel_btn:hover {
+	background-color: rgb(228, 228, 228);
+	color: rgb(169, 169, 169);
+}
+
+.edit_btn {
+	background-color: rgb(250, 250, 250);
+	color: rgb(200, 200, 200);
+}
