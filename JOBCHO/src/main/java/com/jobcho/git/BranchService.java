@@ -1,6 +1,7 @@
 package com.jobcho.git;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -14,12 +15,12 @@ import lombok.RequiredArgsConstructor;
 public class BranchService {
 
 	private final BranchRepository branchRepository;
-
+	
 	Branch getBranchByBranchId(Integer branchId) {
 		return this.branchRepository.findById(branchId).get();
 	}
 
-	void createBranch(String branchName, Users user, Workspaces worksapce, String rgb, Integer countOfCommits) {
+	public void createBranch(String branchName, Users user, Workspaces worksapce, String rgb, Integer countOfCommits) {
 		Branch branch = new Branch();
 
 		branch.setTitle(branchName);
@@ -37,13 +38,19 @@ public class BranchService {
 		}
 	}
 
-	List<Branch> getByUserId(Users user) {
-		return this.branchRepository.findByUser(user);
+	List<Branch> getByUserIdAndWorkspaceId(Integer userId, Integer workspaceId) {
+		return this.branchRepository.findByUserUserIdAndWorkspaceWorkspaceId(userId, workspaceId);
 	}
 
-	// 🌿워크스페이스 id 로 브랜치 탐색
+	// 🌿 워크스페이스 id 로 브랜치 탐색
 	public List<Branch> getBranchwithWorkspaceId(Integer workspaceId) {
 		return this.branchRepository.findByWorkspace_WorkspaceId(workspaceId);
+	}
+	
+	// 🌿 워크스페이스 내 메인 브랜치 탐색
+	public Branch getMainBranchByWorkspaceId(Integer workspaceId) {
+		Optional<Branch> mainBranch = this.branchRepository.findBranchByWorkspaceIdAndTitle(workspaceId, "main");
+		return mainBranch.get();
 	}
 
 	public List<Branch> getBranchwithWorkspaceIdwithCommit(Integer workspaceId) {

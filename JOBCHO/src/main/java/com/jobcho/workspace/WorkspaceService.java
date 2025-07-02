@@ -9,7 +9,9 @@ import com.jobcho.chatroom.ChatroomRepository;
 import com.jobcho.chatroom.Chatrooms;
 import com.jobcho.folder.FolderRepository;
 import com.jobcho.folder.Folders;
+import com.jobcho.git.BranchService;
 import com.jobcho.member.MemberService;
+import com.jobcho.mychatroom.MyChatroom;
 import com.jobcho.mychatroom.MyChatroomService;
 import com.jobcho.notification.NotificationRepository;
 import com.jobcho.notification.Notifications;
@@ -33,6 +35,7 @@ public class WorkspaceService {
 	private final MemberService memberService;
 	private final WorkspaceDomainService workspaceDomainService;
 	private final MyChatroomService myChatroomService;
+	private final BranchService branchService;
 
 	public Workspaces getWorkspaceByWorkspaceId(Integer workspaceId) {
 		return this.workspaceRepository.findById(workspaceId).get();
@@ -94,7 +97,13 @@ public class WorkspaceService {
 		this.workspaceDomainService.createWorkspaceDomain(workspace.getWorkspaceId(), workspace.getWorkspaceDomain(),
 				"/workspace/" + workspace.getWorkspaceId());
 
-		this.myChatroomService.createMyChatroom(user, workspace);
+		Optional<MyChatroom> mychat = myChatroomService.findMychatByUserID(user.getUserId());
+		if (mychat.isEmpty()) {
+			this.myChatroomService.createMyChatroom(user, workspace);
+			System.out.println("사용자 mychatroom  자동생성");
+		}
+		
+		this.branchService.createBranch("main", workspace.getOwner(), workspace, "(6, 195, 115)", 0);
 
 		System.out.println("<<< workspaceRepository.createWorkspace 호출 >>> : 워크스페이스 생성");
 

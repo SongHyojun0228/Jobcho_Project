@@ -4,7 +4,7 @@
 		<head>
 			<meta charset="UTF-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-			<title th:text="'Welcome | ' + ${workspaceId}">Welcome</title>
+			<title th:text="'Welcome | ' + ${workspace.workspaceName}">Welcome</title>
 			<link rel="stylesheet" th:href="@{/css/includes/shared.css}" />
 			<link rel="stylesheet" th:href="@{/css/workspace/workspace.css}" />
 			<link rel="stylesheet" th:href="@{/css/workspace/uploadnotification.css}" />
@@ -204,6 +204,10 @@
 									<a href="http://localhost:2003/user/setting">계정 설정</a>
 								</div>
 								<div class="popup_format">
+									<img th:src="@{/images/icons/commit-git.png}">
+									<a th:href="@{|/workspace/${workspaceId}/project|}">프로젝트 관리</a>
+								</div>
+								<div class="popup_format">
 									<img th:src="@{/images/icons/exit-to-app-button.png}">
 									<a href="http://localhost:2003/user/logout">로그아웃</a>
 								</div>
@@ -236,7 +240,7 @@
 											<a href="/index">
 												<img th:src="@{/images/icons/home-icon-silhouette (1).png}" alt="" />
 											</a>
-											<a href="">
+											<a th:href="@{/cs/chat/{userId}(userId=${user.userId})}" class="chat-link">
 												<img th:src="@{/images/icons/conversation.png}" alt="" />
 											</a>
 										</div>
@@ -259,11 +263,8 @@
 						<div class="workroom">
 							<div class="search_chat_line">
 								<div class="icon_box">
-									<img th:src="@{/images/icons/search_black.png}" alt="대화방 검색 아이콘">
-									<p>대화방 검색</p>
-								</div>
-								<div class="icon_box">
-									<img th:src="@{/images/icons/show_menu.png}" alt="메뉴 숨기기">
+									<img th:src="@{/images/icons/git_folder.png}" alt="대화방 검색 아이콘">
+									<p>모든 대화방</p>
 								</div>
 							</div>
 							<div class="search_chat_line">
@@ -272,10 +273,7 @@
 									<p>채팅방</p>
 								</div>
 								<div class="icon_box_2">
-									<img th:src="@{/images/icons/sort_ascending.png}" alt="정렬메뉴">
-								</div>
-								<div class="icon_box_2">
-									<img th:src="@{/images/icons/cross-mark.png}" alt="새로 만들기 버튼"
+									<img th:src="@{/images/icons/add-folder.png}" alt="새로 만들기 버튼"
 										id="create_folder_btn">
 								</div>
 							</div>
@@ -373,8 +371,8 @@
 
 									<img th:src="@{/images/Jobcho_logo.png}" alt="잡초 로고 small">
 									<a
-										th:href="@{/workspace/{workspaceId}/mychat/{myChatroomId} (workspaceId=${workspaceId}, myChatroomId=${mychat.myChatroomId})}">The
-										Jobcho (나와의 대화)</a>
+										th:href="@{/workspace/{workspaceId}/mychat/{myChatroomId} (workspaceId=${workspaceId}, myChatroomId=${mychat.chatroom.chatroomId})}">
+										The Jobcho (나와의 대화)</a>
 								</div>
 							</div>
 						</div>
@@ -478,10 +476,8 @@
 													<img
 														th:src="@{/uploads/profileImg/{img}(img=${notification.author.userImg})}">
 													<p th:text="${notification.author.userName}">사용자명</p>
-													<p th:text="${notification.createdDate}" class="notification_date">
-														2025/5/15
-														AM
-														09:41</p>
+													<p th:text="${#temporals.format(notification.createdDate, 'yyyy년 MM월 dd일 HH:mm')}"
+														class="notification_date"></p>
 												</div>
 												<div class="notification_more_item2">
 													<p th:text="${notification.content}" class="notification_content">
@@ -659,14 +655,21 @@
 									id="task_detail_container" th:data-workspace-id="${workspaceId}"
 									th:data-chatroom-id="${chatroomId}" th:data-task-id="${task.taskId}"
 									onclick="openSideTask(this)">
-									<div class="tasks" th:attr="id='tasks-' + ${iterStat.index}">
+									<div class="tasks" th:attr="id='tasks-' + ${iterStat.index}"
+										th:classappend="${task.status == 100} ? ' completed-task'">
 										<p class="task_status" th:text="|진행률: ${task.status}%|"><strong>0</strong>%</p>
 										<p class="task_title" th:text="${task.taskTitle}"></p>
 										<p class="task_content" th:text="${task.description}"></p>
+										<div class="progress_bar_container">
+											<div class="progress_bar" th:style="'width:' + ${task.status} + '%'"></div>
+										</div>
 										<div class="task_date_container">
-											<p class="task_date" th:text="${task.startDate}"></p>
+											<p class="task_date"
+												th:text="${#temporals.format(task.startDate, 'yyyy년 M월 d일 H시 mm분')}">
+											</p>
 											<p>&nbsp; ~ &nbsp;</p>
-											<p class="task_date" th:text="${task.endDate}"></p>
+											<p class="task_date"
+												th:text="${#temporals.format(task.endDate, 'yyyy년 M월 d일 H시 mm분')}"></p>
 										</div>
 										<p class="team_name" th:text="${chatrooms.chatroomName}"></p>
 									</div>
@@ -785,11 +788,6 @@
 									</div>
 
 									<div class="form_item">
-										<img th:src="@{/images/icons/docs.png}" alt="" />
-										<input type="file" />
-									</div>
-
-									<div class="form_item">
 										<img th:src="@{/images/icons/date.png}" alt="" />
 										<label for="startDate">시작 일시</label>
 										<input type="datetime-local" id="startDate" name="startDate" required />
@@ -803,7 +801,8 @@
 
 									<div class="btns">
 										<button class="cancel_btn" type="button" id="createTaskClose">취소</button>
-										<button class="save_btn">저장하기</button>
+										<button class="save_btn"
+											onclick="sendTaskMessage(userName, userId, userImg, chatroomId)">저장하기</button>
 									</div>
 								</form>
 							</div>
@@ -897,7 +896,8 @@
 						<p class="discription">다시 초대받을때 까지 들어오실 수 없습니다.</p>
 						<div class="alert_btn_box">
 							<button class="alert_f" id="chatroomOutClose">취소</button>
-							<button class="alert_y">확인</button>
+							<button class="alert_y"
+								onclick="sendOutMessage(userName, userId, userImg, chatroomId)">확인</button>
 						</div>
 					</div>
 				</form>
@@ -1351,6 +1351,35 @@
 
 					stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(msg));
 				}
+
+				function sendTaskMessage(userName, userId, userImg, chatroomId) {
+					const msg = {
+						sender: userName,
+						content: `${userName}님이 새로운 할 일을 등록했습니다.`,
+						chatroomId: chatroomId,
+						senderId: userId,
+						mentions: [],
+						profile: userImg,
+						fileName: null
+					};
+
+					stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(msg));
+				}
+
+				function sendOutMessage(userName, userId, userImg, chatroomId) {
+					const msg = {
+						sender: userName,
+						content: `${userName}님이 채팅방에서 나갔습니다.`,
+						chatroomId: chatroomId,
+						senderId: userId,
+						mentions: [],
+						profile: userImg,
+						fileName: null
+					};
+
+					stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(msg));
+				}
+
 
 				function fetchAlarms() {
 					const workspaceId = Number(document.querySelector('.chat_main').dataset.workspaceId);

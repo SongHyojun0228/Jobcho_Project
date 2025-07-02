@@ -2,6 +2,8 @@ package com.jobcho.git;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
@@ -28,9 +30,6 @@ import com.jobcho.workspace.Workspaces;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 
 @Controller
 @RequiredArgsConstructor
@@ -87,7 +86,7 @@ public class GitController {
 
 		Optional<Users> user = userService.getUser(principal.getName());
 		Workspaces workspace = workspaceService.getWorkspaceByWorkspaceId(workspaceId);
-		List<Branch> myBranches = this.branchService.getByUserId(user.get());
+		List<Branch> myBranches = this.branchService.getByUserIdAndWorkspaceId(user.get().getUserId(), workspaceId);
 
 		model.addAttribute("currentPath", currentPath);
 		model.addAttribute("workspace", workspace);
@@ -109,7 +108,8 @@ public class GitController {
 
 	// 🌿 깃허브 페이지 📁📄
 	@GetMapping({ "/workspace/{workspaceId}/github", "/workspace/{workspaceId}/github/**" })
-	public String browseGitFolder(@PathVariable("workspaceId") Integer workspaceId, HttpServletRequest request,
+	public String browseGitFolder(@PathVariable("workspaceId") Integer workspaceId,
+			@RequestParam(value = "branchId", required = false) Integer branchId, HttpServletRequest request,
 			Model model, Principal principal) {
 		String fullPath = request.getRequestURI();
 		String prefix = "/workspace/" + workspaceId + "/github";
@@ -118,10 +118,22 @@ public class GitController {
 
 		Optional<Users> user = userService.getUser(principal.getName());
 		Workspaces workspace = workspaceService.getWorkspaceByWorkspaceId(workspaceId);
-		List<Branch> myBranches = this.branchService.getByUserId(user.get());
+		List<Branch> myBranches = this.branchService.getByUserIdAndWorkspaceId(user.get().getUserId(), workspaceId);
+		List<Branch> branches = this.branchService.getBranchwithWorkspaceId(workspaceId);
+
+		if (branchId == null) {
+			List<Branch> allBranches = branchService.getBranchwithWorkspaceId(workspaceId);
+			for (Branch b : allBranches) {
+				if ("main".equalsIgnoreCase(b.getTitle())) {
+					branchId = b.getBranchId();
+					break;
+				}
+			}
+		}
 
 		// 📄📄 ----- 현재 경로에 있는 파일들만 필터링 ----- 📄📄
-		List<GitFile> allFiles = gitFileService.getAllGitFiles();
+		List<GitFile> allFiles = gitFileService.getAllGitFilesByWorkspaceIdAndBranchId(workspaceId, branchId);
+
 		String folderPrefix = currentPath.isBlank() ? "" : currentPath + "/";
 
 		List<GitFile> filesInFolder = allFiles.stream().filter(f -> {
@@ -130,15 +142,15 @@ public class GitController {
 			}
 			// 경로 앞에 '/' 지우고
 			String normalizedPath = f.getFilePath().startsWith("/") ? f.getFilePath().substring(1) : f.getFilePath();
-			
+
 			// normalizedPath가 현재 경로(현재 폴더) folderPrefix로 시작하지 않으면 제외하고
 			if (!normalizedPath.startsWith(folderPrefix)) {
-				return false;				
+				return false;
 			}
-			
+
 			// 현재 경로 다음의 나머지 경로를 subPath로 저장 하고
 			String subPath = normalizedPath.substring(folderPrefix.length());
-			
+
 			// subPath에 '/'가 없으면?? 현재 폴더에 바로 있는 파일이므로 포함 -> 다음 폴더가 없단 뜻 (하위 폴더 X)
 			return !subPath.contains("/");
 		}).collect(Collectors.toList());
@@ -160,7 +172,7 @@ public class GitController {
 				return null;
 			}
 
-			// 경로 앞에 '/' 지우고 
+			// 경로 앞에 '/' 지우고
 			String normalizedPath = f.getFilePath().startsWith("/") ? f.getFilePath().substring(1) : f.getFilePath();
 
 			// normalizedPath가 현재 경로(현재 폴더) folderPrefix로 시작하지 않으면 제외하고
@@ -190,6 +202,8 @@ public class GitController {
 		model.addAttribute("lastCommit", lastCommit);
 		model.addAttribute("myBranches", myBranches);
 		model.addAttribute("countOfLastCommitFile", countOfLastCommitFile);
+		model.addAttribute("branches", branches);
+		model.addAttribute("selectedBranchId", branchId);
 
 		return "git/git_commit";
 	}
@@ -201,40 +215,59 @@ public class GitController {
 			@RequestParam("currentPath") String currentPath, @RequestParam("commit_branch") Integer branchId,
 			Model model, Principal principal) {
 
+		Branch mainBranch = this.branchService.getMainBranchByWorkspaceId(workspaceId);
 		String basePath = currentPath == null || currentPath.isEmpty() ? "" : currentPath + "/";
 
 		Branch branch = this.branchService.getBranchByBranchId(branchId);
 
 		File uploadGitFile = new File(uploadGitFileDir).getAbsoluteFile();
 		GitFolder folder = null;
+		GitFolder mainFolder = null;
 
 		if (!uploadGitFile.exists()) {
 			uploadGitFile.mkdir();
 		}
 
 		Commit commit = this.commitService.uploadCommit(branch, commitContent);
+		Commit mainCommit = this.commitService.uploadCommit(mainBranch, commitContent);
 
 		Map<String, GitFolder> folderMap = new HashMap<>();
+		Map<String, GitFolder> mainFolderMap = new HashMap<>();
 
 		for (MultipartFile file : gitFiles) {
 			String originalName = file.getOriginalFilename();
 			if (originalName == null || originalName.trim().isEmpty() || file.getSize() == 0) {
 				continue;
 			}
-
 			if (originalName.equals(".DS_Store")) {
 				continue;
 			}
+
 			String relativePath = basePath + originalName;
 			String fileName = new File(relativePath).getName();
 			String folderPath = relativePath.contains("/") ? relativePath.substring(0, relativePath.lastIndexOf("/"))
 					: "(root)";
+			System.out.println("폴더 경로 : " + folderPath);
 			System.out.println("업로드 파일명: " + relativePath);
 
 			GitFolder gitFolder = folderMap.get(folderPath);
-			if (gitFolder == null && !this.gitFolderService.isExistingFolder(folderPath)) {
-				folder = this.gitFolderService.uploadFolder(folderPath, commit);
+			if (gitFolder == null) {
+				if (this.gitFolderService.isExistingFolder(folderPath)) {
+					gitFolder = this.gitFolderService.findByPathAndCommit(folderPath, commit);
+				} else {
+					gitFolder = this.gitFolderService.uploadFolder(folderPath, commit);
+				}
 				folderMap.put(folderPath, gitFolder);
+			}
+
+			GitFolder mainGitFolder = mainFolderMap.get(folderPath);
+			if (mainGitFolder == null) {
+				if (this.gitFolderService.isExistingFolder(folderPath)) {
+					mainGitFolder = this.gitFolderService.findByPathAndCommit(folderPath, mainCommit);
+				} else {
+					mainGitFolder = this.gitFolderService.uploadFolder(folderPath, mainCommit);
+				}
+				mainFolderMap.put(folderPath, mainGitFolder);
 			}
 
 			File dest = new File(uploadGitFile, relativePath);
@@ -245,7 +278,8 @@ public class GitController {
 				e.printStackTrace();
 			}
 
-			this.gitFileService.uploadGitFiles(folder, commit, fileName, relativePath);
+			this.gitFileService.uploadGitFiles(gitFolder, commit, fileName, relativePath);
+			this.gitFileService.uploadGitFiles(mainGitFolder, mainCommit, fileName, relativePath);
 		}
 
 		return "redirect:/workspace/" + workspaceId + "/github";

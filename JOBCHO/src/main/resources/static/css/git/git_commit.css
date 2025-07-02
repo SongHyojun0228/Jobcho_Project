@@ -66,7 +66,7 @@ header {
 }
 
 #last_commit_file_count {
-	color: rgb(151, 231, 198);
+	color: rgb(6, 195, 115);
 	font-weight: 600
 }
 
@@ -76,6 +76,14 @@ header {
 #last_commit_date {
 	font-weight: 700;
 	color: rgb(125, 125, 125);
+}
+
+#last_commit_content {
+	margin-right: 4rem;
+}
+
+select {
+	padding: 0.5rem;	
 }
 
 #file_commit_date,

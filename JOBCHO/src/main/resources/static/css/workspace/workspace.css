@@ -118,6 +118,12 @@
 	margin-left: 7rem;
 }
 
+
+.search_chat_line:nth-child(2)>.icon_box_2:nth-child(2) {
+	margin-left: 8.9rem;
+}
+
+
 .search_chat_line:nth-child(2)>.icon_box_2 {
 	width: 2rem;
 	height: 2rem;
@@ -127,6 +133,11 @@
 .search_chat_line>div:nth-child(2)>img {
 	width: 1.5rem;
 	height: 1.5rem;
+}
+
+.search_chat_line>div:nth-child(2)>img {
+	width: 1.3rem;
+	height: 1.3rem;
 }
 
 .search_chat_line>.icon_box_2:hover,
@@ -501,6 +512,7 @@
 
 .notification_more_item2>p:nth-child(1) {
 	margin-left: 1rem;
+	margin-top: 0.5rem;
 }
 
 .notification_more {
@@ -537,9 +549,9 @@
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
-	margin-top: 1rem;
+	margin-top: 0.5rem;
 	border-top: 1px solid rgb(200, 200, 200);
-	padding-top: 0.3rem;
+	padding-top: 0.4rem;
 }
 
 .notification_more_row2_item {
@@ -568,15 +580,31 @@
 }
 
 .notifi_btn {
-	background-color: rgb(200, 200, 200);
+	font-size: 0.9rem;
 	color: rgb(250, 250, 250);
 	margin-left: 0.1rem;
 	font-size: 1rem;
+	padding: 0.25rem 0.5rem;
+}
+
+.notifi_btn:first-child {
+	background-color: rgb(151, 231, 198);
+}
+
+.notifi_btn:last-child {
+	background-color: rgb(200, 200, 200);
 }
 
 .notifi_btn:hover {
-	background-color: rgb(169, 169, 169);
 	color: rgb(255, 255, 255);
+}
+
+.notifi_btn:first-child:hover {
+	background-color: rgb(6, 195, 115);
+}
+
+.notifi_btn:last-child:hover {
+	background-color: rgb(169, 69, 65);
 }
 
 #create_folder {
@@ -629,8 +657,6 @@
 	padding: 10px;
 	border-radius: 10px;
 	display: inline-block;
-	max-width: 70%;
-	white-space: pre-wrap;
 	word-break: break-word;
 	color: rgb(169, 169, 169);
 	margin-left: 2rem;
@@ -717,4 +743,9 @@
 
 .upper_container>.number_of_tasks {
 	color: rgb(6, 195, 115);
+}
+
+.completed-task * {
+	text-decoration: line-through;
+	color: gray;
 }

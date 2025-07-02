@@ -1,9 +1,5 @@
 package com.jobcho.git;
 
-import java.util.List;
-
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -36,6 +32,10 @@ public class GitFolderService {
 		}
 
 		return false;
+	}
+
+	public GitFolder findByPathAndCommit(String folderPath, Commit commit) {
+		return gitFolderRepository.findByFolderNameAndCommit(folderPath, commit).orElse(null);
 	}
 
 //	public List<GitFolder> getByWorkspaceId(Integer workspaceId) {

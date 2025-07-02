@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title th:text="'Welcome | ' + ${workspaceId}">Welcome</title>
+		<title th:text="'Welcome | ' + ${workspace.workspaceName}">Welcome</title>
 		<link rel="stylesheet" th:href="@{/css/includes/shared.css}" />
 		<link rel="stylesheet" th:href="@{/css/workspace/workspace.css}" />
 		<link rel="stylesheet" th:href="@{/css/workspace/uploadnotification.css}" />
@@ -324,7 +324,7 @@
 
 								<img th:src="@{/images/Jobcho_logo.png}" alt="잡초 로고 small">
 								<a
-									th:href="@{/workspace/{workspaceId}/mychat/{myChatroomId} (workspaceId=${workspaceId}, myChatroomId=${mychat.myChatroomId})}">The
+									th:href="@{/workspace/{workspaceId}/mychat/{myChatroomId} (workspaceId=${workspaceId}, myChatroomId=${mychat.chatroom.chatroomId})}">The
 									Jobcho (나와의 대화)</a>
 							</div>
 						</div>

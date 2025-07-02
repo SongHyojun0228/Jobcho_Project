@@ -1,15 +1,14 @@
 package com.jobcho.git;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 public interface GitFolderRepository extends JpaRepository<GitFolder, Integer> {
 
 	Optional<GitFolder> findByFolderName(String folderName);
+
+    Optional<GitFolder> findByFolderNameAndCommit(String folderName, Commit commit);
 
 //	@Query("""
 //			   	SELECT gf FROM GitFolder gf

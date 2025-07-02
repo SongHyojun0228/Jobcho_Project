@@ -11,7 +11,12 @@ import com.jobcho.workspace.Workspaces;
 
 public interface GitFileRepository extends JpaRepository<GitFile, Integer> {
 
-	List<GitFile> findAllByOrderByCommitUploadedDateDesc();
+	@Query("""
+			SELECT gf FROM GitFile gf
+			WHERE gf.commit.branch.workspace.workspaceId = :workspaceId
+			ORDER BY gf.commit.uploadedDate DESC
+			""")
+	List<GitFile> findAllByWorkspaceIdOrderByCommitUploadedDateDesc(@Param("workspaceId") Integer workspaceId);
 
 	@Query("""
 			SELECT COUNT(f)
@@ -22,4 +27,10 @@ public interface GitFileRepository extends JpaRepository<GitFile, Integer> {
 	Integer countByCommitAndWorkspace(@Param("commit") Commit commit, @Param("workspace") Workspaces workspace);
 
 	Optional<GitFile> findByFilePath(String filePath);
+
+	@Query("SELECT gf FROM GitFile gf " + "WHERE gf.commit.branch.workspace.workspaceId = :workspaceId "
+			+ "AND gf.commit.branch.branchId = :branchId " + "ORDER BY gf.commit.uploadedDate DESC")
+	List<GitFile> findByWorkspaceIdAndBranchIdOrderByCommitUploadedDateDesc(@Param("workspaceId") Integer workspaceId,
+			@Param("branchId") Integer branchId);
+
 }

@@ -75,8 +75,17 @@
 							</div>
 							<div class="folder_in">
 								<div th:each="chatroom : ${folder.chatrooms}" class="icon_box_chat">
-									<img th:src="@{/images/icons/empty_star.png}" alt="즐겨찾기_빔" class="star-icon"
-										onclick="toggleStar(this)">
+									<img th:if="${bookmarkedChatroomIds.contains(chatroom.chatroomId)}"
+										th:src="@{/images/icons/star.png}" alt="즐겨찾기O"
+										th:class="'star-icon bookmark_star_chatroom_' + ${chatroom.chatroomId}"
+										onclick="toggleStar(this);" data-type="chatroom"
+										th:data-id="${chatroom.chatroomId}" />
+
+									<img th:unless="${bookmarkedChatroomIds.contains(chatroom.chatroomId)}"
+										th:src="@{/images/icons/empty_star.png}" alt="즐겨찾기X"
+										th:class="'star-icon bookmark_star_chatroom_' + ${chatroom.chatroomId}"
+										onclick="toggleStar(this);" data-type="chatroom"
+										th:data-id="${chatroom.chatroomId}" />
 									<a th:href="@{/workspace/{workspaceId}/{chatroomId}(workspaceId=${folder.workspaceId}, chatroomId=${chatroom.chatroomId})}"
 										th:text="${chatroom.chatroomName}">채팅방 이름</a>
 								</div>
@@ -128,7 +137,17 @@
 						<div class="line_side_bar"></div>
 						<div class="non_folder">
 							<div class="icon_box_chat">
-								<img th:src="@{/images/icons/empty_star.png}" alt="즐겨찾기_빔">
+								<img th:if="${bookmarkedMyChatroomIds.contains(mychat.myChatroomId)}"
+									th:src="@{/images/icons/star.png}" alt="즐겨찾기O"
+									th:class="'star-icon bookmark_star_mychatroom_' + ${mychat.myChatroomId}"
+									onclick="toggleStar(this);" data-type="mychatroom"
+									th:data-id="${mychat.myChatroomId}" />
+
+								<img th:unless="${bookmarkedMyChatroomIds.contains(mychat.myChatroomId)}"
+									th:src="@{/images/icons/empty_star.png}" alt="즐겨찾기X"
+									th:class="'star-icon bookmark_star_mychatroom_' + ${mychat.myChatroomId}"
+									onclick="toggleStar(this);" data-type="mychatroom"
+									th:data-id="${mychat.myChatroomId}" />
 								<img th:src="@{/images/Jobcho_logo.png}" alt="잡초 로고 small">
 								<a href="..">The Jobcho (나와의 대화)</a>
 							</div>
@@ -153,10 +172,13 @@
 										<div class="popup_indiv">
 											<a href="#" id="notice-link">공지등록</a>
 											<a href="#" id="chatinfomodify-link"
-											th:if="${chatrooms.createdBy == user.userId}"
-											th:data-workspace-id="${workspaceId}" 
-											th:data-chatroom-id="${chatroomId}" onclick="showModifyChat(this)">변경</a>
-											<a href="#" id="chatremove-link" th:if="${chatrooms.createdBy == user.userId}" onclick="showAlertDel()">삭제</a>
+												th:if="${chatrooms.createdBy == user.userId}"
+												th:data-workspace-id="${workspaceId}"
+												th:data-chatroom-id="${chatroomId}"
+												onclick="showModifyChat(this)">변경</a>
+											<a href="#" id="chatremove-link"
+												th:if="${chatrooms.createdBy == user.userId}"
+												onclick="showAlertDel()">삭제</a>
 											<a href="#" id="chatout-link" onclick="showAlertOut()">나가기</a>
 										</div>
 									</div>
@@ -215,7 +237,8 @@
 									</div>
 								</div>
 
-								<div class="chat_message" th:each="message, iterStat : ${messages}" th:if="${message.parentMessage == null}">
+								<div class="chat_message" th:each="message, iterStat : ${messages}"
+									th:if="${message.parentMessage == null}">
 									<div class="chat_info">
 										<img class="chat_profile" src="/images/profileImg/default_profile.png" />
 										<span class="chat_sender" th:text="${message.senderId}">아이디</span>
@@ -232,10 +255,9 @@
 												th:data-message-content="${message.content}"
 												onclick="shownotifiOnMessage(this)">
 											<img th:src="@{/images/icons/comment.png}" alt="답글"
-											th:data-message-id="${message.messageId}"
-											th:data-workspace-id="${workspaceId}"
-											th:data-chatroom-id="${chatroomId}"
-											onclick="openSideMessage(this)">	
+												th:data-message-id="${message.messageId}"
+												th:data-workspace-id="${workspaceId}"
+												th:data-chatroom-id="${chatroomId}" onclick="openSideMessage(this)">
 											<img th:src="@{/images/icons/edit.png}" alt="메시지수정"
 												th:data-message-content="${message.content}"
 												th:data-message-id="${message.messageId}"
@@ -267,7 +289,7 @@
 							</div>
 						</div>
 					</div>
-					
+
 					<th:block layout:fragment="sideblock"></th:block>
 				</div>
 

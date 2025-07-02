@@ -1,5 +1,6 @@
 package com.jobcho.mychatroom;
 
+import com.jobcho.chatroom.Chatrooms;
 import com.jobcho.user.Users;
 import com.jobcho.workspace.Workspaces;
 
@@ -24,11 +25,15 @@ public class MyChatroom {
 	private Integer myChatroomId;
 
 	@ManyToOne
-    @JoinColumn(name = "user_id")
+	@JoinColumn(name = "user_id")
 	private Users user;
-	
+
 	@ManyToOne
-    @JoinColumn(name = "workspace_id")	
+	@JoinColumn(name = "workspace_id")
 	private Workspaces workspace;
-	
+
+	@ManyToOne
+	@JoinColumn(name = "chatroom_id")
+	private Chatrooms chatroom;
+
 }

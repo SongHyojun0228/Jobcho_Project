@@ -85,9 +85,11 @@ public class WorkspaceSideBarController {
 
 		Chatrooms chatrooms = this.workspaceService.getChatroomWithChatId(chatroomId);
 		Tasks tasksDetail = this.workspaceService.getTaskWithTaskId(taskId);
-		MyChatroom mychat = myChatroomService.findMychatByUserID(user.getUserId());
+		Optional<MyChatroom> mychat = myChatroomService.findMychatByUserID(user.getUserId());
 		List<Chatrooms> userChatrooms = chatroomMemberService.getChatroomByUserId(user.getUserId());
+		Workspaces workspace = this.workspaceService.getWorkspaceByWorkspaceId(workspaceId);
 
+		model.addAttribute("workspace", workspace);
 		model.addAttribute("user", user);
 		model.addAttribute("members", members);
 		model.addAttribute("chatroomMembers", chatroomMembers);
@@ -104,7 +106,7 @@ public class WorkspaceSideBarController {
 		model.addAttribute("bookmarkedChatroomIds", bookmarkedChatroomIds);
 		model.addAttribute("bookmarkedMyChatroomIds", bookmarkedMyChatroomIds);
 		model.addAttribute("bookmarkedMessageIds", bookmarkedMessageIds);
-		model.addAttribute("mychat", mychat);
+		model.addAttribute("mychat", mychat.orElse(null));
 
 		return "workspace/workspace_sidebar_taskDetail";
 	}
@@ -128,9 +130,11 @@ public class WorkspaceSideBarController {
 		Set<Integer> bookmarkedMessageIds = bookmarkService.extractMessageBookmarkIds(bookmarks);
 
 		Chatrooms chatrooms = this.workspaceService.getChatroomWithChatId(chatroomId);
-		MyChatroom mychat = myChatroomService.findMychatByUserID(user.getUserId());
+		Optional<MyChatroom> mychat = myChatroomService.findMychatByUserID(user.getUserId());
 		List<Chatrooms> userChatrooms = chatroomMemberService.getChatroomByUserId(user.getUserId());
+		Workspaces workspace = this.workspaceService.getWorkspaceByWorkspaceId(workspaceId);
 
+		model.addAttribute("workspace", workspace);
 		model.addAttribute("user", user);
 		model.addAttribute("members", members);
 		model.addAttribute("chatroomMembers", chatroomMembers);
@@ -146,7 +150,7 @@ public class WorkspaceSideBarController {
 		model.addAttribute("bookmarkedMyChatroomIds", bookmarkedMyChatroomIds);
 		model.addAttribute("bookmarkedMessageIds", bookmarkedMessageIds);
 		model.addAttribute("messages", messages);
-		model.addAttribute("mychat", mychat);
+		model.addAttribute("mychat", mychat.orElse(null));
 
 		return "workspace/workspace_sidebar_modifychat";
 	}
@@ -174,9 +178,11 @@ public class WorkspaceSideBarController {
 
 		Chatrooms chatrooms = this.workspaceService.getChatroomWithChatId(chatroomId);
 		Messages searchMessage = messageService.getMessageWithMessageId(messageId);
-		MyChatroom mychat = myChatroomService.findMychatByUserID(user.getUserId());
+		Optional<MyChatroom> mychat = myChatroomService.findMychatByUserID(user.getUserId());
 		List<Chatrooms> userChatrooms = chatroomMemberService.getChatroomByUserId(user.getUserId());
+		Workspaces workspace = this.workspaceService.getWorkspaceByWorkspaceId(workspaceId);
 
+		model.addAttribute("workspace", workspace);
 		model.addAttribute("user", user);
 		model.addAttribute("members", members);
 		model.addAttribute("chatroomMembers", chatroomMembers);
@@ -194,7 +200,7 @@ public class WorkspaceSideBarController {
 		model.addAttribute("bookmarkedMessageIds", bookmarkedMessageIds);
 		model.addAttribute("searchMessage", searchMessage);
 		model.addAttribute("replies", replies);
-		model.addAttribute("mychat", mychat);
+		model.addAttribute("mychat", mychat.orElse(null));
 
 		return "workspace/workspace_sidebar_message";
 	}

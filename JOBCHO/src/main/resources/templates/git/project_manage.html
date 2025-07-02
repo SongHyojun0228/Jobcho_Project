@@ -2,17 +2,19 @@
 <div layout:fragment="content" class="container my-3">
 
 	<head>
-		<title>Team명 | 프로젝트 이름</title>
+		<title th:text="'프로젝트 관리 | ' + ${workspace.workspaceName}"></title>
 		<link rel="stylesheet" th:href="@{/css/git/project_manage.css}" />
 	</head>
 
 	<body>
 		<header>
-			<div class="jobcho_logo">
-				<img th:src="@{/images/Jobcho_logo.png}" alt="Jobcho_logo" />
-				<p>Jobcho</p>
-			</div>
-			<p class="project_name">프로젝트 명</p>
+			<a th:href="@{/index}">
+				<div class="jobcho_logo">
+					<img th:src="@{/images/Jobcho_logo.png}" alt="Jobcho_logo" />
+					<p>Jobcho</p>
+				</div>
+			</a>
+			<p class="project_name" th:text="${workspace.workspaceName}">프로젝트 명</p>
 			<p>&nbsp;</p>
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 		</header>
@@ -38,7 +40,7 @@
 								<div class="icon_box_chat" th:each="branch:${branchs}">
 									<img th:src="@{/images/icons/commit-git.png}" alt="레퍼지토리">
 									<span class="branch-color-dot"
-										th:style="'background-color: rgb' + ${branch.color}"	></span>
+										th:style="'background-color: rgb' + ${branch.color}"></span>
 									<a href="#" th:text="${branch.title}">main</a>
 								</div>
 							</div>
@@ -70,16 +72,18 @@
 					<div class="activity_main_bar">
 						<div class="more-options-wrapper">
 							<div class="branches_button">
-								<img th:src="@{/images/icons/commit-git.png}" alt="레퍼지토리">
-								<a href="javascript:void(0)" onclick="openModal()">All branches</a>
+								<div>
+									<img th:src="@{/images/icons/commit-git.png}" alt="레퍼지토리">
+									<a id="selectedBranchText" href="javascript:void(0)" onclick="openModal()">All
+										branches</a>
+								</div>
 								<img th:src="@{/images/icons/arrow-down.png}" alt="숨기기,보이기 화살표">
 							</div>
 							<div id="branchModal" class="modal">
-								<p class="p_title">Choose branch...</p>
 								<div id="branchList">
-									<p data-branch="ALL">모든 브랜치</p>
+									<p data-branch="ALL" class="ListItem">모든 브랜치</p>
 									<p th:each="branch : ${branchs}" th:text="${branch.title}"
-										th:attr="data-branch=${branch.title}"></p>
+										th:attr="data-branch=${branch.title}" class="ListItem"></p>
 								</div>
 								<button onclick="closeModal()">닫기</button>
 							</div>
@@ -130,10 +134,10 @@
 				const date = item.dataset.uploadedDate;
 				const title = item.dataset.branchTitle;
 				const color = "rgb" + item.dataset.branchColor;
-				
+
 				console.log("color : " + color);
-				
-				console.log("branch_title : "  + title);
+
+				console.log("branch_title : " + title);
 
 				if (!mainStartDate) mainStartDate = date;
 
@@ -191,6 +195,7 @@
 				document.querySelectorAll("#branchList p").forEach(li => {
 					li.addEventListener("click", () => {
 						const selectedBranch = li.dataset.branch;
+						const selectedText = li.innerText;
 						const allItems = document.querySelectorAll(".activity_item");
 
 						allItems.forEach(item => {
@@ -201,7 +206,7 @@
 								item.style.display = "none";
 							}
 						});
-
+						document.getElementById("selectedBranchText").innerText = selectedText;
 						closeModal();
 					});
 				});

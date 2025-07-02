@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.jobcho.user.UserService;
 import com.jobcho.user.Users;
+import com.jobcho.workspace.WorkspaceService;
+import com.jobcho.workspace.Workspaces;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +22,7 @@ public class ProjectManageController {
 
 	private final BranchService branchService;
 	private final UserService userService;
+	private final WorkspaceService workspaceSerivce;
 
 	@GetMapping("workspace/{workspaceId}/project")
 	public String projectMain(@PathVariable("workspaceId") int workspaceId, Model model, Principal principal) {
@@ -28,6 +31,9 @@ public class ProjectManageController {
 		Users user = _user.get();
 //		List<Branch> branch = branchService.getBranchwithWorkspaceId(workspaceId);
 		List<Branch> branch = branchService.getBranchwithWorkspaceIdwithCommit(workspaceId);
+		Workspaces workspace = workspaceSerivce.getWorkspaceByWorkspaceId(workspaceId);
+
+		model.addAttribute("workspace", workspace);
 		model.addAttribute("branchs", branch);
 		model.addAttribute(workspaceId);
 

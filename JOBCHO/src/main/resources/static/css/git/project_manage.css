@@ -237,6 +237,7 @@
 	border-radius: 0.5rem;
 	border: 1px solid rgb(200, 200, 200);
 	padding: 0.25rem;
+	justify-content: space-between;
 }
 
 .align_button {
@@ -279,10 +280,9 @@
 
 .branches_button img:nth-child(1) {
 	margin-top: 2px;
-	margin-right: 0.5rem;
 }
 
-.branches_button img:nth-child(3) {
+.branches_button img:nth-child(2) {
 	margin-top: 4px;
 	margin-left: 0.5rem;
 }
@@ -328,7 +328,7 @@
 	height: 1rem;
 }
 
-.btn_line{
+.btn_line {
 	display: flex;
 	flex-direction: row;
 	margin-top: 1rem;
@@ -338,9 +338,14 @@
 	margin-right: 1.5rem;
 }
 
-.commitBtn{
+.commitBtn {
 	padding: 6px;
 	width: 7rem;
+}
+
+.commitBtn:hover {
+	color: white;
+	background-color: rgb(6, 195, 115);
 }
 
 .more-options-wrapper {
@@ -348,36 +353,37 @@
 	display: inline-block;
 }
 
-#branchModal{
+#branchModal {
 	position: absolute;
-	display:none; 
-	background:rgb(240, 240, 240); 	
-	border:1px solid rgb(169, 169, 169); 
+	display: none;
+	background: rgb(240, 240, 240);
+	border: 1px solid rgb(169, 169, 169);
 	border-radius: 5px;
-	padding:0.5rem; 
-	z-index:1000;
+	padding: 0.5rem;
+	z-index: 1000;
+	width: 9.5rem;
 }
 
 #branchModal p {
 	font-size: 0.9rem;
 }
 
-#branchModal button{
+#branchModal button {
 	width: 100%;
 	color: rgb(169, 169, 169);
 	background-color: rgb(200, 200, 200);
 }
 
-#branchList p{
+#branchList p {
 	border-bottom: 1px solid rgb(169, 169, 169);
-	cursor:pointer; 
+	cursor: pointer;
 	margin: 5px 0;
 }
 
-.p_title{
+.p_title {
 	border-bottom: 2px solid rgb(169, 169, 169);
-		cursor:pointer; 
-		margin: 5px 0;
+	cursor: pointer;
+	margin: 5px 0;
 }
 
 .branch-color-dot {
@@ -389,3 +395,7 @@
 	vertical-align: middle;
 }
 
+.ListItem:hover {
+	background-color: rgb(200, 200, 200);
+	border-radius: 3px;
+}

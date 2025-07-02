@@ -29,6 +29,12 @@
 								<p id="last_commit_user" th:text="${lastCommit.branch.user.userName}">마지막 커밋한 유저명</p>
 								<p id="last_commit_content" class="eclipse_text" th:text="${lastCommit.content}">마지막
 									커밋내용</p>
+								<select onchange="location.href=this.value">
+									<option th:each="branch : ${branches}"
+										th:value="@{|/workspace/${workspace.workspaceId}/github/${currentPath}?branchId=${branch.branchId}|}"
+										th:text="${branch.title}" th:selected="${branch.branchId == selectedBranchId}">
+									</option>
+								</select>
 							</div>
 							<div th:if="${lastCommit != null}" id="commit_details_info">
 								<p id="last_commit_date" th:text="${lastCommit.timeAgo}">마지막 커밋 이후로 지난 날짜</p>
@@ -61,7 +67,7 @@
 							class="file_or_forder_list_container">
 							<img th:src="@{/images/icons/git_folder.png}" style="width: 20px;">
 							<a class="uploaded_folder_name"
-								th:href="@{|/workspace/${workspace.workspaceId}/github/${currentPath.contains('/') ? currentPath.substring(0, currentPath.lastIndexOf('/')) : ''}|}">
+								th:href="@{|/workspace/${workspace.workspaceId}/github/${currentPath.contains('/') ? currentPath.substring(0, currentPath.lastIndexOf('/')) : ''}?branchId=${selectedBranchId}|}">
 								상위폴더...
 							</a>
 						</div>
@@ -72,9 +78,10 @@
 							class="file_or_forder_list_container">
 							<img th:src="@{/images/icons/git_folder.png}" style="width: 20px;">
 							<a class="uploaded_folder_name"
-								th:href="@{|/workspace/${workspace.workspaceId}/github/${(currentPath != '' ? currentPath + '/' + folderName : folderName)}|}"
+								th:href="@{|/workspace/${workspace.workspaceId}/github/${(currentPath != '' ? currentPath + '/' + folderName : folderName)}?branchId=${selectedBranchId}|}"
 								th:text="${folderName}">
 								폴더명</a>
+							</p>
 						</div>
 
 						<!-- 파일 목록 -->
@@ -117,10 +124,6 @@
 								<p>Commit changes</p>
 								<textarea type="text" placeholder="Add an optional extended description..."
 									name="commit_content" id="commit_content" required></textarea>
-								<div th:if="${workspace != null}" class="commit_radio_input">
-									<input type="radio" name="commit_branch" id="commit_branch" value="2" checked>
-									<label class="user_branches">Main Branch</label>
-								</div>
 								<div class="commit_radio_input" th:if="${myBranches.size() > 0}"
 									th:each="branch : ${myBranches}">
 									<input type="radio" name="commit_branch" id="commit_branch"

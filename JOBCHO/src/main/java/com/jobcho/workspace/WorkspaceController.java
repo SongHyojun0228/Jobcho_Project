@@ -117,14 +117,16 @@ public class WorkspaceController {
 
 		List<Folders> folders = workspaceService.getFolderWithChatrooms(workspaceId);
 		List<Bookmarks> bookmarks = bookmarkService.getBookmarksByUserId(user.getUserId());
-		MyChatroom mychat = myChatroomService.findMychatByUserID(user.getUserId());
+		Optional<MyChatroom> mychat = myChatroomService.findMychatByUserID(user.getUserId());
 
 		List<Tasks> tasks = this.workspaceService.getTasksByUserId(workspaceId);
 		Set<Integer> bookmarkedChatroomIds = bookmarkService.extractChatroomBookmarkIds(bookmarks);
 		Set<Integer> bookmarkedMyChatroomIds = bookmarkService.extractMyChatroomBookmarkIds(bookmarks);
 		Set<Integer> bookmarkedMessageIds = bookmarkService.extractMessageBookmarkIds(bookmarks);
 		List<Chatrooms> userChatrooms = chatroomMemberService.getChatroomByUserId(user.getUserId());
+		Workspaces workspace = this.workspaceService.getWorkspaceByWorkspaceId(workspaceId);
 
+		model.addAttribute("workspace", workspace);
 		model.addAttribute("user", user);
 		model.addAttribute("members", members);
 		model.addAttribute("workspaceId", workspaceId);
@@ -135,37 +137,56 @@ public class WorkspaceController {
 		model.addAttribute("bookmarkedMyChatroomIds", bookmarkedMyChatroomIds);
 		model.addAttribute("bookmarkedMessageIds", bookmarkedMessageIds);
 		model.addAttribute("tasks", tasks);
-		model.addAttribute("mychat", mychat);
+		model.addAttribute("mychat", mychat.orElse(null));
 
 		return "workspace/workspace_basic2";
 	}
 
 	// 🌿 나와의 채팅 GET
-	@GetMapping("/workspace/{workspaceId}/mychat/{mychatroomId}")
+	@GetMapping("/workspace/{workspaceId}/mychat/{chatroomId}")
 	public String workspaceMain_mychat(@PathVariable("workspaceId") int workspaceId,
-			@PathVariable("mychatroomId") int mychatroomId, Model model, Principal principal) {
-		List<Folders> folders = workspaceService.getFolderWithChatrooms(workspaceId);
+			@PathVariable("chatroomId") int chatroomId, Model model, Principal principal) {
 		Optional<Users> _user = this.userService.getUser(principal.getName());
 		Users user = _user.get();
 		List<Users> members = this.memberService.findUsersByWorkspaceId(workspaceId);
+		List<Users> chatroomMembers = this.chatroomMemberService.findUsersByChatroomId(chatroomId);
+
+		List<Folders> folders = workspaceService.getFolderWithChatrooms(workspaceId);
+		List<Tasks> tasks = workspaceService.getTask(chatroomId);
+		List<Notifications> notifications = workspaceService.getNotifi(chatroomId);
+		List<Messages> messages = messageService.getTopLevelMessagesWithReplies(chatroomId);
 		List<Bookmarks> bookmarks = bookmarkService.getBookmarksByUserId(user.getUserId());
+		Chatrooms chatrooms = this.workspaceService.getChatroomWithChatId(chatroomId);
+		List<Alarms> alarms = this.alarmRepository.findByUserIdAndIsNotRead(user.getUserId());
+		Optional<MyChatroom> mychat = myChatroomService.findMychatByUserID(user.getUserId());
 		Set<Integer> bookmarkedChatroomIds = bookmarkService.extractChatroomBookmarkIds(bookmarks);
 		Set<Integer> bookmarkedMyChatroomIds = bookmarkService.extractMyChatroomBookmarkIds(bookmarks);
 		Set<Integer> bookmarkedMessageIds = bookmarkService.extractMessageBookmarkIds(bookmarks);
-		List<Alarms> alarms = this.alarmRepository.findByUserIdAndIsNotRead(user.getUserId());
+		List<Mentions> mentions = mentionService.getByChatroomId(chatroomId);
+		List<Chatrooms> userChatrooms = chatroomMemberService.getChatroomByUserId(user.getUserId());
+		Workspaces workspace = this.workspaceService.getWorkspaceByWorkspaceId(workspaceId);
 
+		model.addAttribute("workspace", workspace);
 		model.addAttribute("user", user);
 		model.addAttribute("members", members);
+		model.addAttribute("chatroomMembers", chatroomMembers);
+		model.addAttribute("userChatrooms", userChatrooms);
 		model.addAttribute("workspaceId", workspaceId);
-		model.addAttribute("MychatroomId", mychatroomId);
 		model.addAttribute("folders", folders);
+		model.addAttribute("chatroomId", chatroomId);
+		model.addAttribute("tasks", tasks);
+		model.addAttribute("chatrooms", chatrooms);
+		model.addAttribute("notifications", notifications);
 		model.addAttribute("bookmarks", bookmarks);
 		model.addAttribute("bookmarkedChatroomIds", bookmarkedChatroomIds);
 		model.addAttribute("bookmarkedMyChatroomIds", bookmarkedMyChatroomIds);
 		model.addAttribute("bookmarkedMessageIds", bookmarkedMessageIds);
+		model.addAttribute("messages", messages);
 		model.addAttribute("alarms", alarms);
+		model.addAttribute("mychat", mychat.orElse(null));
+		model.addAttribute("mentions", mentions);
 
-		return "workspace/workspace_mychat";
+		return "workspace/workspace";
 	}
 
 	// 🌿 워크 스페이스 내 채팅방 매핑
@@ -185,13 +206,15 @@ public class WorkspaceController {
 		List<Bookmarks> bookmarks = bookmarkService.getBookmarksByUserId(user.getUserId());
 		Chatrooms chatrooms = this.workspaceService.getChatroomWithChatId(chatroomId);
 		List<Alarms> alarms = this.alarmRepository.findByUserIdAndIsNotRead(user.getUserId());
-		MyChatroom mychat = myChatroomService.findMychatByUserID(user.getUserId());
+		Optional<MyChatroom> mychat = myChatroomService.findMychatByUserID(user.getUserId());
 		Set<Integer> bookmarkedChatroomIds = bookmarkService.extractChatroomBookmarkIds(bookmarks);
 		Set<Integer> bookmarkedMyChatroomIds = bookmarkService.extractMyChatroomBookmarkIds(bookmarks);
 		Set<Integer> bookmarkedMessageIds = bookmarkService.extractMessageBookmarkIds(bookmarks);
 		List<Mentions> mentions = mentionService.getByChatroomId(chatroomId);
 		List<Chatrooms> userChatrooms = chatroomMemberService.getChatroomByUserId(user.getUserId());
+		Workspaces workspace = this.workspaceService.getWorkspaceByWorkspaceId(workspaceId);
 
+		model.addAttribute("workspace", workspace);
 		model.addAttribute("user", user);
 		model.addAttribute("members", members);
 		model.addAttribute("chatroomMembers", chatroomMembers);
@@ -208,7 +231,7 @@ public class WorkspaceController {
 		model.addAttribute("bookmarkedMessageIds", bookmarkedMessageIds);
 		model.addAttribute("messages", messages);
 		model.addAttribute("alarms", alarms);
-		model.addAttribute("mychat", mychat);
+		model.addAttribute("mychat", mychat.orElse(null));
 		model.addAttribute("mentions", mentions);
 
 		return "workspace/workspace";
@@ -220,7 +243,7 @@ public class WorkspaceController {
 			@RequestParam(value = "folder_name") String folder_name, Principal principal) {
 		Optional<Users> _user = this.userService.getUser(principal.getName());
 		Users user = _user.get();
-		
+
 		this.folderService.create(workspaceId, folder_name, user.getUserId()); // 워크스페이스,이름,생성자_id
 		return String.format("redirect:/workspace/" + workspaceId);
 	}

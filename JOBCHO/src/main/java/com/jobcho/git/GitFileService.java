@@ -41,8 +41,8 @@ public class GitFileService {
 		}
 	}
 
-	List<GitFile> getAllGitFiles() {
-		return this.gitFileRepository.findAllByOrderByCommitUploadedDateDesc();
+	List<GitFile> getAllGitFilesByWorkspaceId(Integer workspaceId) {
+		return this.gitFileRepository.findAllByWorkspaceIdOrderByCommitUploadedDateDesc(workspaceId);
 	}
 
 	public Integer getLastCommitFileCount(Commit lastCommit, Workspaces workspace) {
@@ -50,6 +50,10 @@ public class GitFileService {
 		Integer countOfLastCommitFile = this.gitFileRepository.countByCommitAndWorkspace(lastCommit, workspace);
 
 		return countOfLastCommitFile;
+	}
+
+	public List<GitFile> getAllGitFilesByWorkspaceIdAndBranchId(Integer workspaceId, Integer branchId) {
+		return gitFileRepository.findByWorkspaceIdAndBranchIdOrderByCommitUploadedDateDesc(workspaceId, branchId);
 	}
 
 	public String readTextFile(String filePath) {

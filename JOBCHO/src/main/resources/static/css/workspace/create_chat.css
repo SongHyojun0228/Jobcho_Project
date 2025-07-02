@@ -17,14 +17,19 @@
 	padding: 1rem;
 }
 
-.addChatroombtn{
+.addChatroombtn {
 	z-index: 10;
 }
 
-.form_item > input:nth-child(1){
+.form_item>input:nth-child(1) {
 	width: 30rem;
 }
 
-.form_item > select{
+.form_item>select {
 	width: 30rem;
+}
+
+.register_btn:hover {
+	color: white;
+	background-color: rgb(6, 195, 115);
 }

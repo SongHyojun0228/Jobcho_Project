@@ -39,6 +39,10 @@
 	max-height: 25rem;
 }
 
+.alarm_items:last-child {
+	border-bottom: none;
+}
+
 .alarm_items {
 	padding: 1rem;
 	border-bottom: 1px solid rgb(169, 169, 169);

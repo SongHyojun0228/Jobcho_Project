@@ -63,6 +63,7 @@ taskLink.addEventListener('click', (e) => {
 	bookmarkTotalContainer.style.display = 'none';
 	voteTotalContainer.style.display = 'none';
 	taskDetailTotalContainer.style.display = 'none';
+	popup2.style.display = 'none';
 	taskTotalContainer.style.display = 'block';
 	//taskTotalContainer.style.display = (taskTotalContainer.style.display == 'block') ? 'none' : 'block';
 });
@@ -73,6 +74,7 @@ bookmarkLink.addEventListener('click', (e) => {
 	taskDetailTotalContainer.style.display = 'none';
 	taskTotalContainer.style.display = 'none';
 	bookmarkTotalContainer.style.display = 'block';
+	popup2.style.display = 'none';
 });
 voteLink.addEventListener('click', (e) => {
 	e.preventDefault();
@@ -80,6 +82,7 @@ voteLink.addEventListener('click', (e) => {
 	bookmarkTotalContainer.style.display = 'none';
 	taskDetailTotalContainer.style.display = 'none';
 	taskTotalContainer.style.display = 'none';
+	popup2.style.display = 'none';
 	voteTotalContainer.style.display = 'block';
 });
 
@@ -107,6 +110,9 @@ if (icon != null) {
 	//아이콘 ... 
 	icon.addEventListener('click', () => {
 		popup.style.display = (popup.style.display === 'block') ? 'none' : 'block';
+		const ham = document.getElementById('ham_popup');
+		ham.style.display = 'none';
+		popup2.style.display = 'none';
 	});
 }
 
@@ -169,7 +175,10 @@ function closeChatMenu(index) {
 //아이콘 메뉴 더보기
 menuLink.addEventListener('click', (e) => {
 	e.preventDefault();
+	const ham = document.getElementById('ham_popup');
 	popup2.style.display = (popup2.style.display === 'block') ? 'none' : 'block';
+	ham.style.display = 'none';
+	popup.style.display = 'none';
 });
 document.addEventListener('click', (event) => {
 	const isClickInsideIcon = icon && icon.contains(event.target);
@@ -316,6 +325,7 @@ document.getElementById('createTaskClose').addEventListener('click', function(e)
 	voteTotalContainer.style.display = 'none';
 	taskDetailTotalContainer.style.display = 'none';
 	taskTotalContainer.style.display = 'block';
+	createToatalContainer.style.display = 'none';
 });
 
 function shownotifiOnMessage(btn) {
@@ -369,6 +379,8 @@ function showFileUpload() {
 function showHamPopup() {
 	const ham = document.getElementById('ham_popup');
 	ham.style.display = (ham.style.display == 'block') ? 'none' : 'block';
+	popup2.style.display = 'none';
+	popup.style.display = 'none';
 }
 
 if (document.getElementById('event_prevent')) {
