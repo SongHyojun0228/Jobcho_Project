@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{includes/layout}" lang="ko">
+
+<head>
+	<title layout:title="커밋페이지">커밋페이지</title>
+	<link rel="stylesheet" th:href="@{/css/git/git_commit.css}">
+</head>
+
+<body>
+	<div class="main" layout:fragment="content">
+		<div id="total_git_commit_controller">
+			<!-- <div id="left_branches_container">
+				<p th:text="${workspace.workspaceName}">팀명 == 프로젝트명으로 해도 될 듯???</p>
+				<div>
+					<p>- 브랜치1</p>
+					<p>- 브랜치2</p>
+				</div>
+			</div> -->
+
+			<div id="right_total_container">
+				<div id="file_upload_history_container">
+					<div id="upper_container">
+						<div id="last_container_container">
+							<div th:if="${lastCommit != null}" id="commit_user_info">
+								<img class="mine_chat_sender_profile"
+									th:src="@{/uploads/profileImg/{img}(img=${lastCommit.branch.user.userImg})}"
+									alt="마지막으로 커밋한 유저 프로필">
+								<p id="last_commit_user" th:text="${lastCommit.branch.user.userName}">마지막 커밋한 유저명</p>
+								<p id="last_commit_content" class="eclipse_text" th:text="${lastCommit.content}">마지막
+									커밋내용</p>
+							</div>
+							<div th:if="${lastCommit != null}" id="commit_details_info">
+								<p id="last_commit_date" th:text="${lastCommit.timeAgo}">마지막 커밋 이후로 지난 날짜</p>
+								<p id="last_commit_file_count" th:text="${countOfLastCommitFile} + ' Commits'">12
+									Commits</p>
+							</div>
+						</div>
+
+						<!--<div th:if="${allGitFiles.size() != 0}" id="uploaded_files_container">
+							<table>
+								<tr th:each="gitFile : ${allGitFiles}">
+									<td>
+										<div>
+											<img th:src="@{/images/icons/git_file.png}">
+											<a th:href="@{|/uploads/git/${gitFile.fileName}|}" download
+												th:text="${gitFile.fileName}"></a>
+										</div>
+									</td>
+									<td>
+										<p id="file_commit_content" th:text="${gitFile.commit.content}">Commit Content
+										</p>
+									</td>
+									<td>
+										<p id="file_commit_date" th:text="${gitFile.commit.timeAgo}">Commited Date</p>
+									</td>
+								</tr>
+							</table>
+						</div> -->
+						<div th:if="${currentPath != ''}" id="upper_folder_container"
+							class="file_or_forder_list_container">
+							<img th:src="@{/images/icons/git_folder.png}" style="width: 20px;">
+							<a class="uploaded_folder_name"
+								th:href="@{|/workspace/${workspace.workspaceId}/github/${currentPath.contains('/') ? currentPath.substring(0, currentPath.lastIndexOf('/')) : ''}|}">
+								상위폴더...
+							</a>
+						</div>
+
+
+						<!-- 하위 폴더 목록 -->
+						<div th:each="folderName : ${subfolders}" id="folder_list_contaier"
+							class="file_or_forder_list_container">
+							<img th:src="@{/images/icons/git_folder.png}" style="width: 20px;">
+							<a class="uploaded_folder_name"
+								th:href="@{|/workspace/${workspace.workspaceId}/github/${(currentPath != '' ? currentPath + '/' + folderName : folderName)}|}"
+								th:text="${folderName}">
+								폴더명</a>
+							</p>
+						</div>
+
+						<!-- 파일 목록 -->
+						<div th:each="file : ${files}" id="file_list_container" class="file_or_forder_list_container">
+							<div>
+								<img src="/images/icons/git_file.png" style="width: 20px;">
+								<!--<a th:href="@{|/uploads/git/${file.filePath}|}" download th:text="${file.fileName}"
+									class="eclipse_text">파일명</a>-->
+								<a th:href="@{|/workspace/${workspace.workspaceId}/github/view?filePath=${file.filePath}|}"
+									th:text="${file.fileName}" class="eclipse_text uploaded_file_name">파일명</a>
+							</div>
+							<div id="commit_content_date_container">
+								<p th:text="${file.commit.content}" class="eclipse_text">커밋 내용</p>
+								<p th:text="${file.commit.timeAgo}">커밋 날짜</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<form id="files_container" th:action="@{|/workspace/${workspace.workspaceId}/upload/git|}" method="post"
+					enctype="multipart/form-data">
+					<input type="hidden" name="currentPath" th:value="${currentPath}" />
+					<div id="under_container">
+						<div id="upload_file_container">
+							<div class="file_input">
+								<label>파일 업로드 : </label>
+								<input type="file" id="git_files" name="git_files" multiple>
+							</div>
+							<div class="file_input">
+								<label>폴더 업로드 : </label>
+								<input type="file" id="git_folder" name="git_files" multiple webkitdirectory>
+								<input type="hidden" id="folder_name" name="folder_name">
+							</div>
+						</div>
+
+						<div id="write_commit_container">
+							<img class="mine_chat_sender_profile"
+								th:src="@{/uploads/profileImg/{img}(img=${user.userImg})}" alt="로그인한 유저 프로필">
+							<div id="write_commit_details_container">
+								<p>Commit changes</p>
+								<textarea type="text" placeholder="Add an optional extended description..."
+									name="commit_content" id="commit_content" required></textarea>
+								<div th:if="${workspace != null}" class="commit_radio_input">
+									<input type="radio" name="commit_branch" id="commit_branch" value="2" checked>
+									<label class="user_branches">Main Branch</label>
+								</div>
+								<div class="commit_radio_input" th:if="${myBranches.size() > 0}"
+									th:each="branch : ${myBranches}">
+									<input type="radio" name="commit_branch" id="commit_branch"
+										th:value="${branch.branchId}">
+									<label class="user_branches" th:text="${branch.title} + ' Branch'"
+										th:style="'color: rgb' + ${branch.color}">Create a new branch for this commit
+										start a pull
+										request</label>
+								</div>
+								<div id="branch_create_container">
+								</div>
+								<div id="commit_btns">
+									<button id="commit_btn">Commit</button>
+									<button id="cancel_btn" type="reset">Cancel</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+				<form id="create_commit_container" th:action="@{|/workspace/${workspace.workspaceId}/branch/create|}"
+					method="post">
+					<p>New Branch</p>
+					<div id="branch_create_input">
+						<input type="text" placeholder="branch name..." id="branch_name" name="branch_name">
+						<input type="number" min="0" max="255" placeholder="r (0-255)" id="brach_r" name="branch_r">
+						<input type="number" min="0" max="255" placeholder="g (0-255)" id="brach_g" name="branch_g">
+						<input type="number" min="0" max="255" placeholder="b (0-255)" id="brach_b" name="branch_b">
+					</div>
+					<div id="branch_create_btn">
+						<button id="create_branch_btn">Create</button>
+						<button id="reset_branch_btn" type="reset">Cancel</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
