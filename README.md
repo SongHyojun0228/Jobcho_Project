@@ -101,7 +101,7 @@
 
 
 ## 📸 사진
-<div>
+<div style="display: flex">
   <img width="1758" alt="1  회원가입" src="https://github.com/user-attachments/assets/c7bce6d8-2d6d-4186-b9e4-84f4a98a90ed" />
   <img width="1758" alt="2  로그인" src="https://github.com/user-attachments/assets/366038a3-3496-4c97-87ad-c662f6009f09" />
   <img width="1758" alt="3  비밀번호찾기" src="https://github.com/user-attachments/assets/2d676aa3-ec8f-472a-9cdf-3cb0e6441d18" />
