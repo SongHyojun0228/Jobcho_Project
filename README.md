@@ -99,13 +99,34 @@
 
 <br><br>
 
+<h2>📸 프로젝트 사진</h2>
+### 🏠 메인 화면
+<img width="1276" alt="Image" src="https://github.com/user-attachments/assets/f17275d9-c623-47a2-86c5-656d2f187f68" />
 
-## 📸 사진
-<div style="display: flex">
-  <img width="1758" alt="1  회원가입" src="https://github.com/user-attachments/assets/c7bce6d8-2d6d-4186-b9e4-84f4a98a90ed" />
-  <img width="1758" alt="2  로그인" src="https://github.com/user-attachments/assets/366038a3-3496-4c97-87ad-c662f6009f09" />
-  <img width="1758" alt="3  비밀번호찾기" src="https://github.com/user-attachments/assets/2d676aa3-ec8f-472a-9cdf-3cb0e6441d18" />
-</div>
+---
+
+### 🎞️ 스크린샷
+| 스크린샷1 | 스크린샷2 |
+|:-:|:-:|
+| <img width="1920" alt="Image" src="https://github.com/user-attachments/assets/7304c065-b145-45b4-9168-58a303c0e014" /> | <img width="1920" alt="Image" src="https://github.com/user-attachments/assets/3d61367e-1a1f-4367-848f-b58f55b4d17e" /> |
+
+---
+
+### 🎞️ 스크린샷
+| 스크린샷3 | 스크린샷4 |
+|:-:|:-:|
+| <img width="1919" alt="Image" src="https://github.com/user-attachments/assets/2af4656c-3d92-44e4-bfeb-fd53000ea395" /> | <img width="288" alt="Image" src="https://github.com/user-attachments/assets/69be57af-ec05-4169-aafd-4bfa2fb3f095" /> |
+
+---
+
+### 🔚 종료화면
+<img width="1920" alt="Image" src="https://github.com/user-attachments/assets/4b2d3d63-5252-4b07-8dd5-716bf59c752e" />
+
+
+## 📸 스크린샷
+| 로그인 | 회원가입 | 비밀번호찾기 |
+|:-:|:-:|:-:|
+| <img width="1758" alt="1  회원가입" src="https://github.com/user-attachments/assets/c7bce6d8-2d6d-4186-b9e4-84f4a98a90ed" /> | <img width="1758" alt="2  로그인" src="https://github.com/user-attachments/assets/366038a3-3496-4c97-87ad-c662f6009f09" /> | <img width="1758" alt="3  비밀번호찾기" src="https://github.com/user-attachments/assets/2d676aa3-ec8f-472a-9cdf-3cb0e6441d18" /> |
 
 <div>
   <img width="1758" alt="4  홈화면" src="https://github.com/user-attachments/assets/61fd65fd-e6bd-4f4c-8557-f3f151e65213" />
