@@ -104,7 +104,6 @@
 
 ---
 
-<img width="1758" alt="2  로그인" src="https://github.com/user-attachments/assets/366038a3-3496-4c97-87ad-c662f6009f09" />
 | 로그인 | 비밀번호 찾기 |
 |:-:|:-:|
 | <img width="1758" alt="2  로그인" src="https://github.com/user-attachments/assets/366038a3-3496-4c97-87ad-c662f6009f09" /> | <img width="1758" alt="3  비밀번호찾기" src="https://github.com/user-attachments/assets/2d676aa3-ec8f-472a-9cdf-3cb0e6441d18" /> |
