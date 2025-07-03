@@ -95,6 +95,41 @@
 - 웹소켓 기반 다중 채팅방 구현
 - 메시지 별 부가 기능 -> 수정, 삭제, 답글 등
 - 공지사항, 할 일 등록
-- 채팅방 파일 등록
-- 채팅방 시스템 메시지 구현 -> ex) 유승원님이 공지사항을 등록했습니다.
-- 브랜치 별 커밋 정렬
+
+
+<br><br>
+
+
+## 📸 사진
+<div>
+  <img width="1758" alt="1  회원가입" src="https://github.com/user-attachments/assets/c7bce6d8-2d6d-4186-b9e4-84f4a98a90ed" />
+  <img width="1758" alt="2  로그인" src="https://github.com/user-attachments/assets/366038a3-3496-4c97-87ad-c662f6009f09" />
+  <img width="1758" alt="3  비밀번호찾기" src="https://github.com/user-attachments/assets/2d676aa3-ec8f-472a-9cdf-3cb0e6441d18" />
+</div>
+
+<div>
+  <img width="1758" alt="4  홈화면" src="https://github.com/user-attachments/assets/61fd65fd-e6bd-4f4c-8557-f3f151e65213" />
+  <img width="1758" alt="5  팀생성" src="https://github.com/user-attachments/assets/070618a5-223a-4bbd-bb8d-185e8de481c4" />
+</div>
+
+<div>
+  <img width="1768" alt="6  할 일" src="https://github.com/user-attachments/assets/d43990d3-5dcb-4d14-8961-a7185cf82e48" />
+  <img width="1768" alt="7  조직도" src="https://github.com/user-attachments/assets/1ba04850-7cb5-47c0-883b-10f2c834ef70" />
+</div>
+
+<div>
+  <img width="1768" alt="8  알람" src="https://github.com/user-attachments/assets/debccb29-0baa-4dee-a8ff-27bf8ad25428" />
+  <img width="1758" alt="9  채팅방 초대" src="https://github.com/user-attachments/assets/a29cc3a2-ac7f-47c0-be18-b48296a98e35" />
+</div>
+
+<div>
+  <img width="1768" alt="10  프로젝트 매니저" src="https://github.com/user-attachments/assets/e1107dde-80f2-47eb-9395-9bb4af15fc9e" />
+</div>
+
+<div>
+  <img width="1768" alt="11  프로젝트 커밋" src="https://github.com/user-attachments/assets/63a5315f-322a-4793-9388-2ce25d9fb41d" />
+</div>
+
+<div>
+  <img width="1768" alt="12  프로젝트 뷰" src="https://github.com/user-attachments/assets/c6151df6-0eea-4fc7-a766-8914f6054bc0" />
+</div>
