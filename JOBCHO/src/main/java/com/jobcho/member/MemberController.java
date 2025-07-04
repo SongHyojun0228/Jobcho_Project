@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jobcho.mail.MailService;
+import com.jobcho.mychatroom.MyChatroomService;
 import com.jobcho.user.UserService;
 import com.jobcho.user.Users;
 import com.jobcho.workspace.WorkspaceService;
+import com.jobcho.workspace.Workspaces;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +29,7 @@ public class MemberController {
 	private final MailService mailService;
 	private final WorkspaceService workspaceService;
 	private final UserService userService;
+	private final MyChatroomService myChatroomService;
 
 	@GetMapping("/workspace/invite/{workspaceId}/{token}")
 	public String acceptInvite(@PathVariable("token") String token,
@@ -77,7 +80,10 @@ public class MemberController {
 			@RequestParam("email") String email) {
 		String workspaceName = workspaceService.getWorkspaceNameById(workspaceId);
 		mailService.sendInviteMail(email, workspaceId, workspaceName);
-
+		Users user = this.userService.getUserByEmail(email).get();
+		Workspaces workspace = this.workspaceService.getWorkspaceByWorkspaceId(workspaceId);
+		myChatroomService.createMyChatroom(user, workspace);
+		
 	    return "redirect:/workspace/" + workspaceId;
 	}
 

@@ -24,9 +24,9 @@
 						<div id="last_container_container">
 							<div th:if="${lastCommit != null}" id="commit_user_info">
 								<img class="mine_chat_sender_profile"
-									th:src="@{/uploads/profileImg/{img}(img=${lastCommit.branch.user.userImg})}"
+									th:src="@{/uploads/profileImg/{img}(img=${lastCommit.user.userImg})}"
 									alt="마지막으로 커밋한 유저 프로필">
-								<p id="last_commit_user" th:text="${lastCommit.branch.user.userName}">마지막 커밋한 유저명</p>
+								<p id="last_commit_user" th:text="${lastCommit.user.userName}">마지막 커밋한 유저명</p>
 								<p id="last_commit_content" class="eclipse_text" th:text="${lastCommit.content}">마지막
 									커밋내용</p>
 								<select onchange="location.href=this.value">
@@ -124,6 +124,15 @@
 								<p>Commit changes</p>
 								<textarea type="text" placeholder="Add an optional extended description..."
 									name="commit_content" id="commit_content" required></textarea>
+								<div class="commit_radio_input">
+									<input type="radio" name="commit_branch" id="commit_branch"
+										th:value="${mainBranch.branchId}">
+									<label class="user_branches" th:text="${mainBranch.title} + ' Branch'"
+										th:style="'color: rgb' + ${mainBranch.color}">Create a new branch for this
+										commit
+										start a pull
+										request</label>
+								</div>
 								<div class="commit_radio_input" th:if="${myBranches.size() > 0}"
 									th:each="branch : ${myBranches}">
 									<input type="radio" name="commit_branch" id="commit_branch"

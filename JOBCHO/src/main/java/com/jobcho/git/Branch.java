@@ -50,4 +50,7 @@ public class Branch {
 	@OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Commit> commit = new ArrayList<>();
 	
+	@Column
+	private Integer isMain;
+	
 }

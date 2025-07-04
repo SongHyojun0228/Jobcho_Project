@@ -66,7 +66,8 @@ public class GitFileService {
 	}
 
 	public GitFile getByFilePath(String filePath) {
-		return gitFileRepository.findByFilePath(filePath)
+		System.out.println("filePath : " + filePath);
+		return gitFileRepository.findByFilePathIfNotNull(filePath)
 				.orElseThrow(() -> new RuntimeException("❌ 파일을 찾을 수 없습니다: " + filePath));
 	}
 

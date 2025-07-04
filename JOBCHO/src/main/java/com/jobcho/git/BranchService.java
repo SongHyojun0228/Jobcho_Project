@@ -20,7 +20,7 @@ public class BranchService {
 		return this.branchRepository.findById(branchId).get();
 	}
 
-	public void createBranch(String branchName, Users user, Workspaces worksapce, String rgb, Integer countOfCommits) {
+	public void createBranch(String branchName, Users user, Workspaces worksapce, String rgb, Integer countOfCommits, Integer isMain) {
 		Branch branch = new Branch();
 
 		branch.setTitle(branchName);
@@ -28,6 +28,7 @@ public class BranchService {
 		branch.setWorkspace(worksapce);
 		branch.setColor(rgb);
 		branch.setCountOfCommits(countOfCommits);
+		branch.setIsMain(isMain);
 
 		try {
 			this.branchRepository.save(branch);

@@ -101,8 +101,9 @@
 									<p th:text="${commit.content}"></p>
 								</div>
 								<div class="activity_item_row2">
-									<img th:src="@{/uploads/profileImg/{img}(img=${branch.user.userImg})}">
-									<p th:text="${branch.user.userName}"></p>
+									<img th:if="${branch.isMain != 1}" th:src="@{/uploads/profileImg/{img}(img=${branch.user.userImg})}">
+									<img th:if="${branch.isMain == 1}" th:src="@{/images/Jobcho_logo.png}">
+									<p th:if="${branch.isMain != 1}" th:text="${branch.user.userName}"></p>
 									<p>pushed 1 commit to</p>
 									<p th:text="${branch.title}">main</p>
 								</div>

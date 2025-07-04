@@ -103,7 +103,7 @@ public class WorkspaceService {
 			System.out.println("사용자 mychatroom  자동생성");
 		}
 		
-		this.branchService.createBranch("main", workspace.getOwner(), workspace, "(6, 195, 115)", 0);
+		this.branchService.createBranch("main", null, workspace, "(6, 195, 115)", 0, 1);
 
 		System.out.println("<<< workspaceRepository.createWorkspace 호출 >>> : 워크스페이스 생성");
 
@@ -119,5 +119,5 @@ public class WorkspaceService {
 		Folders _folder = this.folderRepository.getById(folderId);
 		return workspaceRepository.getById(_folder.getWorkspaceId());
 	}
-
+	
 }

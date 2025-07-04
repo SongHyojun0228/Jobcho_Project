@@ -3,6 +3,8 @@ package com.jobcho.git;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+import com.jobcho.user.Users;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,6 +30,10 @@ public class Commit {
 	@JoinColumn(name = "branch_id")
 	private Branch branch;
 
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private Users user;
+	
 	@Column
 	private String content;
 

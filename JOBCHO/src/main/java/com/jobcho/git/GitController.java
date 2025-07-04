@@ -194,6 +194,8 @@ public class GitController {
 		Commit lastCommit = this.commitService.getLastCommit(workspace);
 		Integer countOfLastCommitFile = this.gitFileService.getLastCommitFileCount(lastCommit, workspace);
 
+		Branch mainBranch = this.branchService.getMainBranchByWorkspaceId(workspaceId);
+		
 		model.addAttribute("currentPath", currentPath);
 		model.addAttribute("subfolders", subfolders);
 		model.addAttribute("files", filesInFolder);
@@ -204,6 +206,7 @@ public class GitController {
 		model.addAttribute("countOfLastCommitFile", countOfLastCommitFile);
 		model.addAttribute("branches", branches);
 		model.addAttribute("selectedBranchId", branchId);
+		model.addAttribute("mainBranch", mainBranch);
 
 		return "git/git_commit";
 	}
@@ -215,6 +218,8 @@ public class GitController {
 			@RequestParam("currentPath") String currentPath, @RequestParam("commit_branch") Integer branchId,
 			Model model, Principal principal) {
 
+		Optional<Users> _user = this.userService.getUser(principal.getName());
+		
 		Branch mainBranch = this.branchService.getMainBranchByWorkspaceId(workspaceId);
 		String basePath = currentPath == null || currentPath.isEmpty() ? "" : currentPath + "/";
 
@@ -228,8 +233,8 @@ public class GitController {
 			uploadGitFile.mkdir();
 		}
 
-		Commit commit = this.commitService.uploadCommit(branch, commitContent);
-		Commit mainCommit = this.commitService.uploadCommit(mainBranch, commitContent);
+		Commit commit = this.commitService.uploadCommit(branch, commitContent, _user.get());
+		Commit mainCommit = this.commitService.uploadCommit(mainBranch, commitContent, null);
 
 		Map<String, GitFolder> folderMap = new HashMap<>();
 		Map<String, GitFolder> mainFolderMap = new HashMap<>();
@@ -298,7 +303,7 @@ public class GitController {
 		String branchRGB = "(" + branchR + ", " + branchG + ", " + branchB + ")";
 
 		try {
-			this.branchService.createBranch(branchName, _user.get(), workspace, branchRGB, 0);
+			this.branchService.createBranch(branchName, _user.get(), workspace, branchRGB, 0, 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
