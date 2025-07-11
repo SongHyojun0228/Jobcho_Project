@@ -3,6 +3,8 @@
 
 **Jobcho**는 팀원 간의 실시간 소통과 프로젝트 관리를 지원하는 웹 기반 협업툴입니다.  
 잔디(JANDI)의 기능을 참고하여 구현되었으며, 메시지 채팅, 공지 관리, 할 일, 파일 공유 등의 기능을 제공합니다.
+### API 명세서 링크
+> https://spotless-seeker-00f.notion.site/JOBCHO-API-22d13ddc688b80449ec1c9b64f0b609f?pvs=73
 
 <br><br>
 
