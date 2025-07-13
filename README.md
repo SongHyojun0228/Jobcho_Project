@@ -26,10 +26,11 @@
 <br><br>
 
 ## 📠 기술 스택
-- Spring Boot
-- WebSocket
-- ORACLE
-- Thymeleaf / CSS / JavaScript
+- Frontend : HTML, CSS, JavaScript
+- Template : Thymeleaf
+- Backend : Spring Boot, Spring MVC, JPA
+- Database : Oracle
+- Build Tool : Gradle
 
 <br><br>
 
