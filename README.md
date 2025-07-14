@@ -96,7 +96,7 @@
 - 테이블 설계
 - 무결성 제약 조건 설계
 
-<br><br>
+<br>
 
 ### 🙋🏻‍♂️ <a href="https://github.com/walwal123" target="_blank">유승원</a>
 #### ➬ 프론트엔드
