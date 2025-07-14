@@ -6,6 +6,9 @@
 ### API 명세서 링크
 > https://spotless-seeker-00f.notion.site/JOBCHO-API-22d13ddc688b80449ec1c9b64f0b609f?pvs=73
 
+### Notion
+> https://spotless-seeker-00f.notion.site/16513ddc688b806aacb5f59a6befa64e?p=22913ddc688b80a092aad24c232204da&pm=c
+
 <br><br>
 
 ## 선정 이유
